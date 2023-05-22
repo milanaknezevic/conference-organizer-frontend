@@ -1,0 +1,290 @@
+.App {
+  text-align: center;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+}
+.FirstPage {
+  background-image: url("./assets/slika.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+}
+
+.zatamni {
+  position: fixed;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.act {
+  color: white;
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  border-width: 5px;
+  border-style: solid;
+  border-color: lightgray;
+  overflow: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  max-height: 174px;
+  margin: 0 auto; /* Dodajte ovu liniju da centrirate element */
+}
+
+.act label {
+  display: flex;
+  flex-direction: row; /* Dodato - postavlja labele jednu ispod druge */
+  align-items: baseline;
+}
+
+.act button + button {
+  margin-left: 20px;
+}
+.act button {
+  display: inline-block;
+  margin: 10px auto;
+  margin-bottom: 5px;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+.FirstPage button {
+  margin: 0.5rem;
+  padding: 1rem 2rem;
+  width: 20rem; /* Sirina dugmica */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #7439db;
+  background-color: white;
+  font-size: 1.2rem; /* velicina fonta */
+}
+.auth-form-container,
+.login-form,
+.register-form {
+  display: flex;
+  flex-direction: column;
+}
+.error-message {
+  color: red;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.languageSelectorContainer {
+  display: flex;
+  align-items: center;
+}
+.success-message {
+  background-color: #dff0d8;
+  color: #3c763d;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.auth-form-container {
+  padding: 3.2rem;
+  border: 1px solid white;
+  border-radius: 50px;
+  margin: 0.5rem;
+  margin-top: 90px; /* Postavite željeni razmak između headera i .auth-form-container */
+}
+
+label {
+  text-align: left;
+  padding: 0.25rem 0;
+}
+
+input {
+  margin: 0.5rem 0;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+}
+
+button {
+  border: none;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #7439db;
+}
+
+.link-btn {
+  background: none;
+  color: darkgray;
+
+  text-decoration: underline;
+}
+
+.korisnik-item {
+  display: flex;
+  list-style: none;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+}
+
+.admin-container {
+  position: relative;
+  list-style: none;
+  border: 3px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.admin-container.zatamniListu {
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.polja-color {
+  color: white;
+  font-weight: bold;
+}
+
+.ok {
+  color: lightgray;
+  font-weight: bold;
+}
+
+.editButton {
+  border: none;
+  background-color: #fff;
+  color: purple;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  position: absolute;
+  bottom: 30px;
+  right: 50px;
+  transform: translate(50%, 50%);
+}
+.zzz {
+  border: none;
+  background-color: #fff;
+  color: gray;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  position: absolute;
+  bottom: 30px;
+  right: 50px;
+  transform: translate(50%, 50%);
+}
+
+.underline {
+  /*border-bottom: 1px solid lightgray;*/
+  margin-bottom: 12px; /* Veći razmak između div elemenata */
+}
+
+.toolbar {
+  text-align: center;
+  display: flex;
+  min-height: 7vh;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  padding: 10px;
+  margin-top: 5rem;
+  margin-bottom: 15rem;
+  z-index: 10;
+  border-width: 5px;
+  border-style: solid;
+  border-color: lightgray;
+}
+.toolbar-active {
+  pointer-events: none;
+  text-align: center;
+  display: flex;
+  min-height: 7vh;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  padding: 10px;
+  margin-top: 5rem;
+  margin-bottom: 15rem;
+  z-index: 10;
+  border-width: 5px;
+  border-style: solid;
+  border-color: lightgray;
+}
+
+.toolbar-active button {
+  border: none;
+  background-color: #fff;
+  color: gray;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px; /* Dodajte razmak s desne strane */
+  font-weight: bold;
+}
+
+.toolbar button {
+  border: none;
+  background-color: #fff;
+  color: purple;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px; /* Dodajte razmak s desne strane */
+  font-weight: bold;
+}
+
+.toolbar button:hover {
+  background-color: #ddd;
+}
+
+.toolbar button:last-child {
+  margin-right: 0;
+}
