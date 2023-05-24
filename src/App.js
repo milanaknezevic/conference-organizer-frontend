@@ -5,17 +5,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Prikaz from "./pages/Prikaz";
-import Admin from "./pages/Admin";
-import initializeI18N from "./i8n/init";
-import { Provider } from "react-redux";
-import { store } from "./pages/store";
-import store2 from "./redux/store2";
-
-initializeI18N();
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
+import Admin from "./pages/Admin/Admin";
+import Organizator from "./pages/Organizator/Organizator";
 
 function App() {
   return (
@@ -26,8 +20,8 @@ function App() {
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
-            <Route path="admin" element={<Admin />} /> {/* Promijenjeno */}
-            <Route path="pocetnaStranica" element={<Prikaz />} />
+            <Route path="admin" element={<Admin />} />
+            <Route path="organizator" element={<Organizator />} />
           </Route>
         </Routes>
       </Router>

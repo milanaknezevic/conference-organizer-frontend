@@ -1,7 +1,7 @@
-import Modal from "./Modal";
+import Modal from "../Modal/Modal";
 import { useState, useEffect } from "react";
-import { promjeniStatus } from "../services/admin.services";
-
+import classes from "./Edit.module.css";
+import { promjeniStatus } from "../../services/admin.services";
 const Edit = (props) => {
   const { user, onClose, token } = props;
   const [checkedValues, setCheckedValues] = useState({
@@ -33,12 +33,11 @@ const Edit = (props) => {
       .then((response) => {
         console.log("Status je uspješno izmijenjen:", response);
         onClose();
+        props.onSave();
       })
       .catch((error) => {
         console.error("Greška prilikom izmjene statusa:", error);
       });
-
-    props.onStatusChange();
   };
 
   useEffect(() => {
@@ -76,8 +75,12 @@ const Edit = (props) => {
         )}
 
         <div className="button-container">
-          <button onClick={handleSave}>Sacuvaj</button>
-          <button onClick={onClose}>Zatvori</button>
+          <button className={classes.button} onClick={handleSave}>
+            Sacuvaj
+          </button>
+          <button className={classes.button} onClick={onClose}>
+            Zatvori
+          </button>
         </div>
       </div>
     </Modal>

@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchKorisnici } from "../redux/features/adminSlice";
-import "../App.css";
-import Edit from "./Edit";
+import "../../App.css";
+import { fetchKorisnici } from "../../redux/features/adminSlice";
+import Toolbar from "../../components/Toolbar";
+import Edit from "../Edit/Edit";
+
 const Admin = () => {
   const [korisnici, setKorisnici] = useState([]);
   const [izbor, setIzbor] = useState("aktivni");
   const [openModal, setOpenModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [refreshData, setRefreshData] = useState(false);
   const user = useSelector((state) => state.login);
   const token = user.user.token;
   const userId = user.user.id;
   const dispatch = useDispatch();
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     dispatch(fetchKorisnici({ token, userId, izbor }))
       .then((response) => {
-        console.log("repsonse", response);
+        console.log("response", response);
         setKorisnici(response.payload);
       })
       .catch((error) => {
         console.log("error", error);
       });
-  }, [dispatch, token, userId, izbor, refreshData]);
+  }, [dispatch, token, userId, izbor, refreshKey]);
 
   const handleEdit = (korisnik) => {
     setSelectedUser(korisnik);
@@ -35,14 +37,16 @@ const Admin = () => {
     setOpenModal(false);
   };
 
+  const handleSaveEdit = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
+
   let korisniciList;
   if (korisnici && korisnici.length > 0) {
     korisniciList = korisnici.map((korisnik) => (
       <li
         key={korisnik.id}
-        className={
-          openModal ? "admin-container .zatamniListu" : "korisnik-item"
-        }
+        className={openModal ? "admin-container zatamniListu" : "korisnik-item"}
       >
         <div>
           <div className="underline">
@@ -98,17 +102,14 @@ const Admin = () => {
   return (
     <div>
       <div className={openModal ? "toolbar-active" : "toolbar"}>
-        <div>
-          <button type="button" onClick={handleIzborAktivnih}>
-            Aktivni Korisnici
-          </button>
-          <button type="button" onClick={handleIzborBlokiranih}>
-            Blokirani Korisnici
-          </button>
-          <button type="button" onClick={handleIzborZahtjeva}>
-            Zahtjevi
-          </button>
-        </div>
+        <Toolbar
+          dugme1={"Aktivni Korisnici"}
+          dugme2={"Blokirani Korisnici"}
+          dugme3={"Zahtjevi"}
+          izbor1={handleIzborAktivnih}
+          izbor2={handleIzborBlokiranih}
+          izbor3={handleIzborZahtjeva}
+        />
       </div>
 
       <section>
@@ -120,7 +121,7 @@ const Admin = () => {
           user={selectedUser}
           onClose={handleClose}
           token={token}
-          onStatusChange={() => setRefreshData(!refreshData)}
+          onSave={handleSaveEdit}
         />
       )}
     </div>

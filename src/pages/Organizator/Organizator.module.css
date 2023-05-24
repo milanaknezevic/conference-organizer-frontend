@@ -1,0 +1,11 @@
+.organizator {
+  display: flex;
+  list-style: none;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 6rem; /* Dodajte željeni razmak između .auth-form-container i .korisnik-item */
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+}

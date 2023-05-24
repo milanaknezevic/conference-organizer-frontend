@@ -1,0 +1,30 @@
+.act {
+  color: white;
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  border-width: 5px;
+  border-style: solid;
+  border-color: lightgray;
+  overflow: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  max-height: 174px;
+  margin: 0 auto; /* Dodajte ovu liniju da centrirate element */
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+.button {
+  margin: 0 0.5rem;
+  padding: 0.5rem 1.5rem;
+  font: inherit;
+  color: white;
+  background-color: #0066cc;
+  border: 1px solid #0066cc;
+  border-radius: 8px;
+  cursor: pointer;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { ulogujSe } from "../redux/features/userSlice";
+import { ulogujSe } from "../../redux/features/userSlice";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -36,6 +36,7 @@ const Login = () => {
           response.payload.status === "ACTIVE"
         ) {
           console.log("organizatro je aktivan");
+          navigate("/organizator");
         } else {
           setError(false);
         }
