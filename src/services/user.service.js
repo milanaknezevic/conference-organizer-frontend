@@ -14,6 +14,8 @@ const login = (data) => {
     .then((responseJson) => {
       // Spremanje uloge korisnika u localStorage
       localStorage.setItem("userRole", responseJson.role);
+      localStorage.setItem("auth", responseJson.token);
+      // sessionStorage.setItem("auth", responseJson.token);
       return responseJson;
     })
     .catch((error) => {
@@ -43,9 +45,15 @@ const registerUser = (data) => {
     });
 };
 
+const odjaviKorisnika = () => {
+  //sessionStorage.removeItem("auth");
+  localStorage.removeItem("auth");
+};
+
 const userService = {
   login,
   registerUser,
+  odjaviKorisnika,
 };
 
 export default userService;

@@ -36,10 +36,9 @@ const Edit = (props) => {
       })
       .catch((error) => {
         console.error("Greška prilikom izmjene statusa:", error);
-        // Ovdje možete dodati logiku za rukovanje greškom prilikom izmjene statusa
       });
 
-    props.onStatusChange(); // Pozivamo funkciju za osvježavanje podataka u roditeljskoj komponenti
+    props.onStatusChange();
   };
 
   useEffect(() => {
@@ -47,7 +46,7 @@ const Edit = (props) => {
     console.log("status", user.status);
     console.log("Active", checkedValues.value1);
     console.log("blocked", checkedValues.value2);
-  }, [checkedValues]);
+  }, [checkedValues, user]);
 
   return (
     <Modal>

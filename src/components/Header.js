@@ -1,23 +1,25 @@
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { logout } from "../pages/store";
+import { odjaviSe, odjavi } from "../redux/features/userSlice";
 import classes from "./Header.module.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 const Header = (props) => {
-  // Pretpostavljamo da imate informaciju o prijavi korisnika
-  // const ulogovan = useSelector((state) => state.ulogovan.value);
-  const user = useSelector((state) => state.user);
-  const isLoggedIn = user.value.ulogovan;
+  const user = useSelector((state) => state.login);
+  const isLoggedIn = user.ulogovan;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     navigate("/");
-    console.log("ulogovan", isLoggedIn);
-    dispatch(logout());
+    dispatch(odjaviSe(false));
+    dispatch(odjavi());
   };
+  useEffect(() => {
+    console.log("isLoggedIn", isLoggedIn);
+  }, [isLoggedIn]);
 
   return (
     <Fragment>

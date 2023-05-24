@@ -7,6 +7,7 @@
   color: white;
   background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
 }
+
 .FirstPage {
   background-image: url("./assets/slika.jpg");
   background-size: cover;
@@ -98,6 +99,7 @@ body {
 .register-form {
   display: flex;
   flex-direction: column;
+  margin-top: 2.5rem;
 }
 .error-message {
   color: red;
@@ -126,7 +128,7 @@ body {
   border: 1px solid white;
   border-radius: 50px;
   margin: 0.5rem;
-  margin-top: 90px; /* Postavite željeni razmak između headera i .auth-form-container */
+  margin-top: 100px; /* Postavite željeni razmak između headera i .auth-form-container */
 }
 
 label {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import userService from "../services/user.service";
+import { registrujSe } from "../redux/features/userSlice";
+import { useDispatch } from "react-redux";
 const Signup = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -8,7 +9,7 @@ const Signup = (props) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -28,9 +29,9 @@ const Signup = (props) => {
 
     console.log(data);
 
-    userService
-      .registerUser(data)
-      .then((responseData) => {
+    dispatch(registrujSe(data))
+      .then((response) => {
+        console.log("Login response", response);
         setRegistrationSuccess(true);
       })
       .catch((error) => {
@@ -53,13 +54,14 @@ const Signup = (props) => {
       return () => clearTimeout(timer);
     }
   }, [registrationSuccess, navigate]);
+
   return (
     <div className="App">
       <div className="auth-form-container">
         <h2>Registruj se</h2>
         {error && (
           <p className="error-message">
-            Doslo je do greske prilikom registracije.Pokusajte ponovo.
+            Došlo je do greške prilikom registracije. Pokušajte ponovo.
           </p>
         )}
 
@@ -67,12 +69,14 @@ const Signup = (props) => {
           <label htmlFor="name">Ime</label>
           <input
             value={name}
-            name="name"
             onChange={(e) => setName(e.target.value)}
-            id="name"
+            type="text"
             placeholder="Ime"
+            id="name"
+            name="name"
           />
-          <label htmlFor="email">email</label>
+
+          <label htmlFor="email">Email</label>
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -82,7 +86,7 @@ const Signup = (props) => {
             name="email"
           />
 
-          <label htmlFor="text">Korisnicko ime</label>
+          <label htmlFor="username">Korisničko ime</label>
           <input
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -91,6 +95,7 @@ const Signup = (props) => {
             id="username"
             name="username"
           />
+
           <label htmlFor="password">Lozinka</label>
           <input
             value={password}
@@ -100,10 +105,12 @@ const Signup = (props) => {
             id="password"
             name="password"
           />
+
           <button>Registruj se</button>
         </form>
+
         <button className="link-btn" onClick={handleLogin}>
-          Vec imas nalog? Prijavi se ovde.
+          Već imaš nalog? Prijavi se ovde.
         </button>
       </div>
     </div>

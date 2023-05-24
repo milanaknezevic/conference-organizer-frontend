@@ -13,25 +13,24 @@ import Admin from "./pages/Admin";
 import initializeI18N from "./i8n/init";
 import { Provider } from "react-redux";
 import { store } from "./pages/store";
+import store2 from "./redux/store2";
 
 initializeI18N();
 
 function App() {
   return (
     <div>
-      <Provider store={store}>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Header />}>
-              <Route index element={<Home />} />
-              <Route path="login" element={<Login />} />
-              <Route path="signup" element={<Signup />} />
-              <Route path="admin" element={<Admin />} /> {/* Promijenjeno */}
-              <Route path="pocetnaStranica" element={<Prikaz />} />
-            </Route>
-          </Routes>
-        </Router>
-      </Provider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Header />}>
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path="admin" element={<Admin />} /> {/* Promijenjeno */}
+            <Route path="pocetnaStranica" element={<Prikaz />} />
+          </Route>
+        </Routes>
+      </Router>
     </div>
   );
 }

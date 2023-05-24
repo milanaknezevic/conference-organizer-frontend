@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import userService from "../services/user.service";
 import { useNavigate } from "react-router-dom";
-import { login } from "./store";
 import { useDispatch } from "react-redux";
+import { ulogujSe } from "../redux/features/userSlice";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const handleSignup = () => {
@@ -24,23 +22,20 @@ const Login = () => {
       password: password,
     };
 
-    userService
-      .login(data)
+    dispatch(ulogujSe(data))
       .then((response) => {
-        console.log("response", response);
-        console.log("id", response.id);
-        console.log("token", response.token);
-        console.log(" Login username", response.username);
-        if (response.rola === "ADMIN") {
-          dispatch(
-            login({
-              username: response.username,
-              id: response.id,
-              token: response.token,
-              ulogovan: true,
-            })
-          );
+        console.log("Login response", response);
+        console.log("Login payload", response.payload);
+        console.log("Login username", response.payload.username);
+        console.log("Login ulogovan", response.payload.ulogovan);
+
+        if (response.payload.rola === "ADMIN") {
           navigate("/admin");
+        } else if (
+          response.payload.rola === "ORGANIZATOR" &&
+          response.payload.status === "ACTIVE"
+        ) {
+          console.log("organizatro je aktivan");
         } else {
           setError(false);
         }
