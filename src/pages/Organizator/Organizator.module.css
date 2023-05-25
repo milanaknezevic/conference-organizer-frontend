@@ -1,11 +1,19 @@
 .organizator {
   display: flex;
   list-style: none;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 400px;
+
   border: 3px solid #ccc;
   border-radius: 10px;
   padding: 10px;
-  margin-top: 6rem; /* Dodajte željeni razmak između .auth-form-container i .korisnik-item */
+  margin-top: 2rem;
+  margin-left: 20px;
   background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  justify-content: flex-start; /* Stil poravnat ulijevo */
+}
+.organizatorContainer {
+  margin-top: 6rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Raspored dva stupca jednake širine */
+  grid-gap: 20px; /* Razmak između dva stupca */
 }

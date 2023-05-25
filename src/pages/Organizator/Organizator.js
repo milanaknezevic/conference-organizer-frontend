@@ -70,7 +70,7 @@ const Organizator = () => {
             </div>
           )}
           <div className="underline">
-            <span className="polja-color">Lokacija Adresa:</span>{" "}
+            <span className="polja-color">Adresa:</span>{" "}
             <span> {konferencija.lokacija.adresa}</span>
           </div>
           {/* Dodatni dio za prikaz događaja */}
@@ -121,9 +121,11 @@ const Organizator = () => {
   }
 
   return (
-    <div>
-      <section>
-        <h2>Konferencije</h2>
+    <div className={classes.organizatorContainer}>
+      <section className={classes.leftSection}>
+        <ul>{konferencijeList}</ul>
+      </section>
+      <section className={classes.rightSection}>
         <ul>{konferencijeList}</ul>
       </section>
     </div>
