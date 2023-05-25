@@ -223,6 +223,7 @@ button {
 }
 
 .underline {
+  display: flex;
   /*border-bottom: 1px solid lightgray;*/
   margin-bottom: 12px; /* Veći razmak između div elemenata */
 }

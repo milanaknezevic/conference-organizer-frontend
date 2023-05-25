@@ -1,19 +1,99 @@
 .organizator {
   display: flex;
   list-style: none;
-  max-width: 400px;
+  max-width: 600px;
 
   border: 3px solid #ccc;
   border-radius: 10px;
   padding: 10px;
   margin-top: 2rem;
+  margin-bottom: 1rem;
   margin-left: 20px;
   background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
   justify-content: flex-start; /* Stil poravnat ulijevo */
 }
-.organizatorContainer {
+
+.stilZaH2 {
+  text-align: center;
+}
+
+.dogadjaji {
+  display: flex;
+  list-style: none;
+  max-width: 600px;
+
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  background-color: cornflowerblue;
+  justify-content: flex-start; /* Stil poravnat ulijevo */
+}
+
+/* za dvije kolone .organizatorContainer {
   margin-top: 6rem;
   display: grid;
   grid-template-columns: 1fr 1fr; /* Raspored dva stupca jednake širine */
-  grid-gap: 20px; /* Razmak između dva stupca */
+/*  grid-gap: 20px; /* Razmak između dva stupca */
+/*}
+*/
+
+.organizatorContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Postavljanje visine cijelog ekrana */
+}
+
+.topSection {
+  flex: 1; /* Gornji dio će zauzeti 1/3 visine */
+}
+
+.bottomSection {
+  flex: 2; /* Donji dio će zauzeti 2/3 visine */
+}
+.eventInfo {
+  border: 3px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.posjetiociList {
+  display: flex;
+  list-style: none;
+  max-width: 600px;
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  background-color: #f2f2f2;
+  justify-content: flex-start; /* Align items to the left */
+}
+
+.posjetiociList .underline {
+  margin-bottom: 5px;
+}
+
+.posjetiociList span.polja-color {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.posjetiociList li {
+  margin-bottom: 10px;
+}
+
+.posjetiociList .organizator {
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  background-color: #f2f2f2;
+  justify-content: flex-start; /* Align items to the left */
 }

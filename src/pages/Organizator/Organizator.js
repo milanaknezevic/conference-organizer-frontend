@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { fetchKonferecnije } from "../../redux/features/organizatorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import classes from "./Organizator.module.css";
@@ -8,6 +8,10 @@ const Organizator = () => {
   const token = user.user.token;
   const [konferencije, setKonferencije] = useState([]);
   const [selectedKonferencija, setSelectedKonferencija] = useState(null); // Dodato stanje za praćenje odabrane konferencije
+  const [selectedDogadjaj, setSelectedDogadjaj] = useState(null); // Dodato stanje za praćenje odabranog događaja
+  const [nazivKonferencije, setNazivKonferencije] = useState(null);
+
+  const posjetiociSectionRef = useRef(null); // Referenca na donji dio (posjetiociSection)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,6 +43,16 @@ const Organizator = () => {
       setSelectedKonferencija(null);
     } else {
       setSelectedKonferencija(konferencija);
+    }
+  };
+
+  const handlePrikaziPosjetioce = (dogadjaj) => {
+    if (selectedDogadjaj === dogadjaj) {
+      setSelectedDogadjaj(null);
+    } else {
+      setSelectedDogadjaj(dogadjaj);
+      setNazivKonferencije(selectedKonferencija.naziv);
+      posjetiociSectionRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -77,9 +91,9 @@ const Organizator = () => {
           {selectedKonferencija === konferencija && (
             <ul>
               {konferencija.dogadjajs.map((dogadjaj) => (
-                <li key={dogadjaj.id}>
+                <li key={dogadjaj.id} className={classes.dogadjaji}>
                   <div>
-                    <div className="underline">
+                    <div className={classes.eventInfo}>
                       <span className="polja-color">Naziv događaja:</span>{" "}
                       <span>{dogadjaj.naziv}</span>
                     </div>
@@ -98,9 +112,17 @@ const Organizator = () => {
                       </div>
                     )}
                     <div className="underline">
-                      <span className="polja-color">Korisnik:</span>{" "}
+                      <span className="polja-color">Moderator:</span>{" "}
                       <span>{dogadjaj.korisnik.naziv}</span>
                     </div>
+                    <button
+                      onClick={() => handlePrikaziPosjetioce(dogadjaj)} // Promijenjen poziv funkcije
+                      className={classes.prikaziPosjetioce}
+                    >
+                      {selectedDogadjaj === dogadjaj
+                        ? "Sakrij posjetioce"
+                        : "Prikaži posjetioce"}
+                    </button>
                   </div>
                 </li>
               ))}
@@ -120,13 +142,54 @@ const Organizator = () => {
     konferencijeList = <li>Trenutno nema dostupnih konferencija.</li>;
   }
 
+  let posjetiociList;
+  if (selectedDogadjaj && selectedDogadjaj.posjetilacs) {
+    posjetiociList = (
+      <div>
+        {selectedDogadjaj.posjetilacs.length > 0 ? (
+          <h2 className={classes.stilZaH2}>
+            Prikaz posjetilaca za događaj '{selectedDogadjaj.naziv}'
+            konferencije '{nazivKonferencije}'
+          </h2>
+        ) : (
+          <p>Nema odabranih posjetilaca.</p>
+        )}
+        <ul>
+          {selectedDogadjaj.posjetilacs.map((posjetilac) => (
+            <li key={posjetilac.korisnik.id} className={classes.organizator}>
+              <div>
+                <div className="underline">
+                  <span className="polja-color">Naziv:</span>{" "}
+                  <span>{posjetilac.korisnik.naziv}</span>
+                </div>
+                <div className="underline">
+                  <span className="polja-color">Username:</span>{" "}
+                  <span>{posjetilac.korisnik.username}</span>
+                </div>
+                <div className="underline">
+                  <span className="polja-color">Email:</span>{" "}
+                  <span>{posjetilac.korisnik.email}</span>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  } else {
+    posjetiociList = <li>Nema odabranih posjetilaca.</li>;
+  }
+
   return (
     <div className={classes.organizatorContainer}>
-      <section className={classes.leftSection}>
+      <section className={classes.topSection}>
         <ul>{konferencijeList}</ul>
       </section>
-      <section className={classes.rightSection}>
-        <ul>{konferencijeList}</ul>
+
+      <section className={classes.bottomSection}>
+        <ul className={`${classes.posjetiociList}`} ref={posjetiociSectionRef}>
+          {posjetiociList}
+        </ul>{" "}
       </section>
     </div>
   );
