@@ -1,27 +1,65 @@
 .organizator {
   display: flex;
   list-style: none;
-  max-width: 600px;
-
-  border: 3px solid #ccc;
+  width: 600px;
   border-radius: 10px;
   padding: 10px;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  margin-left: 20px;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  background-color: lightgray; /*#f0f0f0;*/
+  position: relative; /* Dodato */
+}
+
+.organizator::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
   background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
-  justify-content: flex-start; /* Stil poravnat ulijevo */
+  z-index: -1;
+  border-radius: 10px;
 }
 
-.stilZaH2 {
-  text-align: center;
+.buttons {
+  position: absolute;
+  top: 5rem;
+  right: 1rem;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 10px; /* Add equal spacing between buttons */
+}
+.buttons button {
+  width: 100%;
 }
 
+.editButton:hover {
+  background-color: #5b2f9f;
+}
+.deleteButton {
+  color: white;
+  background-color: red; /* Set the background color to red */
+}
+
+.deleteButton:hover {
+  background-color: darkred; /* Set the hover background color to a darker shade of red */
+}
+
+.organizatorContainer {
+  display: flex;
+
+  justify-content: center;
+  align-items: center; /* Poravnanje vertikalno na sredinu */
+  flex-direction: column; /* Elementi se redaju jedan ispod drugog */
+}
 .dogadjaji {
   display: flex;
   list-style: none;
   max-width: 600px;
-
   border: 3px solid #ccc;
   border-radius: 10px;
   padding: 10px;
@@ -29,7 +67,24 @@
   margin-bottom: 1rem;
   margin-left: 20px;
   background-color: cornflowerblue;
-  justify-content: flex-start; /* Stil poravnat ulijevo */
+  justify-content: center;
+}
+.posjetioci {
+  display: flex;
+  list-style: none;
+  max-width: 600px;
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  background-color: lightblue;
+  justify-content: center;
+}
+.stilZaH2 {
+  margin-top: 8rem;
+  text-align: center;
 }
 
 /* za dvije kolone .organizatorContainer {
@@ -39,12 +94,6 @@
 /*  grid-gap: 20px; /* Razmak između dva stupca */
 /*}
 */
-
-.organizatorContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; /* Postavljanje visine cijelog ekrana */
-}
 
 .topSection {
   flex: 1; /* Gornji dio će zauzeti 1/3 visine */
@@ -58,6 +107,9 @@
   padding: 10px;
   margin-bottom: 10px;
   margin-top: 10px;
+}
+.praznaLista {
+  color: red;
 }
 
 .posjetiociList {

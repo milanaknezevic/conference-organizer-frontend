@@ -1,0 +1,36 @@
+.toolbar {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  padding: 10px 0;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  z-index: 10;
+  border-width: 5px;
+  border-style: solid;
+  border-color: lightgray;
+}
+
+.toolbarActive {
+  pointer-events: none;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  padding: 10px 0;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  z-index: 10;
+  border-width: 5px;
+  border-style: solid;
+  border-color: lightgray;
+}
+
+.toolbarButton {
+  margin: 0 5px;
+  color: purple;
+  background-color: lightgray;
+}

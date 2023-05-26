@@ -101,16 +101,15 @@ const Admin = () => {
 
   return (
     <div>
-      <div className={openModal ? "toolbar-active" : "toolbar"}>
-        <Toolbar
-          dugme1={"Aktivni Korisnici"}
-          dugme2={"Blokirani Korisnici"}
-          dugme3={"Zahtjevi"}
-          izbor1={handleIzborAktivnih}
-          izbor2={handleIzborBlokiranih}
-          izbor3={handleIzborZahtjeva}
-        />
-      </div>
+      <Toolbar
+        dugme1={"Aktivni Korisnici"}
+        dugme2={"Blokirani Korisnici"}
+        dugme3={"Zahtjevi"}
+        izbor1={handleIzborAktivnih}
+        izbor2={handleIzborBlokiranih}
+        izbor3={handleIzborZahtjeva}
+        open={openModal}
+      />
 
       <section>
         <ul>{korisniciList}</ul>
