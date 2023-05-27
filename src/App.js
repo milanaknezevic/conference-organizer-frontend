@@ -10,7 +10,7 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Admin from "./pages/Admin/Admin";
 import Organizator from "./pages/Organizator/Organizator";
-
+import UrediKonferenciju from "./pages/Organizator/UrediKonferenciju/UrediKonferenciju";
 function App() {
   return (
     <div>
@@ -21,6 +21,7 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="admin" element={<Admin />} />
+            <Route path="urediKonferenciju" element={<UrediKonferenciju />} />
             <Route path="organizator" element={<Organizator />} />
           </Route>
         </Routes>

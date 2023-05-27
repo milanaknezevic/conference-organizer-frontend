@@ -40,6 +40,10 @@
 .editButton:hover {
   background-color: #5b2f9f;
 }
+.editButton {
+  color: purple;
+  background-color: white; /* Set the background color to red */
+}
 .deleteButton {
   color: white;
   background-color: red; /* Set the background color to red */

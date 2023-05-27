@@ -3,6 +3,9 @@ import { fetchKonferecnije } from "../../redux/features/organizatorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import classes from "./Organizator.module.css";
 import Obrisi from "../Obrisi/Obrisi";
+import { useNavigate } from "react-router-dom";
+import { izabranaKonferencija } from "../../redux/features/organizatorSlice";
+
 const Organizator = () => {
   const user = useSelector((state) => state.login);
   const token = user.user.token;
@@ -13,8 +16,9 @@ const Organizator = () => {
   const [showModal, setShowModal] = useState(false); // Dodato stanje za prikazivanje modalnog prozora
   const posjetiociSectionRef = useRef(null); // Referenca na donji dio (posjetiociSection)
   const [refreshKey, setRefreshKey] = useState(0);
-
+  const konf = useSelector((state) => state.organizator);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchKonferecnije(token))
@@ -40,6 +44,17 @@ const Organizator = () => {
     };
     const formattedDate = new Date(datum).toLocaleString("en-US", options);
     return formattedDate;
+  };
+  const handleUredi = (konferencija) => {
+    console.log(
+      "konferencija iz organizatora koju sam selektovala",
+      konferencija
+    );
+
+    dispatch(izabranaKonferencija(konferencija));
+    console.log("konf", konf);
+
+    navigate("/urediKonferenciju");
   };
 
   const handleObrisi = (konferencija) => {
@@ -186,7 +201,12 @@ const Organizator = () => {
             )}
           </div>
           <div className={classes.buttons}>
-            <button className={classes.editButton}>Uredi</button>
+            <button
+              className={classes.editButton}
+              onClick={() => handleUredi(konferencija)}
+            >
+              Uredi
+            </button>
             <button
               className={classes.deleteButton}
               onClick={() => handleObrisi(konferencija)}

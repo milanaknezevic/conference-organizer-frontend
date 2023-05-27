@@ -1,0 +1,87 @@
+.container {
+  margin-top: 6rem; /* Podesite odgovarajuću visinu margine iznad komponente */
+}
+.App {
+  text-align: center;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+}
+
+.authFormContainer {
+  padding: 3.2rem;
+  border: 1px solid white;
+  border-radius: 50px;
+  margin: 0.5rem;
+  margin-top: 100px; /* Postavite željeni razmak između headera i .auth-form-container */
+}
+.omg {
+  padding: 1rem;
+  border: 1px solid white;
+  border-radius: 50px;
+  margin: 0.1rem;
+  margin-top: 10px; /* Postavite željeni razmak između headera i .auth-form-container */
+}
+.omg {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.authFormContainer,
+.editForm {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.5rem;
+}
+.btn {
+  margin-top: 10px;
+  background: white;
+  color: purple;
+
+  text-decoration: underline;
+}
+.dogButton {
+  margin-top: 10px;
+  background: none;
+  color: white;
+  font-size: 1.3rem; /* Primer za povećanje fonta */
+  font-weight: bold; /* Primer za podebljavanje teksta */
+  text-decoration: underline;
+}
+
+.ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Dodajte ovaj stil */
+  margin-top: 30px;
+  list-style: none;
+  background-color: lightpink;
+  border: 1px solid white;
+  border-radius: 10px;
+}
+
+.listItem {
+  display: flex;
+  flex-direction: column; /* Promenjeno u "row" umesto "column" */
+  align-items: center;
+  margin-left: -30px;
+  margin-right: 10px;
+  /*justify-content: space-between; /* Dodato */
+  margin-bottom: 10px;
+  color: black;
+}
+
+.input {
+  display: flex; /* Promenjeno u "flex" umesto "block" */
+  align-items: center;
+}
+.input {
+  color: black;
+  display: flex; /* Promenjeno u "flex" umesto "block" */
+  align-items: center;
+}

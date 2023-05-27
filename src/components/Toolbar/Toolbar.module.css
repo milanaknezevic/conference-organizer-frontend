@@ -30,7 +30,17 @@
 }
 
 .toolbarButton {
-  margin: 0 5px;
-  color: purple;
-  background-color: lightgray;
+  margin-right: 10px;
+  padding: 8px 16px;
+  background-color: #fff;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.toolbarButton:hover {
+  background-color: #333;
+  color: #fff;
 }

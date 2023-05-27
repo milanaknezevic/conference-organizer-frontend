@@ -24,8 +24,8 @@ const Header = (props) => {
   return (
     <Fragment>
       <header className={classes.header}>
-        <div className={classes.headerContainer}>
-          <h1>Pro Event Conference</h1>
+        <div>
+          <h1 className={classes.headerTitle}>Pro Event Conference</h1>
           {isLoggedIn && (
             <button
               className={`${classes.logoutButton}`}

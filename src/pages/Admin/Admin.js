@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "../../App.css";
 import { fetchKorisnici } from "../../redux/features/adminSlice";
-import Toolbar from "../../components/Toolbar";
+import Toolbar from "../../components/Toolbar/Toolbar";
 import Edit from "../Edit/Edit";
 
 const Admin = () => {

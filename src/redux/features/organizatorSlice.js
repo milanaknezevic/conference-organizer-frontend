@@ -1,8 +1,8 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAllKonferencije,
   deleteKonferenciju,
 } from "../../services/organizator.service";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchKonferecnije = createAsyncThunk(
   "organizator/konferencije",
@@ -11,6 +11,7 @@ export const fetchKonferecnije = createAsyncThunk(
     return response;
   }
 );
+
 export const obrisiKonferenciju = createAsyncThunk(
   "organizator/obrisiKonferenciju",
   async ({ token, idKonferencije }) => {
@@ -22,32 +23,41 @@ export const obrisiKonferenciju = createAsyncThunk(
 
 const organizatorSlice = createSlice({
   name: "organizator",
-  initialState: [],
-  reducers: {},
+  initialState: {
+    konferencije: [],
+    izabrana: {},
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    izabranaKonferencija: (state, action) => {
+      state.izabrana = action.payload; // ili state.izabrana = action.payload ako želite referencirati isti objekt
 
+      console.log("Payload izabranaKonferencija:", action.payload);
+    },
+  },
   extraReducers: {
     [fetchKonferecnije.pending]: (state, action) => {
       state.loading = true;
-      state.error = null;
     },
     [fetchKonferecnije.fulfilled]: (state, action) => {
+      state.konferencije = action.payload;
+
       state.loading = false;
       state.error = null;
-      return action.payload;
     },
     [fetchKonferecnije.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },
-
     [obrisiKonferenciju.pending]: (state, action) => {
       state.loading = true;
-      state.error = null;
     },
     [obrisiKonferenciju.fulfilled]: (state, action) => {
-      state.loading = false;
+      state.konferencije = action.payload;
       state.error = null;
-      return action.payload;
+
+      state.loading = false;
     },
     [obrisiKonferenciju.rejected]: (state, action) => {
       state.loading = false;
@@ -56,4 +66,5 @@ const organizatorSlice = createSlice({
   },
 });
 
+export const { izabranaKonferencija } = organizatorSlice.actions;
 export default organizatorSlice.reducer;
