@@ -190,6 +190,12 @@ button {
   font-weight: bold;
 }
 
+.underline {
+  display: flex;
+  /*border-bottom: 1px solid lightgray;*/
+  margin-bottom: 12px; /* Veći razmak između div elemenata */
+}
+
 .ok {
   color: lightgray;
   font-weight: bold;
@@ -220,12 +226,6 @@ button {
   bottom: 30px;
   right: 50px;
   transform: translate(50%, 50%);
-}
-
-.underline {
-  display: flex;
-  /*border-bottom: 1px solid lightgray;*/
-  margin-bottom: 12px; /* Veći razmak između div elemenata */
 }
 
 .toolbar {

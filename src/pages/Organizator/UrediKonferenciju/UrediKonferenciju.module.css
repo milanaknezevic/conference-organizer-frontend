@@ -1,6 +1,3 @@
-.container {
-  margin-top: 6rem; /* Podesite odgovarajuću visinu margine iznad komponente */
-}
 .App {
   text-align: center;
   display: flex;
@@ -8,80 +5,85 @@
   align-items: center;
   justify-content: center;
   color: white;
-  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  background-color: #f0f0f0;
+  margin-top: 5rem;
+}
+
+.dogadjajiContainer {
+  max-height: 1500px; /* Postavite željenu visinu kontejnera za prikaz događaja */
+  overflow-y: auto;
 }
 
 .authFormContainer {
-  padding: 3.2rem;
+  padding: 2.5rem;
   border: 1px solid white;
   border-radius: 50px;
-  margin: 0.5rem;
-  margin-top: 100px; /* Postavite željeni razmak između headera i .auth-form-container */
+  background-color: #f0f0f0;
+
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
 }
-.omg {
-  padding: 1rem;
-  border: 1px solid white;
-  border-radius: 50px;
-  margin: 0.1rem;
-  margin-top: 10px; /* Postavite željeni razmak između headera i .auth-form-container */
+
+.btn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: white;
+  color: purple;
+  text-decoration: underline;
 }
-.omg {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
+
+.sakrij {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: none;
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.prikazi {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: none;
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+  margin-left: -50px;
 }
 
 .authFormContainer,
 .editForm {
   display: flex;
   flex-direction: column;
-  margin-top: 2.5rem;
-}
-.btn {
-  margin-top: 10px;
-  background: white;
-  color: purple;
-
-  text-decoration: underline;
-}
-.dogButton {
-  margin-top: 10px;
-  background: none;
-  color: white;
-  font-size: 1.3rem; /* Primer za povećanje fonta */
-  font-weight: bold; /* Primer za podebljavanje teksta */
-  text-decoration: underline;
+  margin-top: 1rem;
 }
 
+.korisnikItem {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  max-width: 600px;
+  margin: 10px auto 0;
+
+  padding: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  background-color: none;
+}
+.korisnikItem:not(:last-child) {
+  border-bottom: 1px solid #ccc; /* Dodato: podvučenost ispod svake liste osim poslednje */
+}
+.h2 {
+  text-decoration: underline;
+}
 .ul {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Dodajte ovaj stil */
-  margin-top: 30px;
+  justify-content: center;
+  margin-top: 20px;
   list-style: none;
-  background-color: lightpink;
-  border: 1px solid white;
+  border: 3px solid #ccc;
   border-radius: 10px;
-}
 
-.listItem {
-  display: flex;
-  flex-direction: column; /* Promenjeno u "row" umesto "column" */
-  align-items: center;
-  margin-left: -30px;
-  margin-right: 10px;
-  /*justify-content: space-between; /* Dodato */
-  margin-bottom: 10px;
-  color: black;
-}
-
-.input {
-  display: flex; /* Promenjeno u "flex" umesto "block" */
-  align-items: center;
-}
-.input {
-  color: black;
-  display: flex; /* Promenjeno u "flex" umesto "block" */
-  align-items: center;
+  padding: 0; /* Uklanjamo podrazumevano unutrašnje margine */
 }

@@ -43,12 +43,9 @@ const UrediKonferenciju = () => {
       }
     };
 
-    console.log("konferencijaaa ", konferencija);
     formatStartTime();
     formatEndTime();
-    console.log(" formattedEndTime", formattedEndTime);
-    console.log(" formattedStartTime", formattedStartTime);
-  }, [konferencija, startTime, endTime, formattedEndTime, formattedStartTime]);
+  }, [startTime, endTime, formattedEndTime, formattedStartTime]);
 
   const handleCancel = () => {
     navigate("/organizator");
@@ -99,14 +96,18 @@ const UrediKonferenciju = () => {
             id="naziv"
           />
 
-          <div className={classes.omg}>
-            <button className={classes.dogButton} onClick={handleShowDogadjaji}>
-              {!showDogadjaji ? "Prikazi dogadjaji" : "Sakrij događaje"}
+          {!showDogadjaji && (
+            <button className={classes.prikazi} onClick={handleShowDogadjaji}>
+              Prikazi dogadjaje
             </button>
-            {showDogadjaji && (
+          )}
+
+          {showDogadjaji && (
+            <div>
+              <h2 className={classes.h2}>Dogadjaji:</h2>
               <ul className={classes.ul}>
                 {dogadjaji.map((dogadjaj) => (
-                  <li className={classes.listItem} key={dogadjaj.id}>
+                  <li key={dogadjaj.id} className={classes.korisnikItem}>
                     <label htmlFor={`naziv-${dogadjaj.id}`}>Naziv:</label>
                     <input
                       value={dogadjaj.naziv}
@@ -114,14 +115,8 @@ const UrediKonferenciju = () => {
                       id={`naziv-${dogadjaj.id}`}
                     />
 
-                    <label
-                      className={classes.label}
-                      htmlFor={`url-${dogadjaj.id}`}
-                    >
-                      URL:
-                    </label>
+                    <label htmlFor={`url-${dogadjaj.id}`}>URL:</label>
                     <input
-                      className={classes.input}
                       value={dogadjaj.url}
                       type="text"
                       id={`url-${dogadjaj.id}`}
@@ -131,8 +126,12 @@ const UrediKonferenciju = () => {
                   </li>
                 ))}
               </ul>
-            )}
-          </div>
+              <button className={classes.sakrij} onClick={handleShowDogadjaji}>
+                Sakrij dogadjaje
+              </button>
+            </div>
+          )}
+
           <button className={classes.btn} type="submit">
             Sacuvaj
           </button>
