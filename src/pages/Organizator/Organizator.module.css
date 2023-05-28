@@ -6,7 +6,7 @@
   padding: 10px;
   margin-top: 1rem;
   margin-bottom: 2rem;
-  background-color: lightgray; /*#f0f0f0;*/
+  background-color: #f0f0f0;
   position: relative; /* Dodato */
 }
 
@@ -36,21 +36,52 @@
 .buttons button {
   width: 100%;
 }
+.pom {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.prikaziDogađajeButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  text-decoration: underline;
+}
+.prikaziDogađajeButton:hover {
+  color: blue;
+}
 
+.divZaButton {
+  width: 150px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  align-items: center;
+}
 .editButton:hover {
   background-color: #5b2f9f;
+  color: black;
 }
 .editButton {
   color: purple;
   background-color: white; /* Set the background color to red */
 }
 .deleteButton {
-  color: white;
-  background-color: red; /* Set the background color to red */
+  color: purple;
+  background-color: white; /* Set the background color to red */
+  /* Set the background color to red */
 }
-
+.poljaColor {
+  color: black;
+  font-weight: bold;
+  font-size: 2ch;
+}
 .deleteButton:hover {
-  background-color: darkred; /* Set the hover background color to a darker shade of red */
+  color: white;
+  background-color: red; /* Set the hover background color to a darker shade of red */
 }
 
 .organizatorContainer {
@@ -64,26 +95,26 @@
   display: flex;
   list-style: none;
   max-width: 600px;
-  border: 3px solid #ccc;
+  border: 3px solid cornflowerblue;
   border-radius: 10px;
   padding: 10px;
   margin-top: 2rem;
   margin-bottom: 1rem;
   margin-left: 20px;
-  background-color: cornflowerblue;
+  background-color: #f0f0f0;
   justify-content: center;
 }
 .posjetioci {
   display: flex;
   list-style: none;
   max-width: 600px;
-  border: 3px solid #ccc;
+  border: 3px solid purple;
   border-radius: 10px;
   padding: 10px;
   margin-top: 2rem;
   margin-bottom: 1rem;
   margin-left: 20px;
-  background-color: lightblue;
+  background-color: #f0f0f0;
   justify-content: center;
 }
 .stilZaH2 {
@@ -107,7 +138,7 @@
   flex: 2; /* Donji dio će zauzeti 2/3 visine */
 }
 .eventInfo {
-  border: 3px solid #ccc;
+  border: 3px solid cornflowerblue;
   padding: 10px;
   margin-bottom: 10px;
   margin-top: 10px;

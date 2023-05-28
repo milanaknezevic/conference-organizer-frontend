@@ -5,7 +5,14 @@ import classes from "./Organizator.module.css";
 import Obrisi from "../Obrisi/Obrisi";
 import { useNavigate } from "react-router-dom";
 import { izabranaKonferencija } from "../../redux/features/organizatorSlice";
-
+import {
+  fetchModeratori,
+  fetchLokacije,
+} from "../../redux/features/organizatorSlice";
+import {
+  setKonferencijeRedux,
+  setModeratori,
+} from "../../redux/features/organizatorSlice";
 const Organizator = () => {
   const user = useSelector((state) => state.login);
   const token = user.user.token;
@@ -24,12 +31,36 @@ const Organizator = () => {
     dispatch(fetchKonferecnije(token))
       .then((response) => {
         console.log("response", response);
+        dispatch(setKonferencijeRedux(response.payload)); // Ažurirajte stanje pomoću akcije setKonferencije
         setKonferencije(response.payload);
       })
       .catch((error) => {
         console.log("error", error);
       });
   }, [dispatch, token, refreshKey]);
+
+  useEffect(() => {
+    dispatch(fetchModeratori(token))
+      .then((response) => {
+        console.log("response Moderatori", response);
+        // dispatch(setModeratori(response.payload)); // Ažurirajte stanje pomoću akcije setModeratori
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, [dispatch, token]);
+
+  useEffect(() => {
+    dispatch(fetchLokacije(token))
+      .then((response) => {
+        console.log("response Lokacije", response);
+        // dispatch(setModeratori(response.payload)); // Ažurirajte stanje pomoću akcije setModeratori
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, [dispatch, token]);
+
   const handleClose = () => {
     setKonferencijaZaBrisanje([]);
     setShowModal(false);
@@ -87,34 +118,34 @@ const Organizator = () => {
     konferencijeList = konferencije.map((konferencija) => (
       <div className={classes.organizatorContainer}>
         <li key={konferencija.id} className={classes.organizator}>
-          <div>
+          <div className={classes.pom}>
             <div className="underline">
-              <span className="polja-color">Naziv:</span>{" "}
+              <span className={classes.poljaColor}>Naziv:</span>{" "}
               <span> {konferencija.naziv}</span>
             </div>
             <div className="underline">
-              <span className="polja-color">Start Time:</span>{" "}
+              <span className={classes.poljaColor}>Start Time:</span>{" "}
               <span> {formatirajDatum(konferencija.startTime)}</span>
             </div>
             <div className="underline">
-              <span className="polja-color">End Time:</span>{" "}
+              <span className={classes.poljaColor}>End Time:</span>{" "}
               <span> {formatirajDatum(konferencija.endTime)}</span>
             </div>
             <div className="underline">
-              <span className="polja-color">Status:</span>{" "}
+              <span className={classes.poljaColor}>Status:</span>{" "}
               <span> {konferencija.status ? "Zavrsena" : "Aktivna"}</span>
             </div>
             {konferencija.url && (
               <div className="underline">
-                <span className="polja-color">URL:</span>{" "}
+                <span className={classes.poljaColor}>URL:</span>{" "}
                 <span> {konferencija.url}</span>
               </div>
             )}
             <div className="underline">
-              <span className="polja-color">Adresa:</span>{" "}
+              <span className={classes.poljaColor}>Adresa:</span>{" "}
               <span> {konferencija.lokacija.adresa}</span>
             </div>
-            <div className="underline">
+            <div className={classes.divZaButton}>
               <button
                 onClick={() => handlePrikaziDogadjaje(konferencija)}
                 className={classes.prikaziDogađajeButton}
@@ -131,30 +162,34 @@ const Organizator = () => {
                     <li key={dogadjaj.id} className={classes.dogadjaji}>
                       <div>
                         <div className={classes.eventInfo}>
-                          <span className="polja-color">Naziv događaja:</span>{" "}
+                          <span className={classes.poljaColor}>
+                            Naziv događaja:
+                          </span>{" "}
                           <span>{dogadjaj.naziv}</span>
                         </div>
                         <div className="underline">
-                          <span className="polja-color">Start Time:</span>{" "}
+                          <span className={classes.poljaColor}>
+                            Start Time:
+                          </span>{" "}
                           <span>{formatirajDatum(dogadjaj.startTime)}</span>
                         </div>
                         <div className="underline">
-                          <span className="polja-color">End Time:</span>{" "}
+                          <span className={classes.poljaColor}>End Time:</span>{" "}
                           <span>{formatirajDatum(dogadjaj.endTime)}</span>
                         </div>
                         {dogadjaj.url && (
                           <div className="underline">
-                            <span className="polja-color">URL:</span>{" "}
+                            <span className={classes.poljaColor}>URL:</span>{" "}
                             <span>{dogadjaj.url}</span>
                           </div>
                         )}
                         <div className="underline">
-                          <span className="polja-color">Moderator:</span>{" "}
+                          <span className={classes.poljaColor}>Moderator:</span>{" "}
                           <span>{dogadjaj.korisnik.naziv}</span>
                         </div>
                         <button
                           onClick={() => handlePrikaziPosjetioce(dogadjaj)}
-                          className={classes.prikaziPosjetioce}
+                          className={classes.prikaziDogađajeButton}
                         >
                           {selectedDogadjaj === dogadjaj
                             ? "Sakrij posjetioce"
@@ -170,13 +205,13 @@ const Organizator = () => {
                                 >
                                   <div className={classes.posjetilacInfo}>
                                     <div className="underline">
-                                      <span className="polja-color">
+                                      <span className={classes.poljaColor}>
                                         Naziv:
                                       </span>{" "}
                                       <span>{posjetilac.korisnik.naziv}</span>
                                     </div>
                                     <div className="underline">
-                                      <span className="polja-color">
+                                      <span className={classes.poljaColor}>
                                         Email:
                                       </span>{" "}
                                       <span>{posjetilac.korisnik.email}</span>
