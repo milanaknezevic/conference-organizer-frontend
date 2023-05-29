@@ -26,7 +26,6 @@ const getAllKonferencije = (token) => {
 };
 
 const deleteKonferenciju = (token, idKonferencije) => {
-  console.log("idKonferencije u fetchu", idKonferencije);
   const url = `http://localhost:8080/konferencije/${idKonferencije}`;
 
   const requestOptions = {
@@ -36,7 +35,6 @@ const deleteKonferenciju = (token, idKonferencije) => {
       Authorization: "Bearer " + token,
     },
   };
-  console.log("urlllllllllllllllllllllll", url);
   return fetch(url, requestOptions)
     .then((response) => {
       if (!response.ok) {
@@ -96,7 +94,6 @@ const getLokacije = (token) => {
       if (!response.ok) {
         throw new Error("Greška prilikom dohvata lokacija.");
       }
-      console.log("response lokacije iz servisa", response.json);
       return response.json();
     })
     .then((data) => {
@@ -108,4 +105,66 @@ const getLokacije = (token) => {
     });
 };
 
-export { getAllKonferencije, deleteKonferenciju, getModeratore, getLokacije };
+const getTipoviDogadjaja = (token) => {
+  const url = `http://localhost:8080/tipovi_dogadjaja`;
+
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom dohvata tipova dogadjaja.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom dohvata tipova dogadjaja:", error);
+      throw error;
+    });
+};
+
+const updateKonferenciju = (token, idKonferencije, konferencijaRequest) => {
+  const url = `http://localhost:8080/konferencije/${idKonferencije}`;
+
+  const requestOptions = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(konferencijaRequest),
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom update konferencije.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom update konferencije:", error);
+      throw error;
+    });
+};
+
+export {
+  getAllKonferencije,
+  deleteKonferenciju,
+  getModeratore,
+  getLokacije,
+  getTipoviDogadjaja,
+  updateKonferenciju,
+};

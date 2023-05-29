@@ -4,6 +4,8 @@ import {
   deleteKonferenciju,
   getModeratore,
   getLokacije,
+  getTipoviDogadjaja,
+  updateKonferenciju,
 } from "../../services/organizator.service";
 
 export const fetchKonferecnije = createAsyncThunk(
@@ -14,11 +16,22 @@ export const fetchKonferecnije = createAsyncThunk(
   }
 );
 
+export const azurirajKonferenciju = createAsyncThunk(
+  "organizator/update_konferenciju",
+  async ({ token, idKonferencije, konferencijaRequest }) => {
+    const response = await updateKonferenciju(
+      token,
+      idKonferencije,
+      konferencijaRequest
+    );
+    return response;
+  }
+);
+
 export const fetchLokacije = createAsyncThunk(
   "organizator/lokacije",
   async (token) => {
     const response = await getLokacije(token);
-    console.log("response lokacije iz reduxa", response);
     return response;
   }
 );
@@ -31,10 +44,17 @@ export const fetchModeratori = createAsyncThunk(
   }
 );
 
+export const fetchTipoviDogadjaja = createAsyncThunk(
+  "organizator/tipovi_dogadjaja",
+  async (token) => {
+    const response = await getTipoviDogadjaja(token);
+    return response;
+  }
+);
+
 export const obrisiKonferenciju = createAsyncThunk(
   "organizator/obrisiKonferenciju",
   async ({ token, idKonferencije }) => {
-    console.log("idKonferencije pri pozivu metoda", idKonferencije);
     const response = await deleteKonferenciju(token, idKonferencije);
     return response;
   }
@@ -45,6 +65,7 @@ const organizatorSlice = createSlice({
   initialState: {
     konferencije: [],
     lokacije: [],
+    tipoviDogadjaja: [],
     moderatori: [],
     izabrana: {},
     loading: false,
@@ -60,10 +81,11 @@ const organizatorSlice = createSlice({
     setLokacije(state, action) {
       state.lokacije = action.payload;
     },
+    setTipoviDogadjaja(state, action) {
+      state.tipoviDogadjaja = action.payload;
+    },
     izabranaKonferencija: (state, action) => {
       state.izabrana = action.payload; // ili state.izabrana = action.payload ako želite referencirati isti objekt
-
-      console.log("Payload izabranaKonferencija:", action.payload);
     },
   },
   extraReducers: {
@@ -113,13 +135,38 @@ const organizatorSlice = createSlice({
       state.loading = true;
     },
     [fetchLokacije.fulfilled]: (state, action) => {
-      console.log("action payload", action.payload);
       state.lokacije = action.payload;
 
       state.loading = false;
       state.error = null;
     },
     [fetchLokacije.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+
+    [fetchTipoviDogadjaja.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [fetchTipoviDogadjaja.fulfilled]: (state, action) => {
+      state.tipoviDogadjaja = action.payload;
+
+      state.loading = false;
+      state.error = null;
+    },
+    [fetchTipoviDogadjaja.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [azurirajKonferenciju.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [azurirajKonferenciju.fulfilled]: (state, action) => {
+      console.log("action azurirajKonferenciju ", action.payload);
+      state.loading = false;
+      state.error = null;
+    },
+    [azurirajKonferenciju.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },
@@ -131,5 +178,6 @@ export const {
   setKonferencijeRedux,
   setModeratori,
   setLokacije,
+  setTipoviDogadjaja,
 } = organizatorSlice.actions;
 export default organizatorSlice.reducer;

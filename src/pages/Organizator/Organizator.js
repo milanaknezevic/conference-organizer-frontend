@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { fetchKonferecnije } from "../../redux/features/organizatorSlice";
+import {
+  fetchKonferecnije,
+  fetchTipoviDogadjaja,
+} from "../../redux/features/organizatorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import classes from "./Organizator.module.css";
 import Obrisi from "../Obrisi/Obrisi";
@@ -30,35 +33,32 @@ const Organizator = () => {
   useEffect(() => {
     dispatch(fetchKonferecnije(token))
       .then((response) => {
-        console.log("response", response);
         dispatch(setKonferencijeRedux(response.payload)); // Ažurirajte stanje pomoću akcije setKonferencije
         setKonferencije(response.payload);
       })
-      .catch((error) => {
-        console.log("error", error);
-      });
+      .catch((error) => {});
   }, [dispatch, token, refreshKey]);
+
+  useEffect(() => {
+    dispatch(fetchTipoviDogadjaja(token))
+      .then((response) => {})
+      .catch((error) => {});
+  }, [dispatch, token]);
 
   useEffect(() => {
     dispatch(fetchModeratori(token))
       .then((response) => {
-        console.log("response Moderatori", response);
         // dispatch(setModeratori(response.payload)); // Ažurirajte stanje pomoću akcije setModeratori
       })
-      .catch((error) => {
-        console.log("error", error);
-      });
+      .catch((error) => {});
   }, [dispatch, token]);
 
   useEffect(() => {
     dispatch(fetchLokacije(token))
       .then((response) => {
-        console.log("response Lokacije", response);
         // dispatch(setModeratori(response.payload)); // Ažurirajte stanje pomoću akcije setModeratori
       })
-      .catch((error) => {
-        console.log("error", error);
-      });
+      .catch((error) => {});
   }, [dispatch, token]);
 
   const handleClose = () => {
@@ -77,19 +77,12 @@ const Organizator = () => {
     return formattedDate;
   };
   const handleUredi = (konferencija) => {
-    console.log(
-      "konferencija iz organizatora koju sam selektovala",
-      konferencija
-    );
-
     dispatch(izabranaKonferencija(konferencija));
-    console.log("konf", konf);
 
     navigate("/urediKonferenciju");
   };
 
   const handleObrisi = (konferencija) => {
-    console.log("konferencija", konferencija);
     setKonferencijaZaBrisanje(konferencija);
     setShowModal(true); // Postavite showModal na true kada se pritisne dugme za brisanje
   };
