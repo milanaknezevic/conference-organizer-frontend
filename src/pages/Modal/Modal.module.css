@@ -10,12 +10,12 @@
 
 .modal {
   position: fixed;
-  top: 37%;
+  top: 28rem;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 350px;
-  height: 190px;
-  background-color: white;
+  min-width: 350px;
+  min-height: 190px;
+  background-color: #f0f0f0;
   z-index: 200;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   display: flex;

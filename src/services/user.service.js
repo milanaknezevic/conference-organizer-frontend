@@ -49,11 +49,41 @@ const odjaviKorisnika = () => {
   //sessionStorage.removeItem("auth");
   localStorage.removeItem("auth");
 };
+const updateKorisnika = (token, data, idKorisnika) => {
+  const url = `http://localhost:8080/korisnici/${idKorisnika}`;
+  console.log("idKorisnika", idKorisnika);
+  console.log("token", token);
+  console.log("data", data);
+  console.log("url", url);
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
 
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom update korisnika.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom update korisnika:", error);
+      throw error;
+    });
+};
 const userService = {
   login,
   registerUser,
   odjaviKorisnika,
+  updateKorisnika,
 };
 
 export default userService;

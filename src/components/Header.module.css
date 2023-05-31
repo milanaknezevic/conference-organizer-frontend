@@ -14,18 +14,39 @@
   z-index: 10;
 }
 
-.logoutButton {
+.logout {
   position: fixed;
-  top: 0;
-  right: 0;
-  margin-top: 10px;
-  margin-right: 10px;
-  background-color: #fff;
-  color: #333;
+  top: 1.5rem; /* Prilagodite udaljenost od vrha stranice prema potrebi */
+  right: 2rem; /* Prilagodite udaljenost od desnog ruba prema potrebi */
+  color: #f0f0f0;
+  text-decoration: none; /* Uklanja podvučeni tekst */
+  font-size: 20px; /* Povećava veličinu fonta prema potrebi */
 }
-.logoutButton:hover {
-  background-color: #333;
-  color: #fff;
+.logout:hover {
+  color: black;
+}
+
+.myProfile {
+  position: fixed;
+  top: 1.5rem; /* Prilagodite udaljenost od vrha stranice prema potrebi */
+  right: 8rem; /* Prilagodite udaljenost od desnog ruba prema potrebi */
+  color: #f0f0f0;
+  text-decoration: none; /* Uklanja podvučeni tekst */
+  font-size: 20px; /* Povećava veličinu fonta prema potrebi */
+}
+.konferencije {
+  position: fixed;
+  top: 1.5rem; /* Prilagodite udaljenost od vrha stranice prema potrebi */
+  right: 15rem; /* Prilagodite udaljenost od desnog ruba prema potrebi */
+  color: #f0f0f0;
+  text-decoration: none; /* Uklanja podvučeni tekst */
+  font-size: 20px; /* Povećava veličinu fonta prema potrebi */
+}
+.myProfile:hover {
+  color: black;
+}
+.konferencije:hover {
+  color: black;
 }
 .fixed {
   position: fixed;

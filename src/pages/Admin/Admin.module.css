@@ -69,8 +69,8 @@ body {
 }
 .editButton {
   border: none;
-  background-color: #fff;
-  color: purple;
+  background-color: transparent;
+  color: red;
   border-radius: 4px;
   font-size: 14px;
   cursor: pointer;

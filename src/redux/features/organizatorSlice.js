@@ -6,6 +6,9 @@ import {
   getLokacije,
   getTipoviDogadjaja,
   updateKonferenciju,
+  updateRezervacije,
+  addKonferencija,
+  addDogadjaj,
 } from "../../services/organizator.service";
 
 export const fetchKonferecnije = createAsyncThunk(
@@ -24,6 +27,28 @@ export const azurirajKonferenciju = createAsyncThunk(
       idKonferencije,
       konferencijaRequest
     );
+    return response;
+  }
+);
+export const dodajKonferenciju = createAsyncThunk(
+  "organizator/add_konerenciju",
+  async ({ token, konferencijaRequest }) => {
+    const response = await addKonferencija(token, konferencijaRequest);
+    return response;
+  }
+);
+export const dodajDogadjaj = createAsyncThunk(
+  "organizator/add_dogadjaj",
+  async ({ token, dogadjaj }) => {
+    const response = await addDogadjaj(token, dogadjaj);
+    return response;
+  }
+);
+
+export const azurirajRezervacije = createAsyncThunk(
+  "organizator/update_rezervacije",
+  async ({ token, nizResursa }) => {
+    const response = await updateRezervacije(token, nizResursa);
     return response;
   }
 );
@@ -162,11 +187,45 @@ const organizatorSlice = createSlice({
       state.loading = true;
     },
     [azurirajKonferenciju.fulfilled]: (state, action) => {
-      console.log("action azurirajKonferenciju ", action.payload);
       state.loading = false;
       state.error = null;
     },
     [azurirajKonferenciju.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+
+    [azurirajRezervacije.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [azurirajRezervacije.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [azurirajRezervacije.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+
+    [dodajKonferenciju.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [dodajKonferenciju.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [dodajKonferenciju.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [dodajDogadjaj.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [dodajDogadjaj.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [dodajDogadjaj.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },

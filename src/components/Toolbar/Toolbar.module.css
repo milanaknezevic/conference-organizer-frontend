@@ -32,8 +32,8 @@
 .toolbarButton {
   margin-right: 10px;
   padding: 8px 16px;
-  background-color: #fff;
-  color: #333;
+  background-color: transparent;
+  color: white;
   border: none;
   border-radius: 4px;
   font-size: 14px;
@@ -41,6 +41,5 @@
 }
 
 .toolbarButton:hover {
-  background-color: #333;
-  color: #fff;
+  color: #333;
 }

@@ -12,10 +12,9 @@ import {
   fetchModeratori,
   fetchLokacije,
 } from "../../redux/features/organizatorSlice";
-import {
-  setKonferencijeRedux,
-  setModeratori,
-} from "../../redux/features/organizatorSlice";
+import { setKonferencijeRedux } from "../../redux/features/organizatorSlice";
+import AddConference from "../AddConference/AddConference";
+
 const Organizator = () => {
   const user = useSelector((state) => state.login);
   const token = user.user.token;
@@ -24,9 +23,9 @@ const Organizator = () => {
   const [selectedKonferencija, setSelectedKonferencija] = useState(null); // Dodato stanje za praćenje odabrane konferencije
   const [selectedDogadjaj, setSelectedDogadjaj] = useState(null); // Dodato stanje za praćenje odabranog događaja
   const [showModal, setShowModal] = useState(false); // Dodato stanje za prikazivanje modalnog prozora
+  const [showAddModal, setshowAddModal] = useState(false);
   const posjetiociSectionRef = useRef(null); // Referenca na donji dio (posjetiociSection)
   const [refreshKey, setRefreshKey] = useState(0);
-  const konf = useSelector((state) => state.organizator);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -64,6 +63,10 @@ const Organizator = () => {
   const handleClose = () => {
     setKonferencijaZaBrisanje([]);
     setShowModal(false);
+    setshowAddModal(false);
+  };
+  const handleAddConference = () => {
+    setshowAddModal(true);
   };
   const formatirajDatum = (datum) => {
     const options = {
@@ -254,19 +257,30 @@ const Organizator = () => {
   return (
     <div>
       <h2 className={classes.stilZaH2}>Konferencije</h2>
-      <ul>{konferencijeList}</ul>
-      {showModal && (
-        <Obrisi
-          onClose={handleClose}
-          konferencija={konferencijaZaBrisanje}
-          idKonferencije={konferencijaZaBrisanje.id}
-          token={token}
-          onSave={handleSaveObrisi}
-        />
-      )}{" "}
-      {/* Prikazuje modal ako je showModal true */}
-      <div ref={posjetiociSectionRef} />{" "}
-      {/* Prazan div koji će biti target za scrollIntoView */}
+      <div className={classes.centeredDiv}>
+        <ul>{konferencijeList}</ul>
+        {showModal && (
+          <Obrisi
+            onClose={handleClose}
+            konferencija={konferencijaZaBrisanje}
+            idKonferencije={konferencijaZaBrisanje.id}
+            token={token}
+            onSave={handleSaveObrisi}
+          />
+        )}
+        {showAddModal && <AddConference onClose={handleClose} />}
+        <div ref={posjetiociSectionRef} />
+      </div>
+
+      <div>
+        <button
+          className={classes.roundButton}
+          title="Create New Conference"
+          onClick={handleAddConference}
+        >
+          +
+        </button>
+      </div>
     </div>
   );
 };

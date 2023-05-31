@@ -133,6 +133,7 @@ const getTipoviDogadjaja = (token) => {
 };
 
 const updateKonferenciju = (token, idKonferencije, konferencijaRequest) => {
+  console.log("servis konferencijaRequest", konferencijaRequest);
   const url = `http://localhost:8080/konferencije/${idKonferencije}`;
 
   const requestOptions = {
@@ -160,6 +161,90 @@ const updateKonferenciju = (token, idKonferencije, konferencijaRequest) => {
     });
 };
 
+const updateRezervacije = (token, nizResursa) => {
+  const url = `http://localhost:8080/rezervacije/rezervacija_update`;
+
+  const requestOptions = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(nizResursa),
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom update rezervacija.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom update rezervacija:", error);
+      throw error;
+    });
+};
+
+const addKonferencija = (token, konferencijaRequest) => {
+  const url = `http://localhost:8080/konferencije`;
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(konferencijaRequest),
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom add konf.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom add konf:", error);
+      throw error;
+    });
+};
+
+const addDogadjaj = (token, dogadjaj) => {
+  const url = `http://localhost:8080/dogadjaji`;
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(dogadjaj),
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom add dogadjaja.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom add dogadjaja:", error);
+      throw error;
+    });
+};
+
 export {
   getAllKonferencije,
   deleteKonferenciju,
@@ -167,4 +252,7 @@ export {
   getLokacije,
   getTipoviDogadjaja,
   updateKonferenciju,
+  updateRezervacije,
+  addKonferencija,
+  addDogadjaj,
 };

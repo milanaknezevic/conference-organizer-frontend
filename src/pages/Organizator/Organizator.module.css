@@ -83,6 +83,16 @@
   color: white;
   background-color: red; /* Set the hover background color to a darker shade of red */
 }
+.centeredDiv {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin-left: 80px;
+  min-height: 400px; /* Prilagodite visinu prema potrebi */
+  text-align: center;
+}
 
 .organizatorContainer {
   display: flex;
@@ -183,4 +193,25 @@
   margin-left: 20px;
   background-color: #f2f2f2;
   justify-content: flex-start; /* Align items to the left */
+}
+
+.roundButton {
+  position: fixed;
+  right: 5%;
+  bottom: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #488b8f;
+  color: white;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.roundButton:hover {
+  background-color: blueviolet;
+  cursor: pointer;
 }
