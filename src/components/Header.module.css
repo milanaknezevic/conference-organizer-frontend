@@ -42,10 +42,21 @@
   text-decoration: none; /* Uklanja podvučeni tekst */
   font-size: 20px; /* Povećava veličinu fonta prema potrebi */
 }
+.mojeKonferencije {
+  position: fixed;
+  top: 1.5rem; /* Prilagodite udaljenost od vrha stranice prema potrebi */
+  right: 24rem; /* Prilagodite udaljenost od desnog ruba prema potrebi */
+  color: #f0f0f0;
+  text-decoration: none; /* Uklanja podvučeni tekst */
+  font-size: 20px; /* Povećava veličinu fonta prema potrebi */
+}
 .myProfile:hover {
   color: black;
 }
 .konferencije:hover {
+  color: black;
+}
+.mojeKonferencije:hover {
   color: black;
 }
 .fixed {

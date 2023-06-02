@@ -14,6 +14,8 @@ import {
 import { setKonferencijeRedux } from "../../redux/features/organizatorSlice";
 import AddConference from "./AddConference/AddConference";
 import UrediKonferenciju from "./UrediKonferenciju/UrediKonferenciju";
+import Posjetioci from "../Posjetioci/Posjetioci";
+import { Pencil, Trash } from "react-bootstrap-icons";
 
 const Organizator = () => {
   const user = useSelector((state) => state.login);
@@ -25,6 +27,8 @@ const Organizator = () => {
   const [showModal, setShowModal] = useState(false); // Dodato stanje za prikazivanje modalnog prozora
   const [showAddModal, setshowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showPosjetiociModal, setShowPosjetiociModal] = useState(false);
+  const [dogadjajZaPosjetioce, setDogadjajZaPosjetioce] = useState({});
   const posjetiociSectionRef = useRef(null); // Referenca na donji dio (posjetiociSection)
   const [refreshKey, setRefreshKey] = useState(0);
   const dispatch = useDispatch();
@@ -66,6 +70,7 @@ const Organizator = () => {
     setShowModal(false);
     setshowAddModal(false);
     setShowEditModal(false);
+    setShowPosjetiociModal(false);
   };
   const handleAddConference = () => {
     setshowAddModal(true);
@@ -91,6 +96,12 @@ const Organizator = () => {
     setKonferencijaZaBrisanje(konferencija);
     setShowModal(true); // Postavite showModal na true kada se pritisne dugme za brisanje
   };
+  const handlePrikaziPosjetioceModal = (dogadjaj) => {
+    //setKonferencijaZaBrisanje(konferencija);
+    console.log("prikazi");
+    setDogadjajZaPosjetioce(dogadjaj);
+    setShowPosjetiociModal(true); // Postavite showModal na true kada se pritisne dugme za brisanje
+  };
 
   const handlePrikaziDogadjaje = (konferencija) => {
     if (selectedKonferencija === konferencija) {
@@ -100,15 +111,17 @@ const Organizator = () => {
     }
   };
   const handlePrikaziPosjetioce = (dogadjaj) => {
-    if (selectedDogadjaj === dogadjaj) {
+    setShowPosjetiociModal(true);
+    console.log("Posjetioce prikazi", showPosjetiociModal);
+    /* if (selectedDogadjaj === dogadjaj) {
       setSelectedDogadjaj(null);
     } else {
       setSelectedDogadjaj(dogadjaj);
-      if (posjetiociSectionRef.current) {
+      /* if (posjetiociSectionRef.current) {
         // Provera da li je referenca definisana
         posjetiociSectionRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }
+      }*/
+    //}
   };
 
   let konferencijeList;
@@ -186,44 +199,13 @@ const Organizator = () => {
                           <span>{dogadjaj.korisnik.naziv}</span>
                         </div>
                         <button
-                          onClick={() => handlePrikaziPosjetioce(dogadjaj)}
+                          onClick={() => handlePrikaziPosjetioceModal(dogadjaj)}
                           className={classes.prikaziDogađajeButton}
                         >
                           {selectedDogadjaj === dogadjaj
                             ? "Sakrij posjetioce"
                             : "Prikaži posjetioce"}
                         </button>
-                        {selectedDogadjaj === dogadjaj && (
-                          <ul>
-                            {dogadjaj.posjetilacs.length > 0 ? (
-                              dogadjaj.posjetilacs.map((posjetilac) => (
-                                <li
-                                  key={posjetilac.korisnik.id}
-                                  className={classes.posjetioci}
-                                >
-                                  <div className={classes.posjetilacInfo}>
-                                    <div className="underline">
-                                      <span className={classes.poljaColor}>
-                                        Naziv:
-                                      </span>{" "}
-                                      <span>{posjetilac.korisnik.naziv}</span>
-                                    </div>
-                                    <div className="underline">
-                                      <span className={classes.poljaColor}>
-                                        Email:
-                                      </span>{" "}
-                                      <span>{posjetilac.korisnik.email}</span>
-                                    </div>
-                                  </div>
-                                </li>
-                              ))
-                            ) : (
-                              <p className={classes.praznaLista}>
-                                Nema posjetilaca!
-                              </p>
-                            )}
-                          </ul>
-                        )}
                       </div>
                     </li>
                   ))
@@ -238,13 +220,13 @@ const Organizator = () => {
               className={classes.editButton}
               onClick={() => handleUredi(konferencija)}
             >
-              Uredi
+              <Pencil /> Uredi
             </button>
             <button
               className={classes.deleteButton}
               onClick={() => handleObrisi(konferencija)}
             >
-              Obrisi
+              <Trash /> Obrisi
             </button>
           </div>
         </li>
@@ -276,7 +258,13 @@ const Organizator = () => {
         {showEditModal && (
           <UrediKonferenciju onClose={handleClose} onSave={handleSaveObrisi} />
         )}
-        <div ref={posjetiociSectionRef} />
+        {showPosjetiociModal && (
+          <Posjetioci
+            onClose={handleClose}
+            dogadjaj={dogadjajZaPosjetioce}
+            show={showPosjetiociModal}
+          />
+        )}
       </div>
 
       <div>

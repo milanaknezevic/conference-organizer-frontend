@@ -37,6 +37,12 @@ const Login = () => {
         ) {
           console.log("organizatro je aktivan");
           navigate("/organizator");
+        } else if (
+          response.payload.rola === "POSJETILAC" &&
+          response.payload.status === "ACTIVE"
+        ) {
+          console.log("organizatro je aktivan");
+          navigate("/posjetilac");
         } else {
           setError(false);
         }

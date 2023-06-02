@@ -6,6 +6,7 @@ import {
   azurirajKorisnika,
   promjeniLozinku,
 } from "../../redux/features/userSlice";
+import { Pencil } from "react-bootstrap-icons";
 
 const UserDetails = () => {
   const user = useSelector((state) => state.login);
@@ -335,20 +336,34 @@ const UserDetails = () => {
 
         {isEditMode && !isChangeMode && (
           <div className={classes.editButtons}>
-            <button onClick={handleSaveClick}>Sačuvaj</button>
-            <button onClick={handleDiscardClick}>Poništi</button>
+            <button className={classes.sacuvaj} onClick={handleSaveClick}>
+              Sačuvaj
+            </button>
+            <button className={classes.ponisti} onClick={handleDiscardClick}>
+              Poništi
+            </button>
           </div>
         )}
         {!isEditMode && isChangeMode && (
           <div className={classes.editButtons}>
-            <button onClick={handleSubmitPass}>Sačuvaj</button>
-            <button onClick={handleChangeDiscardClick}>Poništi</button>
+            <button className={classes.sacuvaj} onClick={handleSubmitPass}>
+              Sačuvaj
+            </button>
+            <button
+              className={classes.ponisti}
+              onClick={handleChangeDiscardClick}
+            >
+              Poništi
+            </button>
           </div>
         )}
       </div>
       {!isEditMode && !isChangeMode && (
         <div className={classes.editButton}>
-          <button onClick={handleEditClick}>Uredi</button>
+          <button onClick={handleEditClick}>
+            <Pencil />
+            Uredi
+          </button>
         </div>
       )}
       {!isEditMode && !isChangeMode && (

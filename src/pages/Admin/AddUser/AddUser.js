@@ -2,10 +2,11 @@ import Modal from "../../Modal/Modal";
 import classes from "./AddUser.module.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { dodajModeratora } from "../../../redux/features/organizatorSlice";
 
 const AddUser = (props) => {
   const { onClose } = props;
-
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.login);
   const token = user.user.token;
   const [username, setUsername] = useState("");
@@ -20,33 +21,31 @@ const AddUser = (props) => {
   const handleSpremi = (e) => {
     e.preventDefault();
     if (username !== "" && password !== "" && name !== "" && email !== "") {
-      const korisnik = {
-        username: username,
-        password: password,
-        naziv: name,
-        email: email,
-        rola: 2, //moderator???
-      };
+      if (password.length > 6) {
+        const korisnik = {
+          username: username,
+          password: password,
+          naziv: name,
+          email: email,
+          rola: 2, //moderator???
+        };
 
-      console.log("korisnik", korisnik);
+        console.log("moderator za bazu", korisnik);
+
+        dispatch(dodajModeratora({ token: token, moderator: korisnik }))
+          .then((response) => {
+            console.log("response", response);
+            onClose();
+          })
+          .catch((error) => {});
+      } else {
+        setError(true);
+        setErrorMessage("Lozinka mora imati minimalno 7 karaktera!");
+      }
     } else {
       setError(true);
       setErrorMessage("Popunite sva polja!");
     }
-
-    /* dispatch(registrujSe(data))
-     .then((response) => {
-       console.log("Login response", response);
-       setRegistrationSuccess(true);
-     })
-     .catch((error) => {
-       console.error("Došlo je do greške prilikom slanja zahtjeva:", error);
-       setError(true);
-       setPassword("");
-       setUsername("");
-       setName("");
-       setEmail("");
-     });*/
   };
   const handleOdustani = () => {
     console.log("token", token);
@@ -64,7 +63,7 @@ const AddUser = (props) => {
             </div>
             {error && <p className={classes.errorMessage}>{errorMessage}</p>}
 
-            <form className="register-form" onSubmit={handleSpremi}>
+            <form className={classes.registerForm} onSubmit={handleSpremi}>
               <label htmlFor="name">Ime</label>
               <input
                 value={name}

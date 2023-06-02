@@ -6,7 +6,7 @@ import Toolbar from "../../components/Toolbar/Toolbar";
 import Edit from "../Edit/Edit";
 import classes from "./Admin.module.css";
 import AddUser from "./AddUser/AddUser";
-
+import { Pencil } from "react-bootstrap-icons";
 const Admin = () => {
   const [korisnici, setKorisnici] = useState([]);
   const [izbor, setIzbor] = useState("aktivni");
@@ -80,12 +80,14 @@ const Admin = () => {
             <span> {korisnik.rola}</span>
           </div>
         </div>
-        <button
-          className={openModal ? "zzz" : "editButton"}
-          onClick={() => handleEdit(korisnik)}
-        >
-          Izmjeni
-        </button>
+        <div className={classes.editDIv}>
+          <button
+            className={classes.editButton}
+            onClick={() => handleEdit(korisnik)}
+          >
+            <Pencil /> Izmjeni
+          </button>
+        </div>
       </li>
     ));
   } else {

@@ -1,5 +1,5 @@
 .userDetailsContainer {
-  min-width: 300px;
+  min-width: 310px;
   min-height: 500px;
   display: flex;
   flex-direction: column;
@@ -7,10 +7,17 @@
   align-items: center;
   overflow: auto;
   border: 1px solid purple;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 .buttonDOgadjaji {
   display: flex;
   justify-content: center;
+}
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
 }
 .buttonD {
   background-color: transparent;

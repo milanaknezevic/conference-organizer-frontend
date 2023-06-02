@@ -303,6 +303,36 @@ const addResurs = (token, resurs) => {
     });
 };
 
+const addModerator = (token, moderator) => {
+  console.log("moderator iz servisa", moderator);
+  const url = `http://localhost:8080/korisnici/dodaj_moderatora`;
+  console.log("url za moderatora ", url);
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(moderator),
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom add moderatora.");
+      }
+      return response;
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom add moderatora:", error);
+      throw error;
+    });
+};
+
 export {
   getAllKonferencije,
   deleteKonferenciju,
@@ -315,4 +345,5 @@ export {
   addDogadjaj,
   addResurs,
   updateDogadjaj,
+  addModerator,
 };

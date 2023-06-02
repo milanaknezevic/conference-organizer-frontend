@@ -9,7 +9,31 @@
   background-color: #f0f0f0;
   position: relative; /* Dodato */
 }
-
+.ocjene {
+  color: #5b2f9f;
+  height: 20px;
+  margin-left: 10px;
+  text-decoration: underline;
+}
+.ocjene:hover {
+  color: blue;
+}
+.ocjeni {
+  position: absolute;
+  top: 2rem;
+  right: 0.2rem;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 10px; /* Add equal spacing between buttons */
+}
+.ocjeni button {
+  font-size: 15px;
+  width: 100%;
+  background-color: transparent;
+}
 .organizator::before {
   content: "";
   position: absolute;

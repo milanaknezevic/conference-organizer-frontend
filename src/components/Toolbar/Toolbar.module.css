@@ -3,14 +3,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
   padding: 10px 0;
   margin-top: 5rem;
   margin-bottom: 5rem;
   z-index: 10;
-  border-width: 5px;
+  border-width: 1px;
   border-style: solid;
-  border-color: lightgray;
+  border-color: #7439db;
+
+  background-color: #f0f0f0;
 }
 
 .toolbarActive {
@@ -33,7 +34,7 @@
   margin-right: 10px;
   padding: 8px 16px;
   background-color: transparent;
-  color: white;
+  color: #7439db;
   border: none;
   border-radius: 4px;
   font-size: 14px;

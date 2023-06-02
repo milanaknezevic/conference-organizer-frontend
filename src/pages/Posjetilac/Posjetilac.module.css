@@ -24,7 +24,20 @@
 
 .buttons {
   position: absolute;
-
+  top: 5rem;
+  right: 1rem;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 10px; /* Add equal spacing between buttons */
+}
+.buttons button {
+  width: 100%;
+}
+.ocjeni {
+  position: absolute;
   top: 2rem;
   right: 0.2rem;
   transform: translateY(-50%);
@@ -32,10 +45,21 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-  /* Add equal spacing between buttons */
+  gap: 10px; /* Add equal spacing between buttons */
 }
-.buttons button {
+.ocjeni button {
+  font-size: 15px;
   width: 100%;
+  background-color: transparent;
+}
+.ocjene {
+  color: #5b2f9f;
+  height: 20px;
+  margin-left: 10px;
+  text-decoration: underline;
+}
+.ocjene:hover {
+  color: blue;
 }
 .pom {
   display: flex;
@@ -63,17 +87,17 @@
   align-items: center;
 }
 .editButton:hover {
+  background-color: #5b2f9f;
   color: black;
 }
 .editButton {
   color: purple;
-  background-color: transparent; /* Set the background color to red */
-  height: 20px;
+  background-color: white; /* Set the background color to red */
 }
 .deleteButton {
   color: purple;
-  background-color: transparent;
-  height: 20px;
+  background-color: white; /* Set the background color to red */
+  /* Set the background color to red */
 }
 .poljaColor {
   color: black;
@@ -81,7 +105,11 @@
   font-size: 2ch;
 }
 .deleteButton:hover {
-  color: red;
+  color: white;
+  background-color: red; /* Set the hover background color to a darker shade of red */
+}
+.ocjeni button:hover {
+  color: black;
 }
 .centeredDiv {
   margin-top: 20px;

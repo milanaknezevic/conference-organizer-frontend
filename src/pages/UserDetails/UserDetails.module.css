@@ -15,6 +15,10 @@
   border-radius: 8px;
   background-color: #f0f0f0;
 }
+.sacuvaj {
+  color: red;
+  background-color: red;
+}
 .formRow {
   display: flex;
   align-items: center;
@@ -40,7 +44,7 @@
 
 .editButton {
   position: relative;
-  left: -70px;
+  right: 80px;
   bottom: 160px;
   display: flex;
   justify-content: flex-start;
@@ -92,17 +96,37 @@
   margin-top: 16px;
 }
 
-.editButtons button {
+.sacuvaj {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
   padding: 8px 16px;
-  background-color: #0a75bf;
-  color: #fff;
+  background-color: transparent;
+  color: #0a75bf;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
-
-.editButtons button:hover {
-  background-color: #d32f2f;
+.sacuvaj:hover {
+  color: black;
+  background-color: transparent;
+}
+.ponisti {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #0a75bf;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.ponisti:hover {
+  color: red;
+  background-color: transparent;
 }
 
 .editButtons button:focus {

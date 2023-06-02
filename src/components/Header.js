@@ -55,6 +55,19 @@ const Header = (props) => {
               Konferencije A
             </Link>
           )}
+          {isLoggedIn && rola === "POSJETILAC" && (
+            <Link className={`${classes.konferencije}`} to="/posjetilac">
+              Konferencije P
+            </Link>
+          )}
+          {isLoggedIn && rola === "POSJETILAC" && (
+            <Link
+              className={`${classes.mojeKonferencije}`}
+              to="/moje_konferencije"
+            >
+              Moje Konferencije
+            </Link>
+          )}
         </div>
       </header>
       <main>

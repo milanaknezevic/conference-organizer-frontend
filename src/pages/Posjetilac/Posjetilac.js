@@ -1,32 +1,29 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   fetchKonferecnije,
   fetchTipoviDogadjaja,
 } from "../../redux/features/organizatorSlice";
 import { useDispatch, useSelector } from "react-redux";
-import classes from "./Konferencija.module.css";
-import { useNavigate } from "react-router-dom";
-import { izabranaKonferencija } from "../../redux/features/organizatorSlice";
+import classes from "./Posjetilac.module.css";
 import {
   fetchModeratori,
   fetchLokacije,
 } from "../../redux/features/organizatorSlice";
 import { setKonferencijeRedux } from "../../redux/features/organizatorSlice";
-
-const Konferencije = () => {
+import OcjenaModal from "../OcjenaModal/OcjenaModal";
+import DodajOcjenu from "../OcjenaModal/DodajOcjenu";
+const Posjetilac = () => {
   const user = useSelector((state) => state.login);
   const token = user.user.token;
   const [konferencije, setKonferencije] = useState([]);
-  const [konferencijaZaBrisanje, setKonferencijaZaBrisanje] = useState({});
+  const [showModalZaOcjenu, setShowModalZaOcjenu] = useState(false);
+  const [showOcjeniModal, setShowOcjeniModal] = useState(false);
+  const [dogadjajZaOcjenu, setDogadjajZaOcjenu] = useState({});
   const [selectedKonferencija, setSelectedKonferencija] = useState(null); // Dodato stanje za praćenje odabrane konferencije
-  const [selectedDogadjaj, setSelectedDogadjaj] = useState(null); // Dodato stanje za praćenje odabranog događaja
-  const [showModal, setShowModal] = useState(false); // Dodato stanje za prikazivanje modalnog prozora
-  const [showAddModal, setshowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const posjetiociSectionRef = useRef(null); // Referenca na donji dio (posjetiociSection)
   const [refreshKey, setRefreshKey] = useState(0);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
+  //const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchKonferecnije(token))
@@ -59,20 +56,6 @@ const Konferencije = () => {
       .catch((error) => {});
   }, [dispatch, token]);
 
-  const handleClose = () => {
-    setKonferencijaZaBrisanje([]);
-    setShowModal(false);
-    setshowAddModal(false);
-    setShowEditModal(false);
-  };
-  const handleAddConference = () => {
-    setshowAddModal(true);
-  };
-  const handleUredi = (konferencija) => {
-    dispatch(izabranaKonferencija(konferencija));
-    setShowEditModal(true);
-    //navigate("/urediKonferenciju");
-  };
   const formatirajDatum = (datum) => {
     const options = {
       year: "numeric",
@@ -85,11 +68,6 @@ const Konferencije = () => {
     return formattedDate;
   };
 
-  const handleObrisi = (konferencija) => {
-    setKonferencijaZaBrisanje(konferencija);
-    setShowModal(true); // Postavite showModal na true kada se pritisne dugme za brisanje
-  };
-
   const handlePrikaziDogadjaje = (konferencija) => {
     if (selectedKonferencija === konferencija) {
       setSelectedKonferencija(null);
@@ -97,17 +75,25 @@ const Konferencije = () => {
       setSelectedKonferencija(konferencija);
     }
   };
-  const handlePrikaziPosjetioce = (dogadjaj) => {
-    if (selectedDogadjaj === dogadjaj) {
-      setSelectedDogadjaj(null);
-    } else {
-      setSelectedDogadjaj(dogadjaj);
-      if (posjetiociSectionRef.current) {
-        // Provera da li je referenca definisana
-        posjetiociSectionRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }
+
+  const handlePrikaziModalZaOcjenu = (dogadjaj) => {
+    //setKonferencijaZaBrisanje(konferencija);
+    console.log("prikazi");
+    setDogadjajZaOcjenu(dogadjaj);
+    setShowModalZaOcjenu(true); // Postavite showModal na true kada se pritisne dugme za brisanje
   };
+  const handleOcjeniModal = (dogadjaj) => {
+    //setKonferencijaZaBrisanje(konferencija);
+    console.log("prikazi");
+    setDogadjajZaOcjenu(dogadjaj);
+    setShowOcjeniModal(true); // Postavite showModal na true kada se pritisne dugme za brisanje
+  };
+  const handleClose = () => {
+    setShowModalZaOcjenu(false);
+    setShowOcjeniModal(false);
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
+
   let konferencijeList;
   if (konferencije && konferencije.length > 0) {
     konferencijeList = konferencije.map((konferencija) => (
@@ -140,6 +126,15 @@ const Konferencije = () => {
               <span className={classes.poljaColor}>Adresa:</span>{" "}
               <span> {konferencija.lokacija?.adresa}</span>
             </div>
+            <div className="underline">
+              <span className={classes.poljaColor}>Ocjene:</span>{" "}
+              <span
+                className={classes.ocjene}
+                onClick={() => handlePrikaziModalZaOcjenu(konferencija)}
+              >
+                Ocjene
+              </span>
+            </div>
             <div className={classes.divZaButton}>
               <button
                 onClick={() => handlePrikaziDogadjaje(konferencija)}
@@ -149,6 +144,13 @@ const Konferencije = () => {
                   ? "Sakrij događaje"
                   : "Prikaži događaje"}
               </button>
+            </div>
+            <div className={classes.ocjeni}>
+              {konferencija.status === true && (
+                <button onClick={() => handleOcjeniModal(konferencija)}>
+                  Ocjeni
+                </button>
+              )}
             </div>
             {selectedKonferencija === konferencija && (
               <ul>
@@ -182,45 +184,6 @@ const Konferencije = () => {
                           <span className={classes.poljaColor}>Moderator:</span>{" "}
                           <span>{dogadjaj.korisnik.naziv}</span>
                         </div>
-                        <button
-                          onClick={() => handlePrikaziPosjetioce(dogadjaj)}
-                          className={classes.prikaziDogađajeButton}
-                        >
-                          {selectedDogadjaj === dogadjaj
-                            ? "Sakrij posjetioce"
-                            : "Prikaži posjetioce"}
-                        </button>
-                        {selectedDogadjaj === dogadjaj && (
-                          <ul>
-                            {dogadjaj.posjetilacs.length > 0 ? (
-                              dogadjaj.posjetilacs.map((posjetilac) => (
-                                <li
-                                  key={posjetilac.korisnik.id}
-                                  className={classes.posjetioci}
-                                >
-                                  <div className={classes.posjetilacInfo}>
-                                    <div className="underline">
-                                      <span className={classes.poljaColor}>
-                                        Naziv:
-                                      </span>{" "}
-                                      <span>{posjetilac.korisnik.naziv}</span>
-                                    </div>
-                                    <div className="underline">
-                                      <span className={classes.poljaColor}>
-                                        Email:
-                                      </span>{" "}
-                                      <span>{posjetilac.korisnik.email}</span>
-                                    </div>
-                                  </div>
-                                </li>
-                              ))
-                            ) : (
-                              <p className={classes.praznaLista}>
-                                Nema posjetilaca!
-                              </p>
-                            )}
-                          </ul>
-                        )}
                       </div>
                     </li>
                   ))
@@ -230,31 +193,37 @@ const Konferencije = () => {
               </ul>
             )}
           </div>
-          <div className={classes.buttons}>
-            <button
-              className={classes.editButton}
-              onClick={() => handleUredi(konferencija)}
-            >
-              Uredi
-            </button>
-            <button
-              className={classes.deleteButton}
-              onClick={() => handleObrisi(konferencija)}
-            >
-              Obrisi
-            </button>
-          </div>
+          <div className={classes.buttons}></div>
         </li>
       </div>
     ));
   } else {
     konferencijeList = <li>Nema konferencija</li>;
   }
-  const handleSaveObrisi = () => {
-    setRefreshKey((prevKey) => prevKey + 1);
-  };
 
-  return <div>{konferencijeList}</div>;
+  return (
+    <div>
+      <h2 className={classes.stilZaH2}>Konferencije</h2>
+      <div className={classes.centeredDiv}>
+        <ul>{konferencijeList}</ul>
+        {showModalZaOcjenu && (
+          <OcjenaModal
+            onClose={handleClose}
+            arg={dogadjajZaOcjenu}
+            show={showModalZaOcjenu}
+          />
+        )}
+        {showOcjeniModal && (
+          <DodajOcjenu
+            onClose={handleClose}
+            arg={dogadjajZaOcjenu}
+            show={showOcjeniModal}
+            korisnik={user}
+          />
+        )}
+      </div>
+    </div>
+  );
 };
 
-export default Konferencije;
+export default Posjetilac;

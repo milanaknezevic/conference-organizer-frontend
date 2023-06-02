@@ -11,6 +11,7 @@ import {
   addDogadjaj,
   addResurs,
   updateDogadjaj,
+  addModerator,
 } from "../../services/organizator.service";
 
 export const fetchKonferecnije = createAsyncThunk(
@@ -99,6 +100,15 @@ export const obrisiKonferenciju = createAsyncThunk(
   "organizator/obrisiKonferenciju",
   async ({ token, idKonferencije }) => {
     const response = await deleteKonferenciju(token, idKonferencije);
+    return response;
+  }
+);
+
+export const dodajModeratora = createAsyncThunk(
+  "organizator/add_moderator",
+  async ({ token, moderator }) => {
+    console.log("moder iz slice", moderator);
+    const response = await addModerator(token, moderator);
     return response;
   }
 );
@@ -266,6 +276,18 @@ const organizatorSlice = createSlice({
       state.error = null;
     },
     [azurirajDogadjaj.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+
+    [dodajModeratora.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [dodajModeratora.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [dodajModeratora.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },
