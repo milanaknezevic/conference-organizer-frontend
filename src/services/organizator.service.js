@@ -188,6 +188,33 @@ const updateRezervacije = (token, nizResursa) => {
       throw error;
     });
 };
+const updateDogadjaj = (token, dogadjaj, idDogadjaja) => {
+  const url = `http://localhost:8080/dogadjaji/${idDogadjaja}`;
+  console.log("url za update dogadjaja", url);
+  const requestOptions = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(dogadjaj),
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom update dogadjaja.");
+      }
+      return response;
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom update dogadjaja:", error);
+      throw error;
+    });
+};
 
 const addKonferencija = (token, konferencijaRequest) => {
   const url = `http://localhost:8080/konferencije`;
@@ -217,16 +244,16 @@ const addKonferencija = (token, konferencijaRequest) => {
     });
 };
 
-const addDogadjaj = (token, dogadjaj) => {
+const addDogadjaj = (token, dogadjajRequest) => {
   const url = `http://localhost:8080/dogadjaji`;
-
+  console.log("gledaaaaajjjj ovoooo", dogadjajRequest);
   const requestOptions = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,
     },
-    body: JSON.stringify(dogadjaj),
+    body: JSON.stringify(dogadjajRequest),
   };
 
   return fetch(url, requestOptions)
@@ -245,6 +272,35 @@ const addDogadjaj = (token, dogadjaj) => {
     });
 };
 
+const addResurs = (token, resurs) => {
+  console.log("resursi iz servisa", resurs);
+  const url = `http://localhost:8080/rezervacije`;
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(resurs),
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom add resursa.");
+      }
+      return response;
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom add resursa:", error);
+      throw error;
+    });
+};
+
 export {
   getAllKonferencije,
   deleteKonferenciju,
@@ -255,4 +311,6 @@ export {
   updateRezervacije,
   addKonferencija,
   addDogadjaj,
+  addResurs,
+  updateDogadjaj,
 };

@@ -79,11 +79,42 @@ const updateKorisnika = (token, data, idKorisnika) => {
       throw error;
     });
 };
+const changePassword = (token, data, idKorisnika) => {
+  const url = `http://localhost:8080/korisnici/${idKorisnika}/change-password`;
+  console.log("idKorisnika", idKorisnika);
+  console.log("token", token);
+  console.log("data", data);
+  console.log("url", url);
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom promjene passworda.");
+      }
+      return response;
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom promjene  passworda:", error);
+      throw error;
+    });
+};
 const userService = {
   login,
   registerUser,
   odjaviKorisnika,
   updateKorisnika,
+  changePassword,
 };
 
 export default userService;

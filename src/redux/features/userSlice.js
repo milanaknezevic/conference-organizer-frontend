@@ -24,6 +24,17 @@ export const azurirajKorisnika = createAsyncThunk(
     return response;
   }
 );
+export const promjeniLozinku = createAsyncThunk(
+  "korisnici/change_password",
+  async ({ token, data, idKorisnika }) => {
+    console.log("sliceeee");
+    console.log("idKorisnika u slice ", idKorisnika);
+    console.log("token", token);
+    console.log("data", data);
+    const response = await userService.changePassword(token, data, idKorisnika);
+    return response;
+  }
+);
 
 export const registrujSe = createAsyncThunk(
   "korisnici/logout",
@@ -89,6 +100,17 @@ const userSlice = createSlice({
       state.error = null;
     },
     [azurirajKorisnika.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [promjeniLozinku.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [promjeniLozinku.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [promjeniLozinku.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },

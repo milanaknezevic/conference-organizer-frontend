@@ -1,122 +1,70 @@
-.App {
-  text-align: center;
+.userDetailsContainer {
+  min-width: 300px;
+  min-height: 500px;
   display: flex;
-  min-height: 100vh;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  color: white;
-  background-color: #f0f0f0;
-  margin-top: 7rem;
+  align-items: center;
+  overflow: auto;
 }
+.pom {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  position: fixed;
 
-.dogadjajiContainer {
-  max-height: 1500px; /* Postavite željenu visinu kontejnera za prikaz događaja */
+  transform: translate(-5%, -5%);
+
+  z-index: 200;
+
+  overflow: hidden;
+  padding: 2rem;
+}
+.userResursContainer {
+  min-width: 200px;
+  min-height: 150px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  background-color: #f0f0f0;
+}
+.scrollable {
   overflow-y: auto;
+  max-height: 280px; /* Postavite željenu maksimalnu visinu unutar moda */
 }
-
-.authFormContainer {
-  padding: 2.5rem;
-  border: 1px solid white;
-  border-radius: 50px;
-  background-color: #f0f0f0;
-  min-width: 30vh;
-  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+.scrollableDogadjaj {
+  list-style: none;
+  overflow-y: auto;
+  max-height: 350px; /* Postavite željenu maksimalnu visinu unutar moda */
 }
-
-.btnDiv {
+.konfDetails {
   text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0;
-  z-index: 10;
-  border-width: 5px;
+  min-width: 300px;
+  overflow: auto;
+  padding: 30px;
+  border-radius: 8px;
+  background-color: #f0f0f0;
 }
-
-.btn {
-  margin-right: 10px;
-  padding: 8px 16px;
-  background-color: #fff;
-  color: #333;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-}
-.disabled {
-  /* Stilovi za onemogućeno dugme */
-  pointer-events: none;
-  opacity: 0.5;
-}
-.btn:not(:disabled):hover {
-  background-color: #333;
-  color: #fff;
-}
-
-.sakrij {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  background: none;
-  color: white;
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-.prikazi {
-  background: none;
-
-  color: white;
-  font-weight: bold;
-  text-decoration: underline;
-  width: 200px;
-}
-
-.authFormContainer,
-.editForm {
-  display: flex;
-  flex-direction: column;
-  margin-top: 0.1rem;
-  align-items: center; /* Dodajte ovo svojstvo za centriranje */
-}
-
-.korisnikItem {
-  display: block;
-  flex-direction: column;
-  list-style: none;
-  margin: 10px auto 0;
-  min-width: 230px;
+.resursdetails {
+  text-align: center;
+  min-width: 200px;
+  overflow: auto;
   padding: 10px;
-  margin-bottom: 10px;
-  position: relative;
-  background-color: none;
+  border-radius: 8px;
+  background-color: #f0f0f0;
 }
-
-.korisnikItem > * {
-  margin-bottom: 10px;
-}
-.korisnikItem:not(:last-child) {
-  border-bottom: 1px solid #ccc; /* Dodato: podvučenost ispod svake liste osim poslednje */
-}
-.h2 {
-  text-decoration: underline;
-}
-.ul {
-  flex-direction: column;
-  align-items: stretch; /* Promenjeno sa 'center' na 'stretch' */
-  justify-content: center;
-  margin-top: 10px;
-  list-style: none;
-  border: 3px solid #ccc;
-  border-radius: 10px;
-  padding: 0;
-  min-width: 250px;
-  display: block;
-}
-
-.dogadjajHeader {
-  display: flex;
-  align-items: center; /* Promenjeno sa 'left' na 'center' */
-  justify-content: space-between;
+.dogKonf {
+  text-align: center;
+  min-width: 300px;
+  border: 2px solid #ccc;
+  padding: 10px;
+  background-color: #f0f0f0;
 }
 .dogadjajiHeader {
   display: flex;
@@ -126,18 +74,15 @@
   justify-content: space-between;
   width: 180px;
 }
-.moderatorHeader {
+.resursiHeader {
   display: flex;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 0.8rem;
   align-items: center; /* Promenjeno sa 'left' na 'center' */
   justify-content: space-between;
-  min-width: 230px;
+  width: 180px;
 }
-.selekt {
-  width: 190px;
-  border-radius: 15px;
-  height: 40px;
-}
-
 .plusButton {
   background-color: transparent;
   width: 15px;
@@ -150,8 +95,200 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 50px;
+}
+.zaUl {
+  display: inline-block;
+  padding: 10px;
+  border: 3px solid #ccc;
+  list-style: none;
+}
+.zaUlResursa {
+  display: inline-block;
+  padding: 10px;
+  border: 3px solid #ccc;
+  list-style: none;
+}
+.plusButton:hover {
+  color: purple;
+  border: 3px solid purple;
+}
+.lista {
+  list-style: none;
+}
+.formRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.formResurs {
+  display: flex;
+  gap: 20px;
+  padding: 10px;
 }
 
-.plusButton:hover {
+.formLabel {
+  flex: 1;
+  text-align: left;
+}
+
+.formInput {
+  flex: 1;
+  text-align: right;
+}
+.formSoba {
+  flex: 0.75;
+  text-align: left;
+}
+.formResurs {
+  flex: 0.75;
+
+  text-align: left;
+}
+.saveResurs {
+  background-color: transparent;
+  color: purple;
+  margin-right: 10px;
+}
+.saveResurs:hover {
   color: blue;
+}
+.resursSelect {
+  padding: 5px;
+  width: 100px;
+  margin-top: 5px;
+  margin-left: 2px;
+}
+.formInputIme {
+  flex: 1;
+  text-align: left;
+  width: 50px;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.buttonDOgadjaji {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+.buttonD {
+  background-color: transparent;
+  color: purple;
+}
+
+.buttonD:hover {
+  background-color: transparent;
+  color: blue;
+}
+.buttonContainer button:last-child {
+  margin-left: 10px; /* Prilagodite vrijednost razmaka prema svojim potrebama */
+}
+.formChecked {
+  flex: 1;
+  text-align: left;
+}
+.formLabelIme {
+  flex: 0.3;
+  text-align: left;
+}
+.formselectLabel {
+  flex: 0.3;
+  text-align: left;
+  width: 78px;
+  padding: 10px;
+}
+.formLabelChecked {
+  flex: 0.3;
+  text-align: left;
+}
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Poravnanje sa leve strane */
+  gap: 8px;
+  text-align: left; /* Poravnanje teksta sa leve strane */
+}
+
+.editButton {
+  color: red;
+  position: relative;
+  left: -70px;
+  bottom: 160px;
+  display: flex;
+  justify-content: flex-start;
+}
+.linkBtn {
+  background: none;
+  color: #333;
+  position: fixed;
+  margin-left: -80px;
+  margin-bottom: -300px;
+  text-decoration: underline;
+}
+
+.editButton button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #3d3b3a;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.editButton button:hover {
+  color: #007bff;
+}
+
+.errorMessage {
+  color: red;
+}
+.editButtons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.editButtons button {
+  padding: 8px 16px;
+  background-color: #0a75bf;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editButtons button:hover {
+  background-color: #d32f2f;
+}
+
+.editButtons button:focus {
+  outline: none;
+}
+
+.changeButton {
+  position: relative;
+  left: 70px;
+  bottom: -5px;
+}
+
+.changeButton button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #3d3b3a;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.changeButton button:hover {
+  color: #007bff;
+}
+.linkBtn:hover {
+  color: #007bff;
 }

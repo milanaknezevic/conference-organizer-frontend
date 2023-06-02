@@ -14,6 +14,7 @@ import {
 } from "../../redux/features/organizatorSlice";
 import { setKonferencijeRedux } from "../../redux/features/organizatorSlice";
 import AddConference from "../AddConference/AddConference";
+import UrediKonferenciju from "./UrediKonferenciju/UrediKonferenciju";
 
 const Organizator = () => {
   const user = useSelector((state) => state.login);
@@ -24,6 +25,7 @@ const Organizator = () => {
   const [selectedDogadjaj, setSelectedDogadjaj] = useState(null); // Dodato stanje za praćenje odabranog događaja
   const [showModal, setShowModal] = useState(false); // Dodato stanje za prikazivanje modalnog prozora
   const [showAddModal, setshowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const posjetiociSectionRef = useRef(null); // Referenca na donji dio (posjetiociSection)
   const [refreshKey, setRefreshKey] = useState(0);
   const dispatch = useDispatch();
@@ -64,9 +66,15 @@ const Organizator = () => {
     setKonferencijaZaBrisanje([]);
     setShowModal(false);
     setshowAddModal(false);
+    setShowEditModal(false);
   };
   const handleAddConference = () => {
     setshowAddModal(true);
+  };
+  const handleUredi = (konferencija) => {
+    dispatch(izabranaKonferencija(konferencija));
+    setShowEditModal(true);
+    //navigate("/urediKonferenciju");
   };
   const formatirajDatum = (datum) => {
     const options = {
@@ -78,11 +86,6 @@ const Organizator = () => {
     };
     const formattedDate = new Date(datum).toLocaleString("en-US", options);
     return formattedDate;
-  };
-  const handleUredi = (konferencija) => {
-    dispatch(izabranaKonferencija(konferencija));
-
-    navigate("/urediKonferenciju");
   };
 
   const handleObrisi = (konferencija) => {
@@ -139,7 +142,7 @@ const Organizator = () => {
             )}
             <div className="underline">
               <span className={classes.poljaColor}>Adresa:</span>{" "}
-              <span> {konferencija.lokacija.adresa}</span>
+              <span> {konferencija.lokacija?.adresa}</span>
             </div>
             <div className={classes.divZaButton}>
               <button
@@ -269,6 +272,7 @@ const Organizator = () => {
           />
         )}
         {showAddModal && <AddConference onClose={handleClose} />}
+        {showEditModal && <UrediKonferenciju onClose={handleClose} />}
         <div ref={posjetiociSectionRef} />
       </div>
 

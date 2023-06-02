@@ -2,9 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Person } from "react-bootstrap-icons";
 import { useSelector, useDispatch } from "react-redux";
 import classes from "./UserDetails.module.css";
-import { azurirajKorisnika } from "../../redux/features/userSlice";
+import {
+  azurirajKorisnika,
+  promjeniLozinku,
+} from "../../redux/features/userSlice";
+
 const UserDetails = () => {
   const user = useSelector((state) => state.login);
+  const idKorisnika = user.user.id;
+  const token = user.user.token;
   const [email, setEmail] = useState(user.user.email);
   const [username, setUsername] = useState(user.user.username);
   const [ime, setIme] = useState(user.user.naziv);
@@ -12,9 +18,38 @@ const UserDetails = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isImeValid, setIsImeValid] = useState(true);
   const [isUsernameValid, setIsUsernameValid] = useState(true);
-
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const dispatch = useDispatch();
+  const [isChangeMode, setIsChangeMode] = useState(false);
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [passwordMatch, setPasswordMatch] = useState(false);
+  const [isOldPasswordValid, setIsOldPasswordValid] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isNewPasswordValid, setIsNewPasswordValid] = useState(false);
+  const [showErrorMessagePass, setShowErrorMessagePass] = useState(false);
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+    if (password !== "") {
+      setShowErrorMessagePass(false);
+    }
+  };
+
+  const handleNewPasswordChange = (event) => {
+    setNewPassword(event.target.value);
+    if (newPassword !== "") {
+      setShowErrorMessagePass(false);
+    }
+  };
+
+  const handleOldPasswordChange = (event) => {
+    setOldPassword(event.target.value);
+    if (oldPassword !== "") {
+      setShowErrorMessagePass(false);
+    }
+  };
   const handleEditClick = () => {
     setIsEditMode(true);
   };
@@ -22,6 +57,78 @@ const UserDetails = () => {
     checkValidity(); // Provjerava valjanost svih parametara
   }, [ime, email, username]);
 
+  useEffect(() => {
+    checkValidityPassword(); // Provjerava valjanost svih parametara
+  }, [oldPassword, newPassword, password]);
+
+  const checkValidityPassword = () => {
+    const isOldPassValid = oldPassword.trim() !== "";
+
+    setIsOldPasswordValid(isOldPassValid);
+
+    const isPassValid = password.trim().length > 7;
+    setIsPasswordValid(isPassValid);
+
+    const isNewPassValid = newPassword.trim().length > 7;
+    setIsNewPasswordValid(isNewPassValid);
+
+    const equality = password === newPassword;
+    setPasswordMatch(equality);
+
+    if (
+      isOldPasswordValid &&
+      isPasswordValid &&
+      isNewPasswordValid &&
+      passwordMatch
+    ) {
+      setShowErrorMessagePass(false);
+    } else {
+    }
+  };
+  const handleSubmitPass = () => {
+    checkValidityPassword();
+
+    if (
+      isOldPasswordValid &&
+      isPasswordValid &&
+      isNewPasswordValid &&
+      passwordMatch
+    ) {
+      setShowErrorMessagePass(false);
+
+      const data = {
+        password: newPassword,
+        trenutnaLozinka: oldPassword,
+      };
+
+      dispatch(promjeniLozinku({ token, data, idKorisnika }))
+        .then((response) => {
+          console.log("response promjeni lozinku", response);
+        })
+        .catch((error) => {});
+      setIsChangeMode(false);
+      setPassword("");
+      setNewPassword("");
+      setOldPassword("");
+    } else {
+      setShowErrorMessagePass(true);
+
+      setIsPasswordValid(false); // Postavlja stanje ispravnosti e-maila na false
+      setIsNewPasswordValid(false); // Postavlja stanje ispravnosti imena na false
+      setIsOldPasswordValid(false); // Postavlja stanje ispravnosti korisničkog imena na false
+    }
+  };
+  const handleChangeClick = () => {
+    setIsChangeMode(true);
+  };
+  const handleChangeDiscardClick = () => {
+    setOldPassword("");
+    setNewPassword("");
+    setPassword("");
+    setIsChangeMode(false);
+    setShowErrorMessage(false);
+    setShowErrorMessagePass(false);
+  };
   const handleSaveClick = () => {
     checkValidity(); // Provjerava valjanost svih parametara
 
@@ -31,9 +138,6 @@ const UserDetails = () => {
         ime: ime,
         email: email,
       };
-      const idKorisnika = user.user.id;
-      const token = user.user.token;
-      console.log("Podaci validni!"); // Možete zamijeniti s prikladnom porukom za prikaz na korisničkom sučelju
 
       dispatch(
         azurirajKorisnika({
@@ -61,6 +165,8 @@ const UserDetails = () => {
     setIme(user.user.naziv);
     setUsername(user.user.username);
     setIsEditMode(false);
+    setShowErrorMessage(false);
+    setShowErrorMessagePass(false);
   };
 
   const validateEmail = (email) => {
@@ -98,7 +204,10 @@ const UserDetails = () => {
           {showErrorMessage && (
             <p className={classes.errorMessage}>Provjerite unesene podatke!</p>
           )}
-          {isEditMode ? (
+          {showErrorMessagePass && (
+            <p className={classes.errorMessage}>Provjerite unesene lozinke!</p>
+          )}
+          {isEditMode && !isChangeMode && (
             <div>
               <div className={classes.formRow}>
                 <div className={classes.formLabel}>
@@ -158,7 +267,8 @@ const UserDetails = () => {
                 </div>
               </div>
             </div>
-          ) : (
+          )}
+          {!isEditMode && !isChangeMode && (
             <div>
               <p>
                 <strong>Ime:</strong> {ime}
@@ -172,22 +282,79 @@ const UserDetails = () => {
               </p>
             </div>
           )}
+
+          {!isEditMode && isChangeMode && (
+            <div>
+              <div className="form-row">
+                <div className="form-label">
+                  <label>
+                    <strong>Trenutna lozinka:</strong>
+                  </label>
+                </div>
+                <div className="form-input">
+                  <input
+                    type="password"
+                    value={oldPassword}
+                    onChange={handleOldPasswordChange}
+                    id="old_password"
+                  />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-label">
+                  <label>
+                    <strong>Nova Lozinka:</strong>
+                  </label>
+                </div>
+                <div className="form-input">
+                  <input
+                    name="new_password"
+                    type="password"
+                    onChange={handlePasswordChange}
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-label">
+                  <label>
+                    <strong>Ponovi lozinku: </strong>
+                  </label>
+                </div>
+                <div className="form-input">
+                  <input
+                    name="repeated_password"
+                    type="password"
+                    onChange={handleNewPasswordChange}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        {isEditMode && (
+        {isEditMode && !isChangeMode && (
           <div className={classes.editButtons}>
             <button onClick={handleSaveClick}>Sačuvaj</button>
             <button onClick={handleDiscardClick}>Poništi</button>
           </div>
         )}
+        {!isEditMode && isChangeMode && (
+          <div className={classes.editButtons}>
+            <button onClick={handleSubmitPass}>Sačuvaj</button>
+            <button onClick={handleChangeDiscardClick}>Poništi</button>
+          </div>
+        )}
       </div>
-      {!isEditMode && (
+      {!isEditMode && !isChangeMode && (
         <div className={classes.editButton}>
           <button onClick={handleEditClick}>Uredi</button>
         </div>
       )}
-      {!isEditMode && (
-        <button className={classes.linkBtn}>Promjeni lozinku.</button>
+      {!isEditMode && !isChangeMode && (
+        <button className={classes.linkBtn} onClick={handleChangeClick}>
+          Promjeni lozinku.
+        </button>
       )}
     </div>
   );

@@ -39,12 +39,22 @@
 }
 
 .editButton {
-  color: red;
   position: relative;
   left: -70px;
   bottom: 160px;
   display: flex;
   justify-content: flex-start;
+}
+.editChangeButton {
+  position: relative;
+  left: -230px;
+  bottom: -250px;
+  display: flex;
+  justify-content: flex-start;
+}
+.editButtonChangePass {
+  color: #333;
+  background-color: transparent;
 }
 .linkBtn {
   background: none;
@@ -66,6 +76,9 @@
 }
 
 .editButton button:hover {
+  color: #007bff;
+}
+.editButtonChangePass:hover {
   color: #007bff;
 }
 

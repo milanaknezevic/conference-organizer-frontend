@@ -7,6 +7,7 @@
   align-items: center;
   overflow: auto;
 }
+
 .scrollable {
   overflow-y: auto;
   max-height: 300px; /* Postavite željenu maksimalnu visinu unutar moda */
@@ -30,6 +31,15 @@
   display: flex;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  align-items: center; /* Promenjeno sa 'left' na 'center' */
+  justify-content: space-between;
+  width: 180px;
+}
+.resursiHeader {
+  display: flex;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 0.8rem;
   align-items: center; /* Promenjeno sa 'left' na 'center' */
   justify-content: space-between;
   width: 180px;
@@ -70,6 +80,25 @@
 .formSoba {
   flex: 0.75;
   text-align: left;
+}
+.formResurs {
+  flex: 0.75;
+
+  text-align: left;
+}
+.saveResurs {
+  background-color: transparent;
+  color: purple;
+  margin-right: 10px;
+}
+.saveResurs:hover {
+  color: blue;
+}
+.resursSelect {
+  padding: 5px;
+  width: 100px;
+  margin-top: 5px;
+  margin-left: 2px;
 }
 .formInputIme {
   flex: 1;

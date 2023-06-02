@@ -2,6 +2,7 @@ import {
   setTipoviDogadjaja,
   dodajKonferenciju,
   dodajDogadjaj,
+  dodajResurs,
 } from "../../redux/features/organizatorSlice";
 import Modal from "../Modal/Modal";
 import classes from "./AddConference.module.css";
@@ -12,8 +13,11 @@ const AddConference = (props) => {
   const user = useSelector((state) => state.login);
   const token = user.user.token;
   const [nizDOgadjaja, setNizDOgadjaja] = useState([]);
+  const [nizResursa, setNizResursa] = useState([]);
+
   const [dogadjajIsOnline, setDogadjajIsOnline] = useState(false);
   const [lokacijuPrikazi, setLokacijuPrikazi] = useState(false);
+  const [kolicinaResursa, setKolicinaResursa] = useState(0);
 
   const { onClose } = props;
   const [imeKonferencije, setImeKonferencije] = useState("");
@@ -24,7 +28,10 @@ const AddConference = (props) => {
   const [lokacijaKonferencije, setLokacijaKonferencije] = useState("");
   const [lokacijaKonfChecked, setLokacijaKonfChecked] = useState(false);
   const [showDogadjaje, setShowDogadjaje] = useState(false);
+  const [showResurse, setShowResurse] = useState(false);
+
   const [showErrorMess, setShowErrorMess] = useState(false);
+  //ostane broj lokacija trebala bih ovde citati iz baze ispocetka svaki put
   const lokacije = useSelector((state) => state.organizator.lokacije);
   const moderatori = useSelector((state) => state.organizator.moderatori);
   const tipovi_dogadjaja = useSelector(
@@ -36,16 +43,21 @@ const AddConference = (props) => {
   const [endTimeDogadjaja, setEndTimeDogadjaja] = useState("");
   const [urlDogadjaja, setUrlDogadjaja] = useState("");
   const [sobaDogadjaja, setSobaDogadjaja] = useState("");
+  const [resursDogadjaja, setResursDOgadjaja] = useState("");
+
   const [moderatorDOgadjaja, setModeratorDOgadjaja] = useState("");
   const [tipDogadjaja, tsetTipDogadjaja] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("selected:", selectedLocation);
-    console.log("soba:", selectedLocation?.sobas);
-    console.log("Moderatori", moderatori);
-    console.log("Tipovi dogadjaj", tipovi_dogadjaja);
-  }, [lokacije, moderatori, tipovi_dogadjaja, lokacijaKonferencije]);
+    console.log("resurs iz use effect", resursDogadjaja);
+  }, [
+    lokacije,
+    resursDogadjaja,
+    moderatori,
+    tipovi_dogadjaja,
+    lokacijaKonferencije,
+  ]);
   const handleDogadjaji = (e) => {
     e.preventDefault();
     if (lokacijaKonfChecked || urlKonfChecked) {
@@ -55,7 +67,6 @@ const AddConference = (props) => {
       } else {
         setShowErrorMess(false);
         setShowDogadjaje(!showDogadjaje);
-        console.log("showDogadjaje", showDogadjaje);
       }
     } else {
       setShowErrorMess(true);
@@ -63,6 +74,33 @@ const AddConference = (props) => {
         setShowDogadjaje(false);
       }
     }
+  };
+
+  const handleSpremiResurs = (e) => {
+    if (resursDogadjaja === "" || kolicinaResursa === "") {
+    } else {
+      const noviResurs = {
+        kolicina: kolicinaResursa,
+        dogadjajId: "",
+        resursId: resursDogadjaja,
+      };
+
+      setNizResursa((prevNiz) => [...prevNiz, noviResurs]);
+      setResursDOgadjaja("");
+      setKolicinaResursa(0);
+
+      setShowResurse(false);
+    }
+  };
+  const handleResurskolicinaChanged = (e) => {
+    console.log("kolicina", e.target.value);
+    setKolicinaResursa(e.target.value);
+  };
+
+  const hadnleResursi = (e) => {
+    e.preventDefault();
+
+    setShowResurse(!showResurse);
   };
   const handleImeChanged = (e) => {
     setImeKonferencije(e.target.value);
@@ -105,23 +143,27 @@ const AddConference = (props) => {
       (lokacija) => lokacija.id === selectedLocationId2
     );
     setSelectedLocation(selectedLocation1);
+    console.log("selectedLocation", selectedLocation);
+    console.log("resursi na lokaciji", selectedLocation.resurs);
 
     setUrlKonferencije("");
   };
   const handleSObaChanged = (e) => {
-    console.log("soba izabrana", e.target.value);
-    //pamti id sobe sto je idealno tnx god
     const selectedSoba2 = parseInt(e.target.value, 10);
     setSobaDogadjaja(selectedSoba2);
   };
+  const handleResursChanged = (e) => {
+    const selectedSoba2 = parseInt(e.target.value, 10);
+    setResursDOgadjaja(selectedSoba2);
+    console.log("resurs", resursDogadjaja);
+    setKolicinaResursa("");
+  };
 
   const handleModeratorChanged = (e) => {
-    console.log("moderator izabrana", e.target.value);
     const moder2 = parseInt(e.target.value, 10);
     setModeratorDOgadjaja(moder2);
   };
   const handleTipDogadjajaCHnaged = (e) => {
-    console.log("tip izabrana", e.target.value);
     const tip2 = parseInt(e.target.value, 10);
     tsetTipDogadjaja(tip2);
   };
@@ -153,9 +195,7 @@ const AddConference = (props) => {
       moderatorDOgadjaja === "" ||
       (tipDogadjaja === "" && (sobaDogadjaja === "" || urlDogadjaja === ""))
     ) {
-      console.log("ne moze");
     } else {
-      console.log("spremi dogadjaj");
       const noviDogadjaj = {
         startTime: startTimeDogadjaja,
         endTime: endTimeDogadjaja,
@@ -166,6 +206,7 @@ const AddConference = (props) => {
         lokacijaId: lokacijaKonferencije,
         sobaId: sobaDogadjaja,
         moderator_Id: moderatorDOgadjaja,
+        resursi: nizResursa,
       };
       if (urlDogadjaja === "") {
         setDogadjajIsOnline(false);
@@ -174,10 +215,9 @@ const AddConference = (props) => {
         setDogadjajIsOnline(true);
         setLokacijuPrikazi(false);
       }
-      console.log("noviDogadjaj", noviDogadjaj);
-      setNizDOgadjaja((prevNiz) => [...prevNiz, noviDogadjaj]);
 
-      console.log("dogadjaji", nizDOgadjaja);
+      setNizDOgadjaja((prevNiz) => [...prevNiz, noviDogadjaj]);
+      setNizResursa([]);
 
       setImeDogadjaja("");
       setStartTimeDogadjaja("");
@@ -198,27 +238,56 @@ const AddConference = (props) => {
       organizatorId: user.user.id,
       lokacijaId: lokacijaKonferencije,
     };
-    console.log("novi dogadjaji", nizDOgadjaja);
-
-    console.log("nova konferencija", konferencijaRequest);
+    console.log("nizDOgadjaja", nizDOgadjaja);
+    const noviNiz = nizDOgadjaja.map(
+      ({ resursi, ...ostaliAtributi }) => ostaliAtributi
+    );
+    console.log("noviNiz", noviNiz);
     const conf = await dispatch(
       dodajKonferenciju({
         token: token,
         konferencijaRequest: konferencijaRequest,
       })
     );
-    console.log("to je moj id", nizDOgadjaja);
-    for (let dogadjaj of nizDOgadjaja) {
+    console.log("id konferencije", conf.payload.id);
+    for (let dogadjaj of noviNiz) {
       dogadjaj.konferencijaId = conf.payload.id;
     }
-    console.log("nizDOgadjaja", nizDOgadjaja);
-    for (let dogadjaj of nizDOgadjaja) {
-      dispatch(
+    /* console.log("noviNiz", noviNiz);
+    for (let dogadjaj of noviNiz) {
+      const responseDog = await dispatch(
         dodajDogadjaj({
           token: token,
-          dogadjaj: dogadjaj,
+          dogadjajRequest: dogadjaj,
         })
       );
+      console.log("dog", responseDog);
+    }*/
+
+    for (let i = 0; i < noviNiz.length; i++) {
+      const dogadjajRequest = noviNiz[i];
+      console.log("dogadjaj jedan po jedan", dogadjajRequest);
+      const responseDog = await dispatch(
+        dodajDogadjaj({
+          token: token,
+          dogadjajRequest: dogadjajRequest,
+        })
+      );
+      console.log("dogadjaj ID", responseDog.payload.id);
+      for (let resurs of nizDOgadjaja[i].resursi) {
+        console.log("ovo citaaaj", responseDog);
+        resurs.dogadjajId = responseDog.payload.id;
+      }
+      for (let resurs of nizDOgadjaja[i].resursi) {
+        console.log("resurs za dispetch", resurs);
+        const resursODG = await dispatch(
+          dodajResurs({
+            token: token,
+            resurs: resurs,
+          })
+        );
+        console.log("resurs response", resursODG);
+      }
     }
   };
 
@@ -504,6 +573,76 @@ const AddConference = (props) => {
                   </select>
                 </div>
               </div>
+              {lokacijaKonfChecked && (
+                <div className={classes.resursiHeader}>
+                  <span>Resursi </span>
+                  <button
+                    className={classes.plusButton}
+                    onClick={hadnleResursi}
+                  >
+                    {showResurse ? "-" : "+"}
+                  </button>
+                </div>
+              )}
+              {showResurse && (
+                <div className={classes.dogKonf}>
+                  <div className={classes.formRow}>
+                    <div className={classes.formLabelChecked}>
+                      <label>
+                        <strong>Resurs:</strong>
+                      </label>
+                    </div>
+                    <div className={classes.formResurs}>
+                      <select
+                        className={classes.resursSelect}
+                        value={resursDogadjaja}
+                        onChange={handleResursChanged}
+                        id="resurs"
+                        name="resurs"
+                      >
+                        <option value="">Odaberi resurs</option>
+                        {selectedLocation?.resurs?.map((r) => (
+                          <option key={r.id} value={r.id}>
+                            {r.naziv}
+                            {r.id}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className={classes.resursSelect}
+                        value={kolicinaResursa}
+                        onChange={handleResurskolicinaChanged}
+                        id="resursKolicina"
+                        name="resursKolicina"
+                      >
+                        <option value="">Kolicina</option>
+                        {selectedLocation?.resurs?.find(
+                          (r) => r.id === resursDogadjaja
+                        ) &&
+                          Array.from(
+                            {
+                              length: selectedLocation.resurs.find(
+                                (r) => r.id === resursDogadjaja
+                              ).kolicina,
+                            },
+                            (_, index) => index + 1
+                          ).map((num) => (
+                            <option key={num} value={num}>
+                              {num}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                    <button
+                      onClick={handleSpremiResurs}
+                      className={classes.saveResurs}
+                    >
+                      Sačuvaj
+                    </button>
+                  </div>
+                </div>
+              )}
+
               <div className={classes.buttonDOgadjaji}>
                 <button
                   className={classes.buttonD}

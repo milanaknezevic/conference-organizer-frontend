@@ -9,6 +9,8 @@ import {
   updateRezervacije,
   addKonferencija,
   addDogadjaj,
+  addResurs,
+  updateDogadjaj,
 } from "../../services/organizator.service";
 
 export const fetchKonferecnije = createAsyncThunk(
@@ -30,6 +32,14 @@ export const azurirajKonferenciju = createAsyncThunk(
     return response;
   }
 );
+
+export const azurirajDogadjaj = createAsyncThunk(
+  "organizator/update_dogadjaj",
+  async ({ token, dogadjaj, idDogadjaja }) => {
+    const response = await updateDogadjaj(token, dogadjaj, idDogadjaja);
+    return response;
+  }
+);
 export const dodajKonferenciju = createAsyncThunk(
   "organizator/add_konerenciju",
   async ({ token, konferencijaRequest }) => {
@@ -39,8 +49,16 @@ export const dodajKonferenciju = createAsyncThunk(
 );
 export const dodajDogadjaj = createAsyncThunk(
   "organizator/add_dogadjaj",
-  async ({ token, dogadjaj }) => {
-    const response = await addDogadjaj(token, dogadjaj);
+  async ({ token, dogadjajRequest }) => {
+    const response = await addDogadjaj(token, dogadjajRequest);
+    return response;
+  }
+);
+export const dodajResurs = createAsyncThunk(
+  "organizator/add_resurs",
+  async ({ token, resurs }) => {
+    console.log("resursi iz slice", resurs);
+    const response = await addResurs(token, resurs);
     return response;
   }
 );
@@ -226,6 +244,28 @@ const organizatorSlice = createSlice({
       state.error = null;
     },
     [dodajDogadjaj.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [dodajResurs.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [dodajResurs.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [dodajResurs.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [azurirajDogadjaj.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [azurirajDogadjaj.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+    },
+    [azurirajDogadjaj.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },
