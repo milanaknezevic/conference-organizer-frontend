@@ -4,18 +4,16 @@ import {
   fetchTipoviDogadjaja,
 } from "../../redux/features/organizatorSlice";
 import { useDispatch, useSelector } from "react-redux";
-import classes from "./Organizator.module.css";
-import Obrisi from "../Obrisi/Obrisi";
+import classes from "./Konferencija.module.css";
+import { useNavigate } from "react-router-dom";
 import { izabranaKonferencija } from "../../redux/features/organizatorSlice";
 import {
   fetchModeratori,
   fetchLokacije,
 } from "../../redux/features/organizatorSlice";
 import { setKonferencijeRedux } from "../../redux/features/organizatorSlice";
-import AddConference from "./AddConference/AddConference";
-import UrediKonferenciju from "./UrediKonferenciju/UrediKonferenciju";
 
-const Organizator = () => {
+const Konferencije = () => {
   const user = useSelector((state) => state.login);
   const token = user.user.token;
   const [konferencije, setKonferencije] = useState([]);
@@ -28,7 +26,7 @@ const Organizator = () => {
   const posjetiociSectionRef = useRef(null); // Referenca na donji dio (posjetiociSection)
   const [refreshKey, setRefreshKey] = useState(0);
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchKonferecnije(token))
@@ -110,7 +108,6 @@ const Organizator = () => {
       }
     }
   };
-
   let konferencijeList;
   if (konferencije && konferencije.length > 0) {
     konferencijeList = konferencije.map((konferencija) => (
@@ -256,40 +253,8 @@ const Organizator = () => {
   const handleSaveObrisi = () => {
     setRefreshKey((prevKey) => prevKey + 1);
   };
-  return (
-    <div>
-      <h2 className={classes.stilZaH2}>Konferencije</h2>
-      <div className={classes.centeredDiv}>
-        <ul>{konferencijeList}</ul>
-        {showModal && (
-          <Obrisi
-            onClose={handleClose}
-            konferencija={konferencijaZaBrisanje}
-            idKonferencije={konferencijaZaBrisanje.id}
-            token={token}
-            onSave={handleSaveObrisi}
-          />
-        )}
-        {showAddModal && (
-          <AddConference onClose={handleClose} onSave={handleSaveObrisi} />
-        )}
-        {showEditModal && (
-          <UrediKonferenciju onClose={handleClose} onSave={handleSaveObrisi} />
-        )}
-        <div ref={posjetiociSectionRef} />
-      </div>
 
-      <div>
-        <button
-          className={classes.roundButton}
-          title="Kreiraj novu konferenciju"
-          onClick={handleAddConference}
-        >
-          +
-        </button>
-      </div>
-    </div>
-  );
+  return <div>{konferencijeList}</div>;
 };
 
-export default Organizator;
+export default Konferencije;

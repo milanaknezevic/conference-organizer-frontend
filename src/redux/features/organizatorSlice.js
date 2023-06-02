@@ -64,9 +64,9 @@ export const dodajResurs = createAsyncThunk(
 );
 
 export const azurirajRezervacije = createAsyncThunk(
-  "organizator/update_rezervacije",
-  async ({ token, nizResursa }) => {
-    const response = await updateRezervacije(token, nizResursa);
+  "organizator/update",
+  async ({ token, rezervacijaRequest }) => {
+    const response = await updateRezervacije(token, rezervacijaRequest);
     return response;
   }
 );

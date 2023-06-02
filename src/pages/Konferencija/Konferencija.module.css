@@ -1,0 +1,217 @@
+.organizator {
+  display: flex;
+  list-style: none;
+  width: 600px;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  background-color: #f0f0f0;
+  position: relative; /* Dodato */
+}
+
+.organizator::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  z-index: -1;
+  border-radius: 10px;
+}
+
+.buttons {
+  position: absolute;
+  top: 5rem;
+  right: 1rem;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 10px; /* Add equal spacing between buttons */
+}
+.buttons button {
+  width: 100%;
+}
+.pom {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.prikaziDogađajeButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  text-decoration: underline;
+}
+.prikaziDogađajeButton:hover {
+  color: blue;
+}
+
+.divZaButton {
+  width: 150px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  align-items: center;
+}
+.editButton:hover {
+  background-color: #5b2f9f;
+  color: black;
+}
+.editButton {
+  color: purple;
+  background-color: white; /* Set the background color to red */
+}
+.deleteButton {
+  color: purple;
+  background-color: white; /* Set the background color to red */
+  /* Set the background color to red */
+}
+.poljaColor {
+  color: black;
+  font-weight: bold;
+  font-size: 2ch;
+}
+.deleteButton:hover {
+  color: white;
+  background-color: red; /* Set the hover background color to a darker shade of red */
+}
+.centeredDiv {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin-left: 80px;
+  min-height: 400px; /* Prilagodite visinu prema potrebi */
+  text-align: center;
+}
+
+.organizatorContainer {
+  display: flex;
+
+  justify-content: center;
+  align-items: center; /* Poravnanje vertikalno na sredinu */
+  flex-direction: column; /* Elementi se redaju jedan ispod drugog */
+}
+.dogadjaji {
+  display: flex;
+  list-style: none;
+  max-width: 600px;
+  border: 3px solid cornflowerblue;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  background-color: #f0f0f0;
+  justify-content: center;
+}
+.posjetioci {
+  display: flex;
+  list-style: none;
+  max-width: 600px;
+  border: 3px solid purple;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  background-color: #f0f0f0;
+  justify-content: center;
+}
+.stilZaH2 {
+  margin-top: 8rem;
+  text-align: center;
+}
+
+/* za dvije kolone .organizatorContainer {
+  margin-top: 6rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Raspored dva stupca jednake širine */
+/*  grid-gap: 20px; /* Razmak između dva stupca */
+/*}
+*/
+
+.topSection {
+  flex: 1; /* Gornji dio će zauzeti 1/3 visine */
+}
+
+.bottomSection {
+  flex: 2; /* Donji dio će zauzeti 2/3 visine */
+}
+.eventInfo {
+  border: 3px solid cornflowerblue;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.praznaLista {
+  color: red;
+}
+
+.posjetiociList {
+  display: flex;
+  list-style: none;
+  max-width: 600px;
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  background-color: #f2f2f2;
+  justify-content: flex-start; /* Align items to the left */
+}
+
+.posjetiociList .underline {
+  margin-bottom: 5px;
+}
+
+.posjetiociList span.polja-color {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.posjetiociList li {
+  margin-bottom: 10px;
+}
+
+.posjetiociList .organizator {
+  border: 3px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  background-color: #f2f2f2;
+  justify-content: flex-start; /* Align items to the left */
+}
+
+.roundButton {
+  position: fixed;
+  right: 5%;
+  bottom: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #488b8f;
+  color: white;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.roundButton:hover {
+  background-color: blueviolet;
+  cursor: pointer;
+}

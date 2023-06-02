@@ -3,8 +3,8 @@ import {
   dodajKonferenciju,
   dodajDogadjaj,
   dodajResurs,
-} from "../../redux/features/organizatorSlice";
-import Modal from "../Modal/Modal";
+} from "../../../redux/features/organizatorSlice";
+import Modal from "../../Modal/Modal";
 import classes from "./AddConference.module.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -289,6 +289,8 @@ const AddConference = (props) => {
         console.log("resurs response", resursODG);
       }
     }
+    onClose();
+    props.onSave();
   };
 
   return (

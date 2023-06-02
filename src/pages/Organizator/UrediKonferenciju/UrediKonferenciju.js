@@ -1,4 +1,8 @@
-import { azurirajDogadjaj } from "../../../redux/features/organizatorSlice";
+import {
+  azurirajDogadjaj,
+  azurirajKonferenciju,
+  azurirajRezervacije,
+} from "../../../redux/features/organizatorSlice";
 import Modal from "../../Modal/Modal";
 //import classes from "../../AddConference/AddConference.module.css";
 import classes from "./UrediKonferenciju.module.css";
@@ -10,7 +14,7 @@ const UrediKonferenciju = (props) => {
   const dogadjaji = konferencija.dogadjajs;
   const user = useSelector((state) => state.login);
   const token = user.user.token;
-  const [nizDOgadjaja, setNizDOgadjaja] = useState([]);
+
   const [expandedDogadjajId, setExpandedDogadjajId] = useState(null);
   const [expandedResursId, setExpandedResursId] = useState(null);
   const { onClose } = props;
@@ -24,12 +28,9 @@ const UrediKonferenciju = (props) => {
   );
   const [urlKonferencije, setUrlKonferencije] = useState(konferencija.url);
 
-  const [lokacijaKonferencije, setLokacijaKonferencije] = useState(
-    konferencija.lokacija
-  );
   const [showDogadjaje, setShowDogadjaje] = useState(false);
   const [showRezervacije, setShowRezervacije] = useState(false);
-  const [showDogadjaj, setShowDogadjaj] = useState(false);
+  // const [showDogadjaj, setShowDogadjaj] = useState(false);
 
   const [showErrorMess, setShowErrorMess] = useState(false);
   //ostane broj lokacija trebala bih ovde citati iz baze ispocetka svaki put
@@ -39,8 +40,6 @@ const UrediKonferenciju = (props) => {
     (state) => state.organizator.tipoviDogadjaja
   );
 
-  const [resursDogadjaja, setResursDOgadjaja] = useState("");
-
   const [moderatorDOgadjaja, setModeratorDOgadjaja] = useState("");
   const [tipDogadjaja, setTipDogadjaja] = useState("");
   const [urlDogadjaja, setUrlDOgadjaja] = useState("");
@@ -48,6 +47,7 @@ const UrediKonferenciju = (props) => {
   const [startDogadjaja, setStartDogadjaja] = useState("");
   const [imeDogadjaja, setImeDogadjaja] = useState("");
   const dispatch = useDispatch();
+  const [selectedKolicina, setSelectedKolicina] = useState(0);
 
   useEffect(() => {
     console.log("expanded dogadjaj ", expandedDogadjajId);
@@ -63,24 +63,11 @@ const UrediKonferenciju = (props) => {
       setKrajDogadjaja(dogadjaj.endTime);
       setUrlDOgadjaja(dogadjaj.url);
     }
-  }, [
-    lokacije,
-    resursDogadjaja,
-    moderatori,
-    tipovi_dogadjaja,
-    lokacijaKonferencije,
-    expandedDogadjajId,
-  ]);
+  }, [lokacije, moderatori, tipovi_dogadjaja, expandedDogadjajId, dogadjaji]);
   const handleUrlDOgadjajaChanged = (value) => {
     setUrlDOgadjaja(value);
   };
 
-  const zatvori = () => {
-    // setShowDogadjaje(false);
-    setShowInnerModal(false);
-    setExpandedDogadjajId(null);
-    console.log("zatvori");
-  };
   const handleSpremiDogadjaj = () => {
     console.log("startDogadjaja", startDogadjaja);
     console.log("krajDogadjaja", krajDogadjaja);
@@ -124,8 +111,34 @@ const UrediKonferenciju = (props) => {
     setUrlDOgadjaja("");
 
     setModeratorDOgadjaja("");
-    setTipDogadjaja("");
-    setShowDogadjaj(false);*/
+    setTipDogadjaja("");*/
+    // setShowDogadjaj(false); ovo mozdaaa treba
+    setExpandedDogadjajId(null);
+  };
+
+  const handleSpremiResurs = () => {
+    console.log("kolicina", selectedKolicina);
+    console.log("dogadjajId", expandedDogadjajId);
+    console.log("resursId", expandedResursId);
+
+    const rezervacijaRequest = {
+      kolicina: selectedKolicina,
+      dogadjajId: expandedDogadjajId,
+      resursId: expandedResursId,
+    };
+    console.log("resurs Za bekend", rezervacijaRequest);
+
+    dispatch(
+      azurirajRezervacije({
+        token: token,
+        rezervacijaRequest: rezervacijaRequest,
+      })
+    )
+      .then((response) => {
+        console.log("rezultat rezervacije", response);
+      })
+      .catch((error) => {});
+    setExpandedResursId(null);
   };
   const handleModalDOgadjaj = (dogadjajId) => {
     console.log("otvori ");
@@ -141,7 +154,7 @@ const UrediKonferenciju = (props) => {
 
   const handleCloseResursModal = () => {
     setExpandedResursId(null);
-    setExpandedDogadjajId(null);
+    //setExpandedDogadjajId(null);
   };
 
   const handleOdustaniOdDogadjaja = (e) => {
@@ -157,10 +170,11 @@ const UrediKonferenciju = (props) => {
       setUrlDOgadjaja(dogadjaj.url);
       console.log("dogadjaj", dogadjaj);
     }*/
-    setShowDogadjaj(false);
+    // setShowDogadjaj(false); mozda treba provjeri
     setShowInnerModal(false);
     setExpandedDogadjajId(null);
   };
+
   const handleImeDogadjajaChanged = (value) => {
     setImeDogadjaja(value);
   };
@@ -174,11 +188,6 @@ const UrediKonferenciju = (props) => {
   const handleRezervacije = (e) => {
     e.preventDefault();
     setShowRezervacije(!showRezervacije);
-  };
-  const handleSelectedDogadjaj = (e) => {
-    e.preventDefault();
-
-    setShowDogadjaj(!showDogadjaj);
   };
 
   const handleImeChanged = (e) => {
@@ -212,15 +221,45 @@ const UrediKonferenciju = (props) => {
     setStartDogadjaja(e.target.value);
   };
 
-  const handleSave = async () => {};
+  const handleSave = () => {
+    console.log("startTimeKonferencije", startTimeKonferencije);
+    console.log("endTimeKonferencija", endTimeKonferencija);
+    console.log("imeKonferencije", imeKonferencije);
+    console.log("urlKonferencije", urlKonferencije);
+
+    const konferencijaRequest = {
+      startTime: startTimeKonferencije,
+      endTime: endTimeKonferencija,
+      naziv: imeKonferencije,
+      url: urlKonferencije,
+    };
+
+    console.log("id konf", konferencija.id);
+    console.log("konferencija Za bekend", konferencijaRequest);
+    console.log("id konferencijeeee", konferencija.id);
+
+    dispatch(
+      azurirajKonferenciju({
+        token: token,
+        idKonferencije: konferencija.id,
+        konferencijaRequest: konferencijaRequest,
+      })
+    )
+      .then((response) => {
+        console.log("rezultat konferencije", response);
+      })
+      .catch((error) => {});
+    // setExpandedResursId(null); onCLose()????
+    console.log("pozvace se funkcije");
+    onClose();
+    props.onSave();
+  };
 
   return (
     <Modal>
       <div className={`${classes.userDetailsContainer} ${classes.scrollable}`}>
-        <h2 style={{ color: "red" }}>
-          Uredi <span style={{ color: "blue" }}>{konferencija.naziv}</span>
-        </h2>
-        {showErrorMess && <p>Oznacite url ili lokaciju konferencije!</p>}
+        <h2 className={classes.naslov}>Uredi {konferencija.naziv}</h2>
+        {showErrorMess && <p>Niste napravili izmjene!</p>}
         <div className={classes.konfDetails}>
           <div className={classes.formRow}>
             <div className={classes.formLabelIme}>
@@ -385,7 +424,7 @@ const UrediKonferenciju = (props) => {
                                 name="urlDogadjaja"
                               />
                             </div>
-                            <div className={classes.formRow}>
+                            <div className={classes.formRowM}>
                               <div className={classes.formselectLabel}>
                                 <label>
                                   <strong>Moderator:</strong>
@@ -407,7 +446,7 @@ const UrediKonferenciju = (props) => {
                                 </select>
                               </div>
                             </div>
-                            <div className={classes.formRow}>
+                            <div className={classes.formRowM}>
                               <div className={classes.formselectLabel}>
                                 <label>
                                   <strong>Tip Dogadjaja:</strong>
@@ -474,7 +513,7 @@ const UrediKonferenciju = (props) => {
 
                                             {expandedResursId ===
                                               rezervacija.resurs.id && (
-                                              <Modal>
+                                              <Modal resurs={expandedResursId}>
                                                 {/* Sadržaj moda za prikaz rezervacije */}
                                                 <div
                                                   className={
@@ -482,32 +521,30 @@ const UrediKonferenciju = (props) => {
                                                   }
                                                 >
                                                   <h3>Detalji rezervacije</h3>
-                                                  <p>
-                                                    Resurs:{" "}
-                                                    {rezervacija.resurs.naziv}
-                                                  </p>
-                                                  <p>
-                                                    Količina:{" "}
-                                                    {rezervacija.kolicina}
-                                                  </p>
+                                                  <div
+                                                    className={
+                                                      classes.prezervacija
+                                                    }
+                                                  >
+                                                    <p>
+                                                      Resurs:{" "}
+                                                      {rezervacija.resurs.naziv}
+                                                    </p>
+                                                    <p>
+                                                      Količina:{" "}
+                                                      {rezervacija.kolicina}
+                                                    </p>
+                                                  </div>
 
                                                   <div
                                                     className={
-                                                      classes.formResurs
+                                                      classes.divZaKolicinu
                                                     }
                                                   >
-                                                    <div
-                                                      className={
-                                                        classes.formLabelIme
-                                                      }
-                                                    >
+                                                    <div>
                                                       <label>
                                                         <strong>
-                                                          {
-                                                            rezervacija.resurs
-                                                              .naziv
-                                                          }
-                                                          :
+                                                          Nova količina :
                                                         </strong>
                                                       </label>
                                                     </div>
@@ -518,13 +555,19 @@ const UrediKonferenciju = (props) => {
                                                       }
                                                     >
                                                       <select
-                                                        className={
-                                                          classes.selekt
-                                                        }
-                                                        defaultValue={
+                                                        value={
+                                                          selectedKolicina ||
                                                           rezervacija.resurs
                                                             .kolicina
                                                         }
+                                                        onChange={(e) => {
+                                                          setSelectedKolicina(
+                                                            parseInt(
+                                                              e.target.value
+                                                            )
+                                                          );
+                                                          // Obrada promene vrednosti selekcije...
+                                                        }}
                                                       >
                                                         {Array.from(
                                                           {
@@ -545,13 +588,32 @@ const UrediKonferenciju = (props) => {
                                                     </div>
                                                   </div>
 
-                                                  <button
-                                                    onClick={
-                                                      handleCloseResursModal
+                                                  <div
+                                                    className={
+                                                      classes.buttonDOgadjaji
                                                     }
                                                   >
-                                                    Zatvori
-                                                  </button>
+                                                    <button
+                                                      className={
+                                                        classes.buttonD
+                                                      }
+                                                      onClick={
+                                                        handleSpremiResurs
+                                                      }
+                                                    >
+                                                      Spremi
+                                                    </button>
+                                                    <button
+                                                      className={
+                                                        classes.buttonD
+                                                      }
+                                                      onClick={
+                                                        handleCloseResursModal
+                                                      }
+                                                    >
+                                                      Odustani
+                                                    </button>
+                                                  </div>
                                                 </div>
                                               </Modal>
                                             )}
@@ -591,9 +653,13 @@ const UrediKonferenciju = (props) => {
             </ul>
           )}
         </div>
-        <div className={classes.buttonContainer}>
-          <button onClick={handleSave}>Da</button>
-          <button onClick={onClose}>Ne</button>
+        <div className={classes.buttonDOgadjaji}>
+          <button className={classes.buttonD} onClick={handleSave}>
+            Spremi
+          </button>
+          <button className={classes.buttonD} onClick={onClose}>
+            Odustani
+          </button>
         </div>
       </div>
     </Modal>

@@ -4,6 +4,8 @@ import "../../App.css";
 import { fetchKorisnici } from "../../redux/features/adminSlice";
 import Toolbar from "../../components/Toolbar/Toolbar";
 import Edit from "../Edit/Edit";
+import classes from "./Admin.module.css";
+import AddUser from "./AddUser/AddUser";
 
 const Admin = () => {
   const [korisnici, setKorisnici] = useState([]);
@@ -15,7 +17,7 @@ const Admin = () => {
   const userId = user.user.id;
   const dispatch = useDispatch();
   const [refreshKey, setRefreshKey] = useState(0);
-
+  const [showAddModal, setshowAddModal] = useState(false);
   useEffect(() => {
     dispatch(fetchKorisnici({ token, userId, izbor }))
       .then((response) => {
@@ -31,16 +33,22 @@ const Admin = () => {
     setSelectedUser(korisnik);
     setOpenModal(true);
   };
-
+  const handleSaveObrisi = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
   const handleClose = () => {
+    console.log("zatvori");
     setSelectedUser(null);
     setOpenModal(false);
+    setshowAddModal(false);
   };
 
   const handleSaveEdit = () => {
     setRefreshKey((prevKey) => prevKey + 1);
   };
-
+  const handleAddConference = () => {
+    setshowAddModal(true);
+  };
   let korisniciList;
   if (korisnici && korisnici.length > 0) {
     korisniciList = korisnici.map((korisnik) => (
@@ -123,6 +131,16 @@ const Admin = () => {
           onSave={handleSaveEdit}
         />
       )}
+      {showAddModal && <AddUser onClose={handleClose} />}
+      <div>
+        <button
+          className={classes.roundButton}
+          title="Dodaj korisnika"
+          onClick={handleAddConference}
+        >
+          +
+        </button>
+      </div>
     </div>
   );
 };

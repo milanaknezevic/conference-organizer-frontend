@@ -1,0 +1,35 @@
+.userDetailsContainer {
+  min-width: 300px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  border: 1px solid purple;
+}
+.buttonDOgadjaji {
+  display: flex;
+  justify-content: center;
+}
+.buttonD {
+  background-color: transparent;
+  color: purple;
+}
+.errorMessage {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: red;
+}
+.naslov {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #333;
+}
+
+.buttonD:hover {
+  background-color: transparent;
+  color: blue;
+}

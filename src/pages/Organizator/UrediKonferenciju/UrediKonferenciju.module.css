@@ -23,6 +23,15 @@
   overflow: hidden;
   padding: 2rem;
 }
+.prezervacija {
+  justify-content: left;
+  align-items: left;
+}
+.divZaKolicinu {
+  display: flex;
+  padding: 10px;
+  gap: 8px;
+}
 .userResursContainer {
   min-width: 200px;
   min-height: 150px;
@@ -117,6 +126,17 @@
   list-style: none;
 }
 .formRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.naslov {
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+}
+.formRowM {
+  margin-left: -5px;
   display: flex;
   align-items: center;
   gap: 8px;

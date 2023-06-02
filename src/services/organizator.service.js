@@ -161,33 +161,35 @@ const updateKonferenciju = (token, idKonferencije, konferencijaRequest) => {
     });
 };
 
-const updateRezervacije = (token, nizResursa) => {
-  const url = `http://localhost:8080/rezervacije/rezervacija_update`;
-
+const updateRezervacije = (token, rezervacijaRequest) => {
+  const url = `http://localhost:8080/rezervacije/update`;
+  console.log("url za update rezervacije", url);
+  console.log("rezReq u servisu", rezervacijaRequest);
   const requestOptions = {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,
     },
-    body: JSON.stringify(nizResursa),
+    body: JSON.stringify(rezervacijaRequest),
   };
 
   return fetch(url, requestOptions)
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Greška prilikom update rezervacija.");
+        throw new Error("Greška prilikom update rezervacije.");
       }
-      return response.json();
+      return response;
     })
     .then((data) => {
       return data;
     })
     .catch((error) => {
-      console.error("Greška prilikom update rezervacija:", error);
+      console.error("Greška prilikom update rezervacije:", error);
       throw error;
     });
 };
+
 const updateDogadjaj = (token, dogadjaj, idDogadjaja) => {
   const url = `http://localhost:8080/dogadjaji/${idDogadjaja}`;
   console.log("url za update dogadjaja", url);

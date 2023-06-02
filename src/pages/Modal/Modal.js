@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 import classes from "./Modal.module.css";
@@ -8,8 +8,16 @@ const Backdrop = (props) => {
 };
 
 const ModalOverlay = (props) => {
+  const { resurs } = props;
+  const modalClass =
+    resurs === undefined ? classes.modal : classes.modalZaRezervaciju;
+  useEffect(() => {
+    console.log("ZaRezervaciju gledajjj ", resurs);
+    console.log("modalClass", modalClass);
+  }, [modalClass, resurs]);
+
   return (
-    <div className={classes.modal}>
+    <div className={modalClass}>
       <div className={classes.content}>{props.children}</div>
     </div>
   );
@@ -18,11 +26,13 @@ const ModalOverlay = (props) => {
 const portalElement = document.getElementById("overlays");
 
 const Modal = (props) => {
+  const { resurs } = props;
+
   return (
     <Fragment>
       {ReactDOM.createPortal(<Backdrop />, portalElement)}
       {ReactDOM.createPortal(
-        <ModalOverlay>{props.children}</ModalOverlay>,
+        <ModalOverlay resurs={resurs}>{props.children}</ModalOverlay>,
         portalElement
       )}
     </Fragment>
