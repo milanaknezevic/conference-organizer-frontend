@@ -34,9 +34,13 @@ const DodajOcjenu = ({ korisnik, arg, show, onClose }) => {
             token: korisnik.user.token,
             ocjenaRequest: ocjenaRequest,
           })
-        );
-
-        onClose();
+        )
+          .then((response) => {
+            console.log("sacuvala sam ocjene ovo je response", response);
+            console.log("Pozovi onClose()");
+            onClose();
+          })
+          .catch((error) => {});
       })
       .catch((error) => {
         console.log("Greška pri validaciji forme:", error);
@@ -50,6 +54,7 @@ const DodajOcjenu = ({ korisnik, arg, show, onClose }) => {
         footer={[]}
         visible={show}
         onCancel={onClose}
+        maskClosable={false}
         bodyStyle={{ maxHeight: "300px", overflowY: "auto" }}
       >
         <Form

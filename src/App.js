@@ -13,6 +13,7 @@ import Organizator from "./pages/Organizator/Organizator";
 import UserDetails from "./pages/UserDetails/UserDetails";
 import Posjetilac from "./pages/Posjetilac/Posjetilac";
 import MojeKonferencije from "./pages/MojeKonferencije/MojeKonferencije";
+import Moderator from "./pages/Moderator/Moderator";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="admin" element={<Admin />} />
+            <Route path="moderator" element={<Moderator />} />
             <Route path="organizator" element={<Organizator />} />
             <Route path="posjetilac" element={<Posjetilac />} />
             <Route path="moje_konferencije" element={<MojeKonferencije />} />

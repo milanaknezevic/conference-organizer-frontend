@@ -7,6 +7,7 @@ const OcjenaModal = ({ arg, show, onClose }) => {
     <>
       <Modal
         title={title1}
+        maskClosable={false}
         footer={[
           <Button key="cancel" onClick={onClose}>
             Zatvori

@@ -31,8 +31,15 @@ const UrediKonferenciju = (props) => {
   const [showDogadjaje, setShowDogadjaje] = useState(false);
   const [showRezervacije, setShowRezervacije] = useState(false);
   // const [showDogadjaj, setShowDogadjaj] = useState(false);
+  const [showMess, setShowMess] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showMessRez, setShowMessRez] = useState(false);
+  const [messageRez, setMessageRez] = useState("");
+  const [showMessKonf, setShowMessKonf] = useState(false);
+  const [messageKonf, setMessageKonf] = useState("");
 
   const [showErrorMess, setShowErrorMess] = useState(false);
+
   //ostane broj lokacija trebala bih ovde citati iz baze ispocetka svaki put
   const lokacije = useSelector((state) => state.organizator.lokacije);
   const moderatori = useSelector((state) => state.organizator.moderatori);
@@ -101,19 +108,23 @@ const UrediKonferenciju = (props) => {
       })
     )
       .then((response) => {
-        console.log("rezultat dogadjaja", response);
+        console.log("response dogadjaja", response);
+        console.log("spremi dogadjaj");
+        setShowMess(true);
+        setMessage("Uspješno ste sačuvali izmjene!");
+        console.log(" setShowMess", showMess);
+        //treba vidjeti payload.status==200
+
+        const timer = setTimeout(() => {
+          setShowMess(false);
+          setMessage("");
+          setExpandedDogadjajId(null);
+        }, 1000);
       })
       .catch((error) => {});
 
-    /* setImeDogadjaja("");
-    setStartDogadjaja("");
-    setKrajDogadjaja("");
-    setUrlDOgadjaja("");
-
-    setModeratorDOgadjaja("");
-    setTipDogadjaja("");*/
     // setShowDogadjaj(false); ovo mozdaaa treba
-    setExpandedDogadjajId(null);
+    // setExpandedDogadjajId(null);
   };
 
   const handleSpremiResurs = () => {
@@ -136,9 +147,19 @@ const UrediKonferenciju = (props) => {
     )
       .then((response) => {
         console.log("rezultat rezervacije", response);
+        setShowMessRez(true);
+        setMessageRez("Uspješno ste sačuvali izmjene!");
+        console.log(" setShowMess", showMess);
+        //treba vidjeti payload.status==200
+
+        const timer = setTimeout(() => {
+          setShowMessRez(false);
+          setMessageRez("");
+          setExpandedResursId(null);
+        }, 1000);
       })
       .catch((error) => {});
-    setExpandedResursId(null);
+    // setExpandedResursId(null);
   };
   const handleModalDOgadjaj = (dogadjajId) => {
     console.log("otvori ");
@@ -247,12 +268,23 @@ const UrediKonferenciju = (props) => {
     )
       .then((response) => {
         console.log("rezultat konferencije", response);
+        setShowMessKonf(true);
+        setMessageKonf("Uspješno ste sačuvali izmjene!");
+        console.log(" setShowMess", showMess);
+        //treba vidjeti payload.status==200
+
+        const timer = setTimeout(() => {
+          setShowMessKonf(false);
+          setMessageKonf("");
+          onClose();
+          props.onSave();
+        }, 1000);
       })
       .catch((error) => {});
     // setExpandedResursId(null); onCLose()????
     console.log("pozvace se funkcije");
-    onClose();
-    props.onSave();
+    /* onClose();
+    props.onSave();*/
   };
 
   return (
@@ -260,6 +292,7 @@ const UrediKonferenciju = (props) => {
       <div className={`${classes.userDetailsContainer} ${classes.scrollable}`}>
         <h2 className={classes.naslov}>Uredi {konferencija.naziv}</h2>
         {showErrorMess && <p>Niste napravili izmjene!</p>}
+
         <div className={classes.konfDetails}>
           <div className={classes.formRow}>
             <div className={classes.formLabelIme}>
@@ -587,7 +620,15 @@ const UrediKonferenciju = (props) => {
                                                       </select>
                                                     </div>
                                                   </div>
-
+                                                  {showMessRez && (
+                                                    <diV>
+                                                      <p
+                                                        className={classes.mess}
+                                                      >
+                                                        {messageRez}
+                                                      </p>
+                                                    </diV>
+                                                  )}
                                                   <div
                                                     className={
                                                       classes.buttonDOgadjaji
@@ -629,13 +670,18 @@ const UrediKonferenciju = (props) => {
                                   )}
                                 </>
                               )}
+                            {showMess && (
+                              <diV>
+                                <p className={classes.mess}>{message}</p>
+                              </diV>
+                            )}
 
                             <div className={classes.buttonDOgadjaji}>
                               <button
                                 className={classes.buttonD}
                                 onClick={handleSpremiDogadjaj}
                               >
-                                Spremi
+                                Spremiiiiii
                               </button>
                               <button
                                 className={classes.buttonD}
@@ -653,6 +699,11 @@ const UrediKonferenciju = (props) => {
             </ul>
           )}
         </div>
+        {showMessKonf && (
+          <diV>
+            <p className={classes.mess}>{messageKonf}</p>
+          </diV>
+        )}
         <div className={classes.buttonDOgadjaji}>
           <button className={classes.buttonD} onClick={handleSave}>
             Spremi

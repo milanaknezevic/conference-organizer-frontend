@@ -16,6 +16,8 @@ import AddConference from "./AddConference/AddConference";
 import UrediKonferenciju from "./UrediKonferenciju/UrediKonferenciju";
 import Posjetioci from "../Posjetioci/Posjetioci";
 import { Pencil, Trash } from "react-bootstrap-icons";
+import Resursi from "../Resursi/Resursi";
+import OcjenaModal from "../OcjenaModal/OcjenaModal";
 
 const Organizator = () => {
   const user = useSelector((state) => state.login);
@@ -32,6 +34,11 @@ const Organizator = () => {
   const posjetiociSectionRef = useRef(null); // Referenca na donji dio (posjetiociSection)
   const [refreshKey, setRefreshKey] = useState(0);
   const dispatch = useDispatch();
+  const [dogadjajZaResurse, setDogadjajZaResurse] = useState({});
+  const [showModalZaResurse, setShowModalZaResurse] = useState(false);
+  const [showModalZaOcjenu, setShowModalZaOcjenu] = useState(false);
+  const [dogadjajZaOcjenu, setDogadjajZaOcjenu] = useState({});
+
   //const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,9 +71,16 @@ const Organizator = () => {
       })
       .catch((error) => {});
   }, [dispatch, token]);
-
+  const handlePrikaziModalZaResurse = (dogadjaj) => {
+    //setKonferencijaZaBrisanje(konferencija);
+    console.log("prikazi");
+    setDogadjajZaResurse(dogadjaj);
+    setShowModalZaResurse(true); // Postavite showModal na true kada se pritisne dugme za brisanje
+  };
   const handleClose = () => {
+    setShowModalZaOcjenu(false);
     setKonferencijaZaBrisanje([]);
+    setShowModalZaResurse(false);
     setShowModal(false);
     setshowAddModal(false);
     setShowEditModal(false);
@@ -104,6 +118,7 @@ const Organizator = () => {
   };
 
   const handlePrikaziDogadjaje = (konferencija) => {
+    console.log("konferencija", konferencija);
     if (selectedKonferencija === konferencija) {
       setSelectedKonferencija(null);
     } else {
@@ -123,6 +138,12 @@ const Organizator = () => {
       }*/
     //}
   };
+  const handlePrikaziModalZaOcjenu = (dogadjaj) => {
+    //setKonferencijaZaBrisanje(konferencija);
+    console.log("prikazi");
+    setDogadjajZaOcjenu(dogadjaj);
+    setShowModalZaOcjenu(true); // Postavite showModal na true kada se pritisne dugme za brisanje
+  };
 
   let konferencijeList;
   if (konferencije && konferencije.length > 0) {
@@ -135,11 +156,11 @@ const Organizator = () => {
               <span> {konferencija.naziv}</span>
             </div>
             <div className="underline">
-              <span className={classes.poljaColor}>Start Time:</span>{" "}
+              <span className={classes.poljaColor}>Početak:</span>{" "}
               <span> {formatirajDatum(konferencija.startTime)}</span>
             </div>
             <div className="underline">
-              <span className={classes.poljaColor}>End Time:</span>{" "}
+              <span className={classes.poljaColor}>Kraj:</span>{" "}
               <span> {formatirajDatum(konferencija.endTime)}</span>
             </div>
             <div className="underline">
@@ -152,9 +173,20 @@ const Organizator = () => {
                 <span> {konferencija.url}</span>
               </div>
             )}
+            {konferencija.lokacija && (
+              <div className="underline">
+                <span className={classes.poljaColor}>Adresa:</span>{" "}
+                <span> {konferencija.lokacija?.adresa}</span>
+              </div>
+            )}
             <div className="underline">
-              <span className={classes.poljaColor}>Adresa:</span>{" "}
-              <span> {konferencija.lokacija?.adresa}</span>
+              <span className={classes.poljaColor}>Ocjene:</span>{" "}
+              <span
+                className={classes.ocjene}
+                onClick={() => handlePrikaziModalZaOcjenu(konferencija)}
+              >
+                Ocjene
+              </span>
             </div>
             <div className={classes.divZaButton}>
               <button
@@ -179,13 +211,11 @@ const Organizator = () => {
                           <span>{dogadjaj.naziv}</span>
                         </div>
                         <div className="underline">
-                          <span className={classes.poljaColor}>
-                            Start Time:
-                          </span>{" "}
+                          <span className={classes.poljaColor}>Početak:</span>{" "}
                           <span>{formatirajDatum(dogadjaj.startTime)}</span>
                         </div>
                         <div className="underline">
-                          <span className={classes.poljaColor}>End Time:</span>{" "}
+                          <span className={classes.poljaColor}>Kraj:</span>{" "}
                           <span>{formatirajDatum(dogadjaj.endTime)}</span>
                         </div>
                         {dogadjaj.url && (
@@ -194,9 +224,34 @@ const Organizator = () => {
                             <span>{dogadjaj.url}</span>
                           </div>
                         )}
+                        {dogadjaj.soba && (
+                          <div className="underline">
+                            <span className={classes.poljaColor}>
+                              Prostorija:
+                            </span>{" "}
+                            <span>{dogadjaj.soba.naziv}</span>
+                          </div>
+                        )}
+                        <div className="underline">
+                          <span className={classes.poljaColor}>
+                            Tip Dogadjaja:
+                          </span>{" "}
+                          <span>{dogadjaj.tipDogadjaja.naziv}</span>
+                        </div>
                         <div className="underline">
                           <span className={classes.poljaColor}>Moderator:</span>{" "}
                           <span>{dogadjaj.korisnik.naziv}</span>
+                        </div>
+                        <div className="underline">
+                          <span className={classes.poljaColor}>Resursi:</span>{" "}
+                          <span
+                            className={classes.ocjene}
+                            onClick={() =>
+                              handlePrikaziModalZaResurse(dogadjaj)
+                            }
+                          >
+                            Resursi
+                          </span>
                         </div>
                         <button
                           onClick={() => handlePrikaziPosjetioceModal(dogadjaj)}
@@ -263,6 +318,20 @@ const Organizator = () => {
             onClose={handleClose}
             dogadjaj={dogadjajZaPosjetioce}
             show={showPosjetiociModal}
+          />
+        )}
+        {showModalZaResurse && (
+          <Resursi
+            onClose={handleClose}
+            dogadjaj={dogadjajZaResurse}
+            show={showModalZaResurse}
+          />
+        )}
+        {showModalZaOcjenu && (
+          <OcjenaModal
+            onClose={handleClose}
+            arg={dogadjajZaOcjenu}
+            show={showModalZaOcjenu}
           />
         )}
       </div>

@@ -14,6 +14,8 @@ const AddConference = (props) => {
   const token = user.user.token;
   const [nizDOgadjaja, setNizDOgadjaja] = useState([]);
   const [nizResursa, setNizResursa] = useState([]);
+  const [resursSacuvan, setResursSacuvan] = useState(false);
+  const [dogadjajSacuvan, setDogadjajSacuvan] = useState(false);
 
   const [dogadjajIsOnline, setDogadjajIsOnline] = useState(false);
   const [lokacijuPrikazi, setLokacijuPrikazi] = useState(false);
@@ -31,6 +33,9 @@ const AddConference = (props) => {
   const [showResurse, setShowResurse] = useState(false);
 
   const [showErrorMess, setShowErrorMess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showErrorMessZaResurs, setShowErrorMessZaResurs] = useState(false);
+
   //ostane broj lokacija trebala bih ovde citati iz baze ispocetka svaki put
   const lokacije = useSelector((state) => state.organizator.lokacije);
   const moderatori = useSelector((state) => state.organizator.moderatori);
@@ -78,18 +83,27 @@ const AddConference = (props) => {
 
   const handleSpremiResurs = (e) => {
     if (resursDogadjaja === "" || kolicinaResursa === "") {
+      console.log("nisi dodao resurs");
+      setShowErrorMessZaResurs(true);
+      setErrorMessage("Odaberite resurs!");
+      const timer = setTimeout(() => {
+        setShowErrorMessZaResurs(false);
+        setErrorMessage("");
+      }, 1000);
     } else {
       const noviResurs = {
         kolicina: kolicinaResursa,
         dogadjajId: "",
         resursId: resursDogadjaja,
       };
-
+      console.log("resurssss", noviResurs);
       setNizResursa((prevNiz) => [...prevNiz, noviResurs]);
       setResursDOgadjaja("");
       setKolicinaResursa(0);
-
+      setShowErrorMessZaResurs(false);
+      setErrorMessage("");
       setShowResurse(false);
+      setResursSacuvan(true);
     }
   };
   const handleResurskolicinaChanged = (e) => {
@@ -189,12 +203,20 @@ const AddConference = (props) => {
   };
   const handleSpremiDogadjaj = () => {
     if (
+      resursSacuvan === false ||
       imeDOgadjaja === "" ||
       startTimeDogadjaja === "" ||
       endTimeDogadjaja === "" ||
       moderatorDOgadjaja === "" ||
       (tipDogadjaja === "" && (sobaDogadjaja === "" || urlDogadjaja === ""))
     ) {
+      console.log("niste odabrali sve");
+      setShowErrorMessZaResurs(true);
+      setErrorMessage("Popunite sva polja!");
+      const timer = setTimeout(() => {
+        setShowErrorMessZaResurs(false);
+        setErrorMessage("");
+      }, 1000);
     } else {
       const noviDogadjaj = {
         startTime: startTimeDogadjaja,
@@ -226,71 +248,78 @@ const AddConference = (props) => {
       setSobaDogadjaja("");
       setModeratorDOgadjaja("");
       setTipoviDogadjaja("");
+      setDogadjajSacuvan(true);
       setShowDogadjaje(false);
     }
   };
   const handleSave = async () => {
-    const konferencijaRequest = {
-      naziv: imeKonferencije,
-      startTime: startTimeKonferencije,
-      endTime: endTimeKonferencija,
-      url: urlKonferencije,
-      organizatorId: user.user.id,
-      lokacijaId: lokacijaKonferencije,
-    };
-    console.log("nizDOgadjaja", nizDOgadjaja);
-    const noviNiz = nizDOgadjaja.map(
-      ({ resursi, ...ostaliAtributi }) => ostaliAtributi
-    );
-    console.log("noviNiz", noviNiz);
-    const conf = await dispatch(
-      dodajKonferenciju({
-        token: token,
-        konferencijaRequest: konferencijaRequest,
-      })
-    );
-    console.log("id konferencije", conf.payload.id);
-    for (let dogadjaj of noviNiz) {
-      dogadjaj.konferencijaId = conf.payload.id;
-    }
-    /* console.log("noviNiz", noviNiz);
-    for (let dogadjaj of noviNiz) {
-      const responseDog = await dispatch(
-        dodajDogadjaj({
+    if (
+      imeKonferencije === "" ||
+      startTimeKonferencije === "" ||
+      endTimeKonferencija === "" ||
+      dogadjajSacuvan === false ||
+      resursSacuvan === false
+    ) {
+      console.log("nistaa");
+      setShowErrorMessZaResurs(true);
+      setErrorMessage("Niste popunili sva polja!");
+      const timer = setTimeout(() => {
+        setShowErrorMessZaResurs(false);
+        setErrorMessage("");
+      }, 1000);
+    } else {
+      const konferencijaRequest = {
+        naziv: imeKonferencije,
+        startTime: startTimeKonferencije,
+        endTime: endTimeKonferencija,
+        url: urlKonferencije,
+        organizatorId: user.user.id,
+        lokacijaId: lokacijaKonferencije,
+      };
+      console.log("nizDOgadjaja", nizDOgadjaja);
+      const noviNiz = nizDOgadjaja.map(
+        ({ resursi, ...ostaliAtributi }) => ostaliAtributi
+      );
+      console.log("noviNiz", noviNiz);
+      const conf = await dispatch(
+        dodajKonferenciju({
           token: token,
-          dogadjajRequest: dogadjaj,
+          konferencijaRequest: konferencijaRequest,
         })
       );
-      console.log("dog", responseDog);
-    }*/
-
-    for (let i = 0; i < noviNiz.length; i++) {
-      const dogadjajRequest = noviNiz[i];
-      console.log("dogadjaj jedan po jedan", dogadjajRequest);
-      const responseDog = await dispatch(
-        dodajDogadjaj({
-          token: token,
-          dogadjajRequest: dogadjajRequest,
-        })
-      );
-      console.log("dogadjaj ID", responseDog.payload.id);
-      for (let resurs of nizDOgadjaja[i].resursi) {
-        console.log("ovo citaaaj", responseDog);
-        resurs.dogadjajId = responseDog.payload.id;
+      console.log("id konferencije", conf.payload.id);
+      for (let dogadjaj of noviNiz) {
+        dogadjaj.konferencijaId = conf.payload.id;
       }
-      for (let resurs of nizDOgadjaja[i].resursi) {
-        console.log("resurs za dispetch", resurs);
-        const resursODG = await dispatch(
-          dodajResurs({
+
+      for (let i = 0; i < noviNiz.length; i++) {
+        const dogadjajRequest = noviNiz[i];
+        console.log("dogadjaj jedan po jedan", dogadjajRequest);
+        const responseDog = await dispatch(
+          dodajDogadjaj({
             token: token,
-            resurs: resurs,
+            dogadjajRequest: dogadjajRequest,
           })
         );
-        console.log("resurs response", resursODG);
+        console.log("dogadjaj ID", responseDog.payload.id);
+        for (let resurs of nizDOgadjaja[i].resursi) {
+          console.log("ovo citaaaj", responseDog);
+          resurs.dogadjajId = responseDog.payload.id;
+        }
+        for (let resurs of nizDOgadjaja[i].resursi) {
+          console.log("resurs za dispetch", resurs);
+          const resursODG = await dispatch(
+            dodajResurs({
+              token: token,
+              resurs: resurs,
+            })
+          );
+          console.log("resurs response", resursODG);
+        }
       }
+      onClose();
+      props.onSave();
     }
-    onClose();
-    props.onSave();
   };
 
   return (
@@ -659,6 +688,11 @@ const AddConference = (props) => {
             </div>
           )}
         </div>
+        {showErrorMessZaResurs && (
+          <div>
+            <p>{errorMessage}</p>
+          </div>
+        )}
         <div className={classes.buttonContainer}>
           <button onClick={handleSave}>Da</button>
           <button onClick={onClose}>Ne</button>

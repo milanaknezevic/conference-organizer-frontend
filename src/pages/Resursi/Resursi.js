@@ -1,31 +1,21 @@
 import { Modal } from "antd";
 
-const Posjetioci = ({ dogadjaj, show, onClose }) => {
-  const title1 = `Posjetioci ${dogadjaj.naziv}`;
+const Resursi = ({ dogadjaj, show, onClose }) => {
+  const title1 = `Resursi:`;
 
   // Definišite imena polja
-  const fields = ["Naziv", "Korisničko ime", "Email"];
-
+  const fields = ["Naziv", "Količina"];
+  console.log("gledaj", dogadjaj);
   return (
     <Modal
       title={title1}
       visible={show}
-      onCancel={onClose}
       maskClosable={false}
-      footer={
-        [
-          /* <Button
-          key="cancel"
-          onClick={onClose}
-          style={{ maxHeight: "300px", overflowY: "auto" }}
-        >
-          Izađi
-        </Button>,*/
-        ]
-      }
+      onCancel={onClose}
+      footer={[]}
     >
-      {dogadjaj.posjetilacs.length === 0 ? (
-        <span style={{ color: "red" }}>Nema posjetilaca!</span>
+      {dogadjaj.rezervacijas?.length === 0 ? (
+        <span style={{ color: "red" }}>Nema resursa!</span>
       ) : (
         <ul
           style={{
@@ -40,7 +30,7 @@ const Posjetioci = ({ dogadjaj, show, onClose }) => {
             style={{
               fontSize: 16,
               display: "flex",
-              justifyContent: "space-between",
+              gap: "6rem",
             }}
           >
             {fields.map((field) => (
@@ -51,22 +41,21 @@ const Posjetioci = ({ dogadjaj, show, onClose }) => {
           </li>
 
           {/* Prikaz vrednosti polja za svakog člana liste */}
-          {dogadjaj.posjetilacs.map((user) => (
+          {dogadjaj.rezervacijas?.map((rezervacija) => (
             <li
               style={{
                 fontSize: 16,
                 display: "flex",
-                justifyContent: "space-between",
+                gap: "5rem",
               }}
-              key={user.korisnik.id}
+              key={rezervacija.resurs.id}
             >
               <span style={{ textAlign: "left", width: "80px" }}>
-                {user.korisnik.naziv}
+                {rezervacija.resurs.naziv}
               </span>
               <span style={{ textAlign: "left" }}>
-                {user.korisnik.username}
+                {rezervacija.resurs.kolicina}
               </span>
-              <span style={{ textAlign: "left" }}>{user.korisnik.email}</span>
             </li>
           ))}
         </ul>
@@ -75,4 +64,4 @@ const Posjetioci = ({ dogadjaj, show, onClose }) => {
   );
 };
 
-export default Posjetioci;
+export default Resursi;

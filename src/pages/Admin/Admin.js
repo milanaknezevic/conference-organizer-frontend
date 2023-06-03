@@ -33,11 +33,10 @@ const Admin = () => {
     setSelectedUser(korisnik);
     setOpenModal(true);
   };
-  const handleSaveObrisi = () => {
-    setRefreshKey((prevKey) => prevKey + 1);
-  };
+
   const handleClose = () => {
     console.log("zatvori");
+    setRefreshKey((prevKey) => prevKey + 1);
     setSelectedUser(null);
     setOpenModal(false);
     setshowAddModal(false);

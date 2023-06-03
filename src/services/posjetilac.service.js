@@ -55,5 +55,34 @@ const addOcjenu = (token, ocjenaRequest) => {
       throw error;
     });
 };
+const addPosjetioca = (token, posjetilac) => {
+  console.log("moderator iz servisa", posjetilac);
+  const url = `http://localhost:8080/posjetioci`;
+  console.log("url za pojetilac ", url);
 
-export { getAllKonferencijeZaPosjetioca, addOcjenu };
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(posjetilac),
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom add posjetioca.");
+      }
+      return response;
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom add posjetioca:", error);
+      throw error;
+    });
+};
+
+export { getAllKonferencijeZaPosjetioca, addOcjenu, addPosjetioca };

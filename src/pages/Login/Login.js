@@ -7,6 +7,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,57 +18,70 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const data = {
-      username: username,
-      password: password,
-    };
+    if (username !== "" && password !== "") {
+      const data = {
+        username: username,
+        password: password,
+      };
 
-    dispatch(ulogujSe(data))
-      .then((response) => {
-        console.log("Login response", response);
-        console.log("Login payload", response.payload);
-        console.log("Login username", response.payload.username);
-        console.log("Login ulogovan", response.payload.ulogovan);
+      dispatch(ulogujSe(data))
+        .then((response) => {
+          console.log("Login response", response);
+          console.log("Login payload", response.payload);
+          console.log("Login username", response.payload.username);
+          console.log("Login ulogovan", response.payload.ulogovan);
 
-        if (response.payload.rola === "ADMIN") {
-          navigate("/admin");
-        } else if (
-          response.payload.rola === "ORGANIZATOR" &&
-          response.payload.status === "ACTIVE"
-        ) {
-          console.log("organizatro je aktivan");
-          navigate("/organizator");
-        } else if (
-          response.payload.rola === "POSJETILAC" &&
-          response.payload.status === "ACTIVE"
-        ) {
-          console.log("organizatro je aktivan");
-          navigate("/posjetilac");
-        } else {
-          setError(false);
-        }
-      })
-      .catch((error) => {
-        setError(true);
-        setPassword("");
-        setUsername("");
-      });
+          if (response.payload.rola === "ADMIN") {
+            navigate("/admin");
+          } else if (
+            response.payload.rola === "ORGANIZATOR" &&
+            response.payload.status === "ACTIVE"
+          ) {
+            console.log("organizatro je aktivan");
+            navigate("/organizator");
+          } else if (
+            response.payload.rola === "POSJETILAC" &&
+            response.payload.status === "ACTIVE"
+          ) {
+            console.log("posjetilac je aktivan");
+            navigate("/posjetilac");
+          } else if (
+            response.payload.rola === "MODERATOR" &&
+            response.payload.status === "ACTIVE"
+          ) {
+            console.log("moderator je aktivan");
+            navigate("/moderator");
+          } else {
+            setError(false);
+            setErrorMessage("");
+          }
+        })
+        .catch((error) => {
+          setError(true);
+          setErrorMessage("Korisničko ime ili lozinka nisu ispravni.");
+          setPassword("");
+          setUsername("");
+        });
+    } else {
+      setError(true);
+      setErrorMessage("Unesite korisničko ime i lozinku.");
+    }
   };
 
   return (
     <div className="App">
       <div className="auth-form-container">
         <h2>Prijavi se</h2>
-        {error && (
-          <p className="error-message">
-            Korisničko ime ili lozinka nisu ispravni.
-          </p>
-        )}
+        {error && <p className="error-message">{errorMessage}</p>}
         <form className="login-form" onSubmit={handleSubmit}>
           <label htmlFor="username">Korisničko ime</label>
           <input
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              setError(false);
+              setErrorMessage("");
+            }}
             type="text"
             placeholder="Korisničko ime"
             id="username"
@@ -76,7 +90,11 @@ const Login = () => {
           <label htmlFor="password">Lozinka</label>
           <input
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError(false);
+              setErrorMessage("");
+            }}
             type="password"
             placeholder="********"
             id="password"

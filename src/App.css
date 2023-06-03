@@ -95,14 +95,21 @@ body {
   font-size: 1.2rem; /* velicina fonta */
 }
 .auth-form-container,
-.login-form,
-.register-form {
+.login-form {
   display: flex;
   flex-direction: column;
   margin-top: 2.5rem;
 }
+.register-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+}
 .error-message {
   color: red;
+}
+.succesMessage {
+  color: #f0f0f0;
 }
 
 .headerContainer {
@@ -154,11 +161,13 @@ button {
 
 .link-btn {
   background: none;
-  color: darkgray;
+  color: lightgray;
 
   text-decoration: underline;
 }
-
+.link-btn:hover {
+  color: #f0f0f0;
+}
 .korisnik-item {
   display: flex;
   list-style: none;

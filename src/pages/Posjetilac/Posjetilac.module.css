@@ -52,6 +52,35 @@
   width: 100%;
   background-color: transparent;
 }
+.prijavi {
+  margin-right: 0.1rem;
+  width: 40px;
+}
+.plus {
+  font-size: 25px;
+  color: cornflowerblue;
+  margin-right: 30px;
+}
+.plus:hover {
+  font-size: 25px;
+  color: purple;
+  margin-right: 30px;
+}
+.zaDiv {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.prijavi button {
+  font-size: 15px;
+  width: 100%;
+  background-color: transparent;
+}
 .ocjene {
   color: #5b2f9f;
   height: 20px;
@@ -111,6 +140,9 @@
 .ocjeni button:hover {
   color: black;
 }
+.prijavi button:hover {
+  color: black;
+}
 .centeredDiv {
   margin-top: 20px;
   display: flex;
@@ -128,6 +160,15 @@
   justify-content: center;
   align-items: center; /* Poravnanje vertikalno na sredinu */
   flex-direction: column; /* Elementi se redaju jedan ispod drugog */
+}
+.poruka {
+  color: red;
+  padding: 10px;
+}
+.outerDiv {
+  gap: 40px;
+  display: flex;
+  align-items: center;
 }
 .dogadjaji {
   display: flex;

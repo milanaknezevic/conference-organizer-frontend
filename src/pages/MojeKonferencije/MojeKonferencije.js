@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { fetchKonferecnijePosjetioca } from "../../redux/features/posjetilacSlice";
+import { fetchKonferecnijeModeratora } from "../../redux/features/moderatorSlice";
 import classes from "./MojeKonferencije.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setKonferencijePosjetioca } from "../../redux/features/posjetilacSlice";
+import { setKonferencijeModeratora } from "../../redux/features/moderatorSlice";
 import OcjenaModal from "../OcjenaModal/OcjenaModal";
 import DodajOcjenu from "../OcjenaModal/DodajOcjenu";
+import Resursi from "../Resursi/Resursi";
+
 const MojeKonferencije = () => {
   const rez = useSelector((state) => state.login);
   const user = rez.user;
@@ -15,6 +19,8 @@ const MojeKonferencije = () => {
   const [showModalZaOcjenu, setShowModalZaOcjenu] = useState(false);
   const [showOcjeniModal, setShowOcjeniModal] = useState(false);
   const [dogadjajZaOcjenu, setDogadjajZaOcjenu] = useState({});
+  const [dogadjajZaResurse, setDogadjajZaResurse] = useState({});
+  const [showModalZaResurse, setShowModalZaResurse] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -37,7 +43,26 @@ const MojeKonferencije = () => {
           console.log("response", response);
         })
         .catch((error) => {});
+    } else if (user.rola === "MODERATOR") {
+      console.log("user je posjetilac", user.rola);
+      console.log("token", token);
+      console.log("user id", user.id);
+      dispatch(
+        fetchKonferecnijeModeratora({
+          token: token,
+          idModeratora: user.id,
+        })
+      )
+        .then((response) => {
+          dispatch(setKonferencijeModeratora(response.payload)); // Ažurirajte stanje pomoću akcije setKonferencije
+          setKonferencije(response.payload);
+          console.log("response", response);
+        })
+        .catch((error) => {});
+    } else {
+      console.log("Error rola nije podrzana");
     }
+    console.log("Moje konferencije, ovde bi trebalo da se ponovo dohvae");
   }, [dispatch, token, refreshKey, user]);
 
   const formatirajDatum = (datum) => {
@@ -51,7 +76,12 @@ const MojeKonferencije = () => {
     const formattedDate = new Date(datum).toLocaleString("en-US", options);
     return formattedDate;
   };
-
+  const handlePrikaziModalZaResurse = (dogadjaj) => {
+    //setKonferencijaZaBrisanje(konferencija);
+    console.log("prikazi");
+    setDogadjajZaResurse(dogadjaj);
+    setShowModalZaResurse(true); // Postavite showModal na true kada se pritisne dugme za brisanje
+  };
   const handlePrikaziDogadjaje = (konferencija) => {
     if (selectedKonferencija === konferencija) {
       setSelectedKonferencija(null);
@@ -72,9 +102,14 @@ const MojeKonferencije = () => {
     setShowOcjeniModal(true); // Postavite showModal na true kada se pritisne dugme za brisanje
   };
   const handleClose = () => {
+    setShowModalZaResurse(false);
     setShowModalZaOcjenu(false);
     setShowOcjeniModal(false);
     setRefreshKey((prevKey) => prevKey + 1);
+    console.log(
+      "Nalazim se u onClose() i refresh key je ovo su moje konferenicje",
+      refreshKey
+    );
   };
 
   let konferencijeList;
@@ -88,11 +123,11 @@ const MojeKonferencije = () => {
               <span> {konferencija.naziv}</span>
             </div>
             <div className="underline">
-              <span className={classes.poljaColor}>Start Time:</span>{" "}
+              <span className={classes.poljaColor}>Početak:</span>{" "}
               <span> {formatirajDatum(konferencija.startTime)}</span>
             </div>
             <div className="underline">
-              <span className={classes.poljaColor}>End Time:</span>{" "}
+              <span className={classes.poljaColor}>Kraj:</span>{" "}
               <span> {formatirajDatum(konferencija.endTime)}</span>
             </div>
             <div className="underline">
@@ -105,10 +140,12 @@ const MojeKonferencije = () => {
                 <span> {konferencija.url}</span>
               </div>
             )}
-            <div className="underline">
-              <span className={classes.poljaColor}>Adresa:</span>{" "}
-              <span> {konferencija.lokacija?.adresa}</span>
-            </div>
+            {konferencija.lokacija && (
+              <div className="underline">
+                <span className={classes.poljaColor}>Adresa:</span>{" "}
+                <span> {konferencija.lokacija?.adresa}</span>
+              </div>
+            )}
             <div className="underline">
               <span className={classes.poljaColor}>Ocjene:</span>{" "}
               <span
@@ -148,13 +185,11 @@ const MojeKonferencije = () => {
                           <span>{dogadjaj.naziv}</span>
                         </div>
                         <div className="underline">
-                          <span className={classes.poljaColor}>
-                            Start Time:
-                          </span>{" "}
+                          <span className={classes.poljaColor}>Početak:</span>{" "}
                           <span>{formatirajDatum(dogadjaj.startTime)}</span>
                         </div>
                         <div className="underline">
-                          <span className={classes.poljaColor}>End Time:</span>{" "}
+                          <span className={classes.poljaColor}>Kraj:</span>{" "}
                           <span>{formatirajDatum(dogadjaj.endTime)}</span>
                         </div>
                         {dogadjaj.url && (
@@ -163,9 +198,34 @@ const MojeKonferencije = () => {
                             <span>{dogadjaj.url}</span>
                           </div>
                         )}
+                        {dogadjaj.soba && (
+                          <div className="underline">
+                            <span className={classes.poljaColor}>
+                              Prostorija:
+                            </span>{" "}
+                            <span>{dogadjaj.soba.naziv}</span>
+                          </div>
+                        )}
+                        <div className="underline">
+                          <span className={classes.poljaColor}>
+                            Tip Dogadjaja:
+                          </span>{" "}
+                          <span>{dogadjaj.tipDogadjaja.naziv}</span>
+                        </div>
                         <div className="underline">
                           <span className={classes.poljaColor}>Moderator:</span>{" "}
                           <span>{dogadjaj.korisnik.naziv}</span>
+                        </div>
+                        <div className="underline">
+                          <span className={classes.poljaColor}>Resursi:</span>{" "}
+                          <span
+                            className={classes.ocjene}
+                            onClick={() =>
+                              handlePrikaziModalZaResurse(dogadjaj)
+                            }
+                          >
+                            Resursi
+                          </span>
                         </div>
                       </div>
                     </li>
@@ -202,6 +262,13 @@ const MojeKonferencije = () => {
             arg={dogadjajZaOcjenu}
             show={showOcjeniModal}
             korisnik={rez}
+          />
+        )}
+        {showModalZaResurse && (
+          <Resursi
+            onClose={handleClose}
+            dogadjaj={dogadjajZaResurse}
+            show={showModalZaResurse}
           />
         )}
       </div>

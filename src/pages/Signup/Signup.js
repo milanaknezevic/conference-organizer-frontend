@@ -8,6 +8,7 @@ const Signup = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,37 +20,48 @@ const Signup = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const data = {
-      username: username,
-      password: password,
-      naziv: name,
-      email: email,
-      rola: 3,
-    };
+    if (username === "" || email === "" || name === "" || password === "") {
+      setError(true);
+      setMessage("Popunite sva polja.");
+    } else {
+      console.log("sva polja popunjena");
+      const data = {
+        username: username,
+        password: password,
+        naziv: name,
+        email: email,
+        rola: 3,
+      };
 
-    console.log(data);
+      console.log(data);
 
-    dispatch(registrujSe(data))
-      .then((response) => {
-        console.log("Login response", response);
-        setRegistrationSuccess(true);
-      })
-      .catch((error) => {
-        console.error("Došlo je do greške prilikom slanja zahtjeva:", error);
-        setError(true);
-        setPassword("");
-        setUsername("");
-        setName("");
-        setEmail("");
-      });
+      dispatch(registrujSe(data))
+        .then((response) => {
+          console.log("Login response", response);
+          setRegistrationSuccess(true);
+        })
+        .catch((error) => {
+          console.error("Došlo je do greške prilikom slanja zahtjeva:", error);
+          setRegistrationSuccess(false);
+          console.log("register succ", registrationSuccess);
+          setError(true);
+          setMessage(
+            "Došlo je do greške prilikom registracije. Pokušajte ponovo."
+          );
+          setPassword("");
+          setUsername("");
+          setName("");
+          setEmail("");
+        });
+    }
   };
 
   useEffect(() => {
     if (registrationSuccess) {
-      alert("Registracija je uspješna.");
+      // alert("Registracija je uspješna.");
       const timer = setTimeout(() => {
         navigate("/");
-      }, 1000); // Preusmjeravanje nakon 1 sekunde
+      }, 2000); // Preusmjeravanje nakon 1 sekunde
 
       return () => clearTimeout(timer);
     }
@@ -59,17 +71,20 @@ const Signup = (props) => {
     <div className="App">
       <div className="auth-form-container">
         <h2>Registruj se</h2>
-        {error && (
-          <p className="error-message">
-            Došlo je do greške prilikom registracije. Pokušajte ponovo.
-          </p>
+        {error && <p className="error-message">{message}</p>}
+        {registrationSuccess && (
+          <p className="succesMessage">Uspješno ste se registrovali!</p>
         )}
 
         <form className="register-form" onSubmit={handleSubmit}>
           <label htmlFor="name">Ime</label>
           <input
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              setError(false);
+              setMessage(false);
+            }}
             type="text"
             placeholder="Ime"
             id="name"
@@ -79,7 +94,11 @@ const Signup = (props) => {
           <label htmlFor="email">Email</label>
           <input
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError(false);
+              setMessage(false);
+            }}
             type="email"
             placeholder="tvojemail@gmail.com"
             id="email"
@@ -89,7 +108,11 @@ const Signup = (props) => {
           <label htmlFor="username">Korisničko ime</label>
           <input
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              setError(false);
+              setMessage(false);
+            }}
             type="text"
             placeholder="Korisničko ime"
             id="username"
@@ -99,7 +122,10 @@ const Signup = (props) => {
           <label htmlFor="password">Lozinka</label>
           <input
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError(false);
+            }}
             type="password"
             placeholder="********"
             id="password"
