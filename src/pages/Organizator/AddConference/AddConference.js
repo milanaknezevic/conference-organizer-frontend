@@ -203,7 +203,7 @@ const AddConference = (props) => {
   };
   const handleSpremiDogadjaj = () => {
     if (
-      resursSacuvan === false ||
+      (lokacijaKonfChecked === true && resursSacuvan === false) ||
       imeDOgadjaja === "" ||
       startTimeDogadjaja === "" ||
       endTimeDogadjaja === "" ||
@@ -258,7 +258,7 @@ const AddConference = (props) => {
       startTimeKonferencije === "" ||
       endTimeKonferencija === "" ||
       dogadjajSacuvan === false ||
-      resursSacuvan === false
+      (lokacijaKonfChecked === true && resursSacuvan === false)
     ) {
       console.log("nistaa");
       setShowErrorMessZaResurs(true);
@@ -326,7 +326,11 @@ const AddConference = (props) => {
     <Modal>
       <div className={`${classes.userDetailsContainer} ${classes.scrollable}`}>
         <h2>Nova konferencija</h2>
-        {showErrorMess && <p>Oznacite url ili lokaciju konferencije!</p>}
+        {showErrorMess && (
+          <p style={{ color: "red" }}>
+            Oznacite url ili lokaciju konferencije!
+          </p>
+        )}
         <div className={classes.konfDetails}>
           <div className={classes.formRow}>
             <div className={classes.formLabelIme}>
@@ -595,7 +599,7 @@ const AddConference = (props) => {
                     id="tipD"
                     name="tipD"
                   >
-                    <option value="">Odaberi Tip DOgadjaja</option>
+                    <option value="">Odaberi Tip Dogadjaja</option>
                     {tipovi_dogadjaja?.map((tip) => (
                       <option key={tip.id} value={tip.id}>
                         {tip.naziv}
@@ -690,12 +694,12 @@ const AddConference = (props) => {
         </div>
         {showErrorMessZaResurs && (
           <div>
-            <p>{errorMessage}</p>
+            <p style={{ color: "red" }}>{errorMessage}</p>
           </div>
         )}
         <div className={classes.buttonContainer}>
-          <button onClick={handleSave}>Da</button>
-          <button onClick={onClose}>Ne</button>
+          <button onClick={handleSave}>Sačuvaj</button>
+          <button onClick={onClose}>Odustani</button>
         </div>
       </div>
     </Modal>

@@ -76,7 +76,7 @@ const Edit = (props) => {
 
         <div className="button-container">
           <button className={classes.button} onClick={handleSave}>
-            Sacuvaj
+            Sačuvaj
           </button>
           <button className={classes.button} onClick={onClose}>
             Zatvori

@@ -3,6 +3,7 @@ import {
   getAllKonferencijeZaPosjetioca,
   addOcjenu,
   addPosjetioca,
+  filtrirajKonferencijePosjetilac,
 } from "../../services/posjetilac.service";
 
 export const fetchKonferecnijePosjetioca = createAsyncThunk(
@@ -12,7 +13,17 @@ export const fetchKonferecnijePosjetioca = createAsyncThunk(
     return response;
   }
 );
-
+export const fetchFilterKonferencijePosjetioca = createAsyncThunk(
+  "konferencije/posjetilac/filter",
+  async ({ token, idPosjetioca, data }) => {
+    const response = await filtrirajKonferencijePosjetilac(
+      token,
+      idPosjetioca,
+      data
+    );
+    return response;
+  }
+);
 export const dodajOcjenu = createAsyncThunk(
   "posjetilac/add_ocjena",
   async ({ token, ocjenaRequest }) => {
@@ -76,6 +87,18 @@ const posjetilacSlice = createSlice({
       state.error = null;
     },
     [dodajPosjetioca.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [fetchFilterKonferencijePosjetioca.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [fetchFilterKonferencijePosjetioca.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.konferencijePosjetioca = action.payload;
+    },
+    [fetchFilterKonferencijePosjetioca.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },

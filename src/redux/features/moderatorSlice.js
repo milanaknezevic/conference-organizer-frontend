@@ -1,10 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getAllKonferencijeZaModeratora } from "../../services/moderator.service";
-
+import { filtrirajKonferencijeModerator } from "../../services/moderator.service";
 export const fetchKonferecnijeModeratora = createAsyncThunk(
   "moderator/konferencije",
   async ({ token, idModeratora }) => {
     const response = await getAllKonferencijeZaModeratora(token, idModeratora);
+    return response;
+  }
+);
+export const fetchFilterKonferencijeModeratora = createAsyncThunk(
+  "konferencije/moderator/filter",
+  async ({ token, idModeratora, data }) => {
+    const response = await filtrirajKonferencijeModerator(
+      token,
+      idModeratora,
+      data
+    );
     return response;
   }
 );
@@ -32,6 +43,19 @@ const moderatorSlice = createSlice({
       state.error = null;
     },
     [fetchKonferecnijeModeratora.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [fetchFilterKonferencijeModeratora.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [fetchFilterKonferencijeModeratora.fulfilled]: (state, action) => {
+      state.konferencijeModeratora = action.payload;
+
+      state.loading = false;
+      state.error = null;
+    },
+    [fetchFilterKonferencijeModeratora.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },

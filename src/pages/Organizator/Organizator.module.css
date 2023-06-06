@@ -2,6 +2,7 @@
   display: flex;
   list-style: none;
   width: 600px;
+  min-height: 350px;
   border-radius: 10px;
   padding: 10px;
   margin-top: 1rem;
@@ -21,10 +22,21 @@
   z-index: -1;
   border-radius: 10px;
 }
+.qrCodeContainer {
+  position: absolute;
+  top: 6rem;
+  right: 0.2rem;
+}
+.qrCodeContainerPosjetilac {
+  position: absolute;
+  top: 7rem;
+  right: 0.2rem;
+}
 .ocjene {
-  color: #5b2f9f;
+  color: black;
   height: 20px;
   margin-left: 10px;
+  font-style: italic;
   text-decoration: underline;
 }
 .ocjene:hover {
@@ -42,13 +54,49 @@
   align-items: flex-end;
   /* Add equal spacing between buttons */
 }
+.buttonc {
+  position: absolute;
+
+  top: 20rem;
+  right: 0.2rem;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  /* Add equal spacing between buttons */
+}
 .buttons button {
   width: 100%;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+}
+.pretraga {
+  margin-top: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
 }
 .pom {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+}
+.glavni {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: -100px;
+}
+.pom2 {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  margin-left: 2000px; /* Prilagodite vrednost za željeni razmak */
 }
 .prikaziDogađajeButton {
   width: 100%;
@@ -104,7 +152,6 @@
 
 .organizatorContainer {
   display: flex;
-
   justify-content: center;
   align-items: center; /* Poravnanje vertikalno na sredinu */
   flex-direction: column; /* Elementi se redaju jedan ispod drugog */

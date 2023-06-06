@@ -6,6 +6,7 @@
   justify-content: center;
   color: white;
   background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  /*background-image: linear-gradient(79deg, #00f, #f0f 48%, #0ff);*/
 }
 
 .FirstPage {
@@ -109,7 +110,7 @@ body {
   color: red;
 }
 .succesMessage {
-  color: #f0f0f0;
+  color: red;
 }
 
 .headerContainer {

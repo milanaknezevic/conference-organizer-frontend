@@ -1,7 +1,8 @@
 .organizator {
   display: flex;
   list-style: none;
-  width: 600px;
+  min-width: 650px;
+  min-height: 350px;
   border-radius: 10px;
   padding: 10px;
   margin-top: 1rem;
@@ -21,10 +22,20 @@
   z-index: -1;
   border-radius: 10px;
 }
-
-.buttons {
+.qrCodeContainer {
   position: absolute;
-  top: 5rem;
+  top: 6rem;
+  right: 0.2rem;
+}
+.qrCodeContainerPosjetilac {
+  position: absolute;
+  top: 8rem;
+  right: 1rem;
+}
+
+.ocjeni {
+  position: absolute;
+  top: 2rem;
   right: 1rem;
   transform: translateY(-50%);
   display: flex;
@@ -33,74 +44,65 @@
   align-items: flex-end;
   gap: 10px; /* Add equal spacing between buttons */
 }
-.buttons button {
+.ocjeni button {
+  font-size: 15px;
   width: 100%;
+  background-color: transparent;
 }
-.ocjeni {
+.ocjene {
+  color: black;
+  height: 20px;
+  margin-left: 10px;
+  font-style: italic;
+  text-decoration: underline;
+}
+.ocjene:hover {
+  color: blue;
+}
+.buttons {
   position: absolute;
+
   top: 2rem;
+  right: 1rem;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  /* Add equal spacing between buttons */
+}
+.buttonc {
+  position: absolute;
+
+  top: 20rem;
   right: 0.2rem;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-  gap: 10px; /* Add equal spacing between buttons */
+  /* Add equal spacing between buttons */
 }
-.pretraga {
-  margin-top: 5.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-}
-.ocjeni button {
-  font-size: 15px;
+.buttons button {
   width: 100%;
-  background-color: transparent;
 }
-.prijavi {
-  margin-right: 0.1rem;
-  width: 40px;
-}
-.plus {
-  font-size: 25px;
-  color: cornflowerblue;
-  margin-right: 30px;
-}
-.plus:hover {
-  font-size: 25px;
-  color: purple;
-  margin-right: 30px;
-}
-.zaDiv {
+.container {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: center;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
 }
-.prijavi button {
-  font-size: 15px;
-  width: 100%;
-  background-color: transparent;
-}
-.ocjene {
-  color: #5b2f9f;
-  height: 20px;
-  margin-left: 10px;
-  text-decoration: underline;
-}
-.ocjene:hover {
-  color: blue;
-}
+
 .pom {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+}
+.pom2 {
+  display: flex;
+  max-width: 20px;
+  flex-direction: column;
+  align-items: stretch;
+  display: flex;
+  flex-grow: 1;
 }
 .prikaziDogađajeButton {
   width: 100%;
@@ -123,17 +125,17 @@
   align-items: center;
 }
 .editButton:hover {
-  background-color: #5b2f9f;
   color: black;
 }
 .editButton {
   color: purple;
-  background-color: white; /* Set the background color to red */
+  background-color: transparent; /* Set the background color to red */
+  height: 20px;
 }
 .deleteButton {
   color: purple;
-  background-color: white; /* Set the background color to red */
-  /* Set the background color to red */
+  background-color: transparent;
+  height: 20px;
 }
 .poljaColor {
   color: black;
@@ -141,14 +143,7 @@
   font-size: 2ch;
 }
 .deleteButton:hover {
-  color: white;
-  background-color: red; /* Set the hover background color to a darker shade of red */
-}
-.ocjeni button:hover {
-  color: black;
-}
-.prijavi button:hover {
-  color: black;
+  color: red;
 }
 .centeredDiv {
   margin-top: 20px;
@@ -156,26 +151,15 @@
   justify-content: center;
   align-items: center;
   width: 80%;
-  margin-left: 80px;
-  min-height: 400px; /* Prilagodite visinu prema potrebi */
+  margin-left: 20px;
   text-align: center;
 }
 
 .organizatorContainer {
   display: flex;
-
   justify-content: center;
   align-items: center; /* Poravnanje vertikalno na sredinu */
   flex-direction: column; /* Elementi se redaju jedan ispod drugog */
-}
-.poruka {
-  color: red;
-  padding: 10px;
-}
-.outerDiv {
-  gap: 40px;
-  display: flex;
-  align-items: center;
 }
 .dogadjaji {
   display: flex;
@@ -204,26 +188,9 @@
   justify-content: center;
 }
 .stilZaH2 {
-  margin-top: 3rem;
-  display: flex; /* Postavljanje fleksibilnog kontejnera */
-  align-items: center;
-  display: inline-block;
-  justify-content: center;
+  margin-top: 8rem;
+  text-align: center;
 }
-.glavni {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: -100px;
-}
-
-/* za dvije kolone .organizatorContainer {
-  margin-top: 6rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Raspored dva stupca jednake širine */
-/*  grid-gap: 20px; /* Razmak između dva stupca */
-/*}
-*/
 
 .topSection {
   flex: 1; /* Gornji dio će zauzeti 1/3 visine */

@@ -14,7 +14,7 @@ import UserDetails from "./pages/UserDetails/UserDetails";
 import Posjetilac from "./pages/Posjetilac/Posjetilac";
 import MojeKonferencije from "./pages/MojeKonferencije/MojeKonferencije";
 import Moderator from "./pages/Moderator/Moderator";
-
+import NotFound from "./pages/NotFound/NotFound";
 function App() {
   return (
     <div>
@@ -30,6 +30,7 @@ function App() {
             <Route path="posjetilac" element={<Posjetilac />} />
             <Route path="moje_konferencije" element={<MojeKonferencije />} />
             <Route path="user_details" element={<UserDetails />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </Router>

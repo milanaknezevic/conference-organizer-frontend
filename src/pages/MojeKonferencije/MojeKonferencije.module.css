@@ -34,6 +34,19 @@
   width: 100%;
   background-color: transparent;
 }
+.glavni {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: -100px;
+}
+.pretraga {
+  margin-top: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
 .organizator::before {
   content: "";
   position: absolute;

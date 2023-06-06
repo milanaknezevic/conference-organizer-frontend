@@ -15,9 +15,13 @@ import { setKonferencijeRedux } from "../../redux/features/organizatorSlice";
 import AddConference from "./AddConference/AddConference";
 import UrediKonferenciju from "./UrediKonferenciju/UrediKonferenciju";
 import Posjetioci from "../Posjetioci/Posjetioci";
-import { Pencil, Trash } from "react-bootstrap-icons";
 import Resursi from "../Resursi/Resursi";
 import OcjenaModal from "../OcjenaModal/OcjenaModal";
+import Konferencija from "../Konferencija/Konferencija";
+import FilterComponent from "../../components/Pretrage/Status/FilterComponent";
+import DateComponent from "../../components/Pretrage/Datum/DateComponent";
+import SearchComponent from "../../components/Pretrage/Naziv/SearchComponent";
+import { fetchFilterKonferencije } from "../../redux/features/userSlice";
 
 const Organizator = () => {
   const user = useSelector((state) => state.login);
@@ -38,17 +42,48 @@ const Organizator = () => {
   const [showModalZaResurse, setShowModalZaResurse] = useState(false);
   const [showModalZaOcjenu, setShowModalZaOcjenu] = useState(false);
   const [dogadjajZaOcjenu, setDogadjajZaOcjenu] = useState({});
+  const [nazivZaPretragu, setNazivZaPretragu] = useState(null);
+  const [statusZaPretragu, setStatusZaPretragu] = useState(null);
+  const [startTimeZaPretragu, setStartTimeZaPretragu] = useState(null);
+  const [endTimeZaPretragu, setEndTimeZaPretragu] = useState(null);
 
-  //const navigate = useNavigate();
-
-  useEffect(() => {
+  /*useEffect(() => {
     dispatch(fetchKonferecnije(token))
       .then((response) => {
-        dispatch(setKonferencijeRedux(response.payload)); // Ažurirajte stanje pomoću akcije setKonferencije
+        dispatch(setKonferencijeRedux(response.payload));
+        setKonferencije(response.payload);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [dispatch, token, refreshKey]);*/
+  useEffect(() => {
+    const data = {
+      status: statusZaPretragu,
+      start: startTimeZaPretragu,
+      end: endTimeZaPretragu,
+      naziv: nazivZaPretragu,
+    };
+    console.log("podaci za bekend", data);
+    dispatch(fetchFilterKonferencije({ token: token, data: data }))
+      .then((response) => {
+        console.log("responseee", response);
         setKonferencije(response.payload);
       })
       .catch((error) => {});
-  }, [dispatch, token, refreshKey]);
+    console.log("na  svaku pormjenu zovi bekend");
+    console.log("nazivZaPretragu:", nazivZaPretragu);
+    console.log("startTimeZaPretragu:", startTimeZaPretragu);
+    console.log("endTimeZaPretragu:", endTimeZaPretragu);
+    console.log("statusZaPretragu:", statusZaPretragu);
+  }, [
+    nazivZaPretragu,
+    startTimeZaPretragu,
+    endTimeZaPretragu,
+    statusZaPretragu,
+    token,
+    refreshKey,
+  ]);
 
   useEffect(() => {
     dispatch(fetchTipoviDogadjaja(token))
@@ -86,6 +121,7 @@ const Organizator = () => {
     setShowEditModal(false);
     setShowPosjetiociModal(false);
   };
+
   const handleAddConference = () => {
     setshowAddModal(true);
   };
@@ -107,6 +143,7 @@ const Organizator = () => {
   };
 
   const handleObrisi = (konferencija) => {
+    console.log("obrisi", konferencija);
     setKonferencijaZaBrisanje(konferencija);
     setShowModal(true); // Postavite showModal na true kada se pritisne dugme za brisanje
   };
@@ -145,159 +182,61 @@ const Organizator = () => {
     setShowModalZaOcjenu(true); // Postavite showModal na true kada se pritisne dugme za brisanje
   };
 
-  let konferencijeList;
-  if (konferencije && konferencije.length > 0) {
-    konferencijeList = konferencije.map((konferencija) => (
-      <div className={classes.organizatorContainer}>
-        <li key={konferencija.id} className={classes.organizator}>
-          <div className={classes.pom}>
-            <div className="underline">
-              <span className={classes.poljaColor}>Naziv:</span>{" "}
-              <span> {konferencija.naziv}</span>
-            </div>
-            <div className="underline">
-              <span className={classes.poljaColor}>Početak:</span>{" "}
-              <span> {formatirajDatum(konferencija.startTime)}</span>
-            </div>
-            <div className="underline">
-              <span className={classes.poljaColor}>Kraj:</span>{" "}
-              <span> {formatirajDatum(konferencija.endTime)}</span>
-            </div>
-            <div className="underline">
-              <span className={classes.poljaColor}>Status:</span>{" "}
-              <span> {konferencija.status ? "Zavrsena" : "Aktivna"}</span>
-            </div>
-            {konferencija.url && (
-              <div className="underline">
-                <span className={classes.poljaColor}>URL:</span>{" "}
-                <span> {konferencija.url}</span>
-              </div>
-            )}
-            {konferencija.lokacija && (
-              <div className="underline">
-                <span className={classes.poljaColor}>Adresa:</span>{" "}
-                <span> {konferencija.lokacija?.adresa}</span>
-              </div>
-            )}
-            <div className="underline">
-              <span className={classes.poljaColor}>Ocjene:</span>{" "}
-              <span
-                className={classes.ocjene}
-                onClick={() => handlePrikaziModalZaOcjenu(konferencija)}
-              >
-                Ocjene
-              </span>
-            </div>
-            <div className={classes.divZaButton}>
-              <button
-                onClick={() => handlePrikaziDogadjaje(konferencija)}
-                className={classes.prikaziDogađajeButton}
-              >
-                {selectedKonferencija === konferencija
-                  ? "Sakrij događaje"
-                  : "Prikaži događaje"}
-              </button>
-            </div>
-            {selectedKonferencija === konferencija && (
-              <ul>
-                {konferencija.dogadjajs.length > 0 ? (
-                  konferencija.dogadjajs.map((dogadjaj) => (
-                    <li key={dogadjaj.id} className={classes.dogadjaji}>
-                      <div>
-                        <div className={classes.eventInfo}>
-                          <span className={classes.poljaColor}>
-                            Naziv događaja:
-                          </span>{" "}
-                          <span>{dogadjaj.naziv}</span>
-                        </div>
-                        <div className="underline">
-                          <span className={classes.poljaColor}>Početak:</span>{" "}
-                          <span>{formatirajDatum(dogadjaj.startTime)}</span>
-                        </div>
-                        <div className="underline">
-                          <span className={classes.poljaColor}>Kraj:</span>{" "}
-                          <span>{formatirajDatum(dogadjaj.endTime)}</span>
-                        </div>
-                        {dogadjaj.url && (
-                          <div className="underline">
-                            <span className={classes.poljaColor}>URL:</span>{" "}
-                            <span>{dogadjaj.url}</span>
-                          </div>
-                        )}
-                        {dogadjaj.soba && (
-                          <div className="underline">
-                            <span className={classes.poljaColor}>
-                              Prostorija:
-                            </span>{" "}
-                            <span>{dogadjaj.soba.naziv}</span>
-                          </div>
-                        )}
-                        <div className="underline">
-                          <span className={classes.poljaColor}>
-                            Tip Dogadjaja:
-                          </span>{" "}
-                          <span>{dogadjaj.tipDogadjaja.naziv}</span>
-                        </div>
-                        <div className="underline">
-                          <span className={classes.poljaColor}>Moderator:</span>{" "}
-                          <span>{dogadjaj.korisnik.naziv}</span>
-                        </div>
-                        <div className="underline">
-                          <span className={classes.poljaColor}>Resursi:</span>{" "}
-                          <span
-                            className={classes.ocjene}
-                            onClick={() =>
-                              handlePrikaziModalZaResurse(dogadjaj)
-                            }
-                          >
-                            Resursi
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => handlePrikaziPosjetioceModal(dogadjaj)}
-                          className={classes.prikaziDogađajeButton}
-                        >
-                          {selectedDogadjaj === dogadjaj
-                            ? "Sakrij posjetioce"
-                            : "Prikaži posjetioce"}
-                        </button>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <p className={classes.praznaLista}>Nema dogadjaja!</p>
-                )}
-              </ul>
-            )}
-          </div>
-          <div className={classes.buttons}>
-            <button
-              className={classes.editButton}
-              onClick={() => handleUredi(konferencija)}
-            >
-              <Pencil /> Uredi
-            </button>
-            <button
-              className={classes.deleteButton}
-              onClick={() => handleObrisi(konferencija)}
-            >
-              <Trash /> Obrisi
-            </button>
-          </div>
-        </li>
-      </div>
-    ));
-  } else {
-    konferencijeList = <li>Nema konferencija</li>;
-  }
   const handleSaveObrisi = () => {
     setRefreshKey((prevKey) => prevKey + 1);
   };
+  const handleChange = (value) => {
+    setStatusZaPretragu(value);
+  };
+  const onSearch = (value) => {
+    setNazivZaPretragu(value);
+  };
+  const handleDateChange = (dates, dateStrings) => {
+    if (dates) {
+      const [startDate, endDate] = dates;
+      setStartTimeZaPretragu(startDate.toDate());
+      setEndTimeZaPretragu(endDate.toDate());
+      console.log("Početni datum:", startDate.toDate());
+      console.log("Završni datum:", endDate.toDate());
+    } else {
+      console.log("Nije odabran nijedan datum.");
+      setStartTimeZaPretragu(null);
+      setEndTimeZaPretragu(null);
+    }
+  };
   return (
-    <div>
+    <div className={classes.glavni}>
+      <div className={classes.pretraga}>
+        <SearchComponent onSearch={onSearch} />
+        <FilterComponent handleChange={handleChange} />
+        <DateComponent handleDateChange={handleDateChange} />
+      </div>
       <h2 className={classes.stilZaH2}>Konferencije</h2>
       <div className={classes.centeredDiv}>
-        <ul>{konferencijeList}</ul>
+        <ul>
+          {konferencije && konferencije.length > 0 ? (
+            konferencije.map((konferencija) => (
+              <div>
+                {" "}
+                <Konferencija
+                  key={konferencija.id}
+                  konferencija={konferencija}
+                  classes={classes}
+                  formatirajDatum={formatirajDatum}
+                  handlePrikaziModalZaOcjenu={handlePrikaziModalZaOcjenu}
+                  handlePrikaziDogadjaje={handlePrikaziDogadjaje}
+                  selectedKonferencija={selectedKonferencija}
+                  handleUredi={handleUredi}
+                  handleObrisi={handleObrisi}
+                  handlePrikaziModalZaResurse={handlePrikaziModalZaResurse}
+                  handlePrikaziPosjetioceModal={handlePrikaziPosjetioceModal}
+                />
+              </div>
+            ))
+          ) : (
+            <li>Nema konferencija</li>
+          )}
+        </ul>
         {showModal && (
           <Obrisi
             onClose={handleClose}

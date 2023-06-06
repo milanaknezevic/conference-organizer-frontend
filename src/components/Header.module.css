@@ -5,7 +5,7 @@
   width: 100%;
   height: 5rem;
   color: white;
-  background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
+  background-image: linear-gradient(79deg, #0ff, #f0f 48%, #00f);
   display: flex;
   justify-content: space-between;
   align-items: center;

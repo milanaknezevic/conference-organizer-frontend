@@ -52,11 +52,19 @@ export const odjaviSe = (ulogovan) => {
   userService.odjaviKorisnika();
   return { type: "korisnici/odjava", ulogovan: ulogovan };
 };
+export const fetchFilterKonferencije = createAsyncThunk(
+  "konferencije/filter",
+  async ({ token, data }) => {
+    const response = await userService.filtrirajKonferencije(token, data);
+    return response;
+  }
+);
 
 const userSlice = createSlice({
   name: "login",
   initialState: {
     ulogovan: false,
+    konferencijeFiltrirane: [],
     user: null,
   },
   reducers: {
@@ -111,6 +119,18 @@ const userSlice = createSlice({
       state.error = null;
     },
     [promjeniLozinku.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [fetchFilterKonferencije.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [fetchFilterKonferencije.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.konferencijeFiltrirane = action.payload;
+    },
+    [fetchFilterKonferencije.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },

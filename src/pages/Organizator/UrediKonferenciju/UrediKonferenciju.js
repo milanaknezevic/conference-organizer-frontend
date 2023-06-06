@@ -344,22 +344,24 @@ const UrediKonferenciju = (props) => {
             </div>
           </div>
 
-          <div className={classes.formRow}>
-            <div className={classes.formLabelIme}>
-              <label>
-                <strong>Url:</strong>
-              </label>
+          {konferencija.url && (
+            <div className={classes.formRow}>
+              <div className={classes.formLabelIme}>
+                <label>
+                  <strong>Url:</strong>
+                </label>
+              </div>
+              <div className={classes.formInputIme}>
+                <input
+                  value={urlKonferencije}
+                  onChange={handleUrlChanged}
+                  type="text"
+                  id="url"
+                  name="url"
+                />
+              </div>
             </div>
-            <div className={classes.formInputIme}>
-              <input
-                value={urlKonferencije}
-                onChange={handleUrlChanged}
-                type="text"
-                id="url"
-                name="url"
-              />
-            </div>
-          </div>
+          )}
 
           <div className={classes.dogadjajiHeader}>
             <span>Dogadjaji </span>
@@ -438,24 +440,30 @@ const UrediKonferenciju = (props) => {
                                 id="krajDogadjaja"
                                 name="krajDogadjaja"
                               />
-                            </div>
-                            <div className={classes.formRow}>
-                              <div className={classes.formLabelIme}>
-                                <label>
-                                  <strong>Url:</strong>
-                                </label>
-                              </div>
-                            </div>
-                            <div className={classes.formInputIme}>
-                              <input
-                                value={urlDogadjaja}
-                                onChange={(e) =>
-                                  handleUrlDOgadjajaChanged(e.target.value)
-                                }
-                                type="text"
-                                id="urlDogadjaja"
-                                name="urlDogadjaja"
-                              />
+                              {dogadjaj.url && (
+                                <div>
+                                  <div className={classes.formRow}>
+                                    <div className={classes.formLabelIme}>
+                                      <label>
+                                        <strong>Url:</strong>
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div className={classes.formInputIme}>
+                                    <input
+                                      value={urlDogadjaja}
+                                      onChange={(e) =>
+                                        handleUrlDOgadjajaChanged(
+                                          e.target.value
+                                        )
+                                      }
+                                      type="text"
+                                      id="urlDogadjaja"
+                                      name="urlDogadjaja"
+                                    />
+                                  </div>
+                                </div>
+                              )}
                             </div>
                             <div className={classes.formRowM}>
                               <div className={classes.formselectLabel}>
@@ -681,7 +689,7 @@ const UrediKonferenciju = (props) => {
                                 className={classes.buttonD}
                                 onClick={handleSpremiDogadjaj}
                               >
-                                Spremiiiiii
+                                Spremi
                               </button>
                               <button
                                 className={classes.buttonD}

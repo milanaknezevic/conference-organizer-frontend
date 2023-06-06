@@ -47,13 +47,6 @@
   align-items: flex-end;
   gap: 10px; /* Add equal spacing between buttons */
 }
-.pretraga {
-  margin-top: 5.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-}
 .ocjeni button {
   font-size: 15px;
   width: 100%;
@@ -66,7 +59,7 @@
 .plus {
   font-size: 25px;
   color: cornflowerblue;
-  margin-right: 30px;
+  margin-right: 40px;
 }
 .plus:hover {
   font-size: 25px;
@@ -173,7 +166,7 @@
   padding: 10px;
 }
 .outerDiv {
-  gap: 40px;
+  gap: 25px;
   display: flex;
   align-items: center;
 }
@@ -204,17 +197,8 @@
   justify-content: center;
 }
 .stilZaH2 {
-  margin-top: 3rem;
-  display: flex; /* Postavljanje fleksibilnog kontejnera */
-  align-items: center;
-  display: inline-block;
-  justify-content: center;
-}
-.glavni {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: -100px;
+  margin-top: 8rem;
+  text-align: center;
 }
 
 /* za dvije kolone .organizatorContainer {

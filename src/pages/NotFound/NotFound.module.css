@@ -1,0 +1,34 @@
+.container {
+  text-align: center;
+  margin-top: 15rem;
+}
+
+.zaH1 {
+  font-size: 150px;
+  color: #f0f;
+  margin: 0;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.zaP {
+  font-size: 24px;
+  color: #f0f;
+  margin-top: 20px;
+}
+
+.zaA {
+  display: inline-block;
+  font-size: 18px;
+  color: #fff;
+  background-color: #f0f;
+  padding: 10px 20px;
+  margin-top: 40px;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.zaA:hover {
+  background-color: #666;
+}

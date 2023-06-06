@@ -33,17 +33,6 @@ const Moderator = () => {
   const [succesMessage, setSuccesrMessage] = useState("");
   const dispatch = useDispatch();
 
-  //const navigate = useNavigate();
-
-  /* useEffect(() => {
-    dispatch(fetchKonferecnije(token))
-      .then((response) => {
-        dispatch(setKonferencijeRedux(response.payload)); // Ažurirajte stanje pomoću akcije setKonferencije
-        setKonferencije(response.payload);
-      })
-      .catch((error) => {});
-  }, [dispatch, token, refreshKey]);*/
-
   useEffect(() => {
     dispatch(fetchTipoviDogadjaja(token))
       .then((response) => {})

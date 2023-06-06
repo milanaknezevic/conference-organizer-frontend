@@ -9,13 +9,17 @@ import {
   fetchModeratori,
   fetchLokacije,
 } from "../../redux/features/organizatorSlice";
+import { fetchFilterKonferencije } from "../../redux/features/userSlice";
 import { setKonferencijeRedux } from "../../redux/features/organizatorSlice";
 import OcjenaModal from "../OcjenaModal/OcjenaModal";
 import DodajOcjenu from "../OcjenaModal/DodajOcjenu";
-import { PlusCircleFill, Filter, FilterSquare } from "react-bootstrap-icons";
 import moment from "moment";
 import { dodajPosjetioca } from "../../redux/features/posjetilacSlice";
 import Resursi from "../Resursi/Resursi";
+import Konferencija from "../Konferencija/Konferencija";
+import FilterComponent from "../../components/Pretrage/Status/FilterComponent";
+import DateComponent from "../../components/Pretrage/Datum/DateComponent";
+import SearchComponent from "../../components/Pretrage/Naziv/SearchComponent";
 
 const Posjetilac = () => {
   const user = useSelector((state) => state.login);
@@ -34,10 +38,14 @@ const Posjetilac = () => {
   const dispatch = useDispatch();
   const [dogadjajZaResurse, setDogadjajZaResurse] = useState({});
   const [showModalZaResurse, setShowModalZaResurse] = useState(false);
+  const [nazivZaPretragu, setNazivZaPretragu] = useState(null);
+  const [statusZaPretragu, setStatusZaPretragu] = useState(null);
+  const [startTimeZaPretragu, setStartTimeZaPretragu] = useState(null);
+  const [endTimeZaPretragu, setEndTimeZaPretragu] = useState(null);
 
   //const navigate = useNavigate();
 
-  useEffect(() => {
+  /* useEffect(() => {
     dispatch(fetchKonferecnije(token))
       .then((response) => {
         dispatch(setKonferencijeRedux(response.payload)); // Ažurirajte stanje pomoću akcije setKonferencije
@@ -47,7 +55,7 @@ const Posjetilac = () => {
       .catch((error) => {});
     console.log("trebalo bi dohvatiti konferneicje ponovo");
   }, [dispatch, token, refreshKey]);
-
+*/
   useEffect(() => {
     dispatch(fetchTipoviDogadjaja(token))
       .then((response) => {})
@@ -155,173 +163,90 @@ const Posjetilac = () => {
     setRefreshKey((prevKey) => prevKey + 1);
     console.log("nalazim se u onClose() i refreshKey je", refreshKey);
   };
+  const handleChange = (value) => {
+    setStatusZaPretragu(value);
+  };
+  const onSearch = (value) => {
+    setNazivZaPretragu(value);
+  };
+  const handleDateChange = (dates, dateStrings) => {
+    if (dates) {
+      const [startDate, endDate] = dates;
+      setStartTimeZaPretragu(startDate.toDate());
+      setEndTimeZaPretragu(endDate.toDate());
+      console.log("Početni datum:", startDate.toDate());
+      console.log("Završni datum:", endDate.toDate());
+    } else {
+      console.log("Nije odabran nijedan datum.");
+      setStartTimeZaPretragu(null);
+      setEndTimeZaPretragu(null);
+    }
+  };
 
-  let konferencijeList;
-  if (konferencije && konferencije.length > 0) {
-    konferencijeList = konferencije.map((konferencija) => (
-      <div className={classes.organizatorContainer}>
-        <li key={konferencija.id} className={classes.organizator}>
-          <div className={classes.pom}>
-            <div className="underline">
-              <span className={classes.poljaColor}>Naziv:</span>{" "}
-              <span> {konferencija.naziv}</span>
-            </div>
-            <div className="underline">
-              <span className={classes.poljaColor}>Početak:</span>{" "}
-              <span> {formatirajDatum(konferencija.startTime)}</span>
-            </div>
-            <div className="underline">
-              <span className={classes.poljaColor}>Kraj:</span>{" "}
-              <span> {formatirajDatum(konferencija.endTime)}</span>
-            </div>
-            <div className="underline">
-              <span className={classes.poljaColor}>Status:</span>{" "}
-              <span> {konferencija.status ? "Zavrsena" : "Aktivna"}</span>
-            </div>
-            {konferencija.url && (
-              <div className="underline">
-                <span className={classes.poljaColor}>URL:</span>{" "}
-                <span> {konferencija.url}</span>
-              </div>
-            )}
-            {konferencija.lokacija && (
-              <div className="underline">
-                <span className={classes.poljaColor}>Adresa:</span>{" "}
-                <span> {konferencija.lokacija?.adresa}</span>
-              </div>
-            )}
-            <div className="underline">
-              <span className={classes.poljaColor}>Ocjene:</span>{" "}
-              <span
-                className={classes.ocjene}
-                onClick={() => handlePrikaziModalZaOcjenu(konferencija)}
-              >
-                Ocjene
-              </span>
-            </div>
-            <div className={classes.divZaButton}>
-              <button
-                onClick={() => handlePrikaziDogadjaje(konferencija)}
-                className={classes.prikaziDogađajeButton}
-              >
-                {selectedKonferencija === konferencija
-                  ? "Sakrij događaje"
-                  : "Prikaži događaje"}
-              </button>
-            </div>
-            <div className={classes.ocjeni}>
-              {konferencija.status === true && (
-                <button onClick={() => handleOcjeniModal(konferencija)}>
-                  Ocjeni
-                </button>
-              )}
-            </div>
-
-            {selectedKonferencija === konferencija && (
-              <ul>
-                {konferencija.dogadjajs.length > 0 ? (
-                  konferencija.dogadjajs.map((dogadjaj) => (
-                    <li key={dogadjaj.id} className={classes.dogadjaji}>
-                      <div className={classes.zaDiv}>
-                        <div className={classes.outerDiv}>
-                          <div className={classes.eventInfo}>
-                            <span className={classes.poljaColor}>
-                              Naziv događaja:
-                            </span>{" "}
-                            <span>{dogadjaj.naziv}</span>
-                          </div>
-                          <div className={classes.prijavi}>
-                            {konferencija.status === true && (
-                              <button
-                                title=" Prijavi se na događaj"
-                                onClick={() =>
-                                  handlePrijaviSeNaDogadjaj(dogadjaj)
-                                }
-                              >
-                                <PlusCircleFill className={classes.plus} />
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                        {prijavljeniDogadjaj?.id === dogadjaj.id &&
-                          showSucess && (
-                            <div className={classes.poruka}>
-                              {succesMessage}
-                            </div>
-                          )}
-                        {prijavljeniDogadjaj?.id === dogadjaj.id &&
-                          showError && (
-                            <div className={classes.poruka}>{errorMessage}</div>
-                          )}
-
-                        <div className="underline">
-                          <span className={classes.poljaColor}>Početak:</span>{" "}
-                          <span>{formatirajDatum(dogadjaj.startTime)}</span>
-                        </div>
-                        <div className="underline">
-                          <span className={classes.poljaColor}>Kraj:</span>{" "}
-                          <span>{formatirajDatum(dogadjaj.endTime)}</span>
-                        </div>
-                        {dogadjaj.url && (
-                          <div className="underline">
-                            <span className={classes.poljaColor}>URL:</span>{" "}
-                            <span>{dogadjaj.url}</span>
-                          </div>
-                        )}
-                        {dogadjaj.soba && (
-                          <div className="underline">
-                            <span className={classes.poljaColor}>
-                              Prostorija:
-                            </span>{" "}
-                            <span>{dogadjaj.soba.naziv}</span>
-                          </div>
-                        )}
-                        <div className="underline">
-                          <span className={classes.poljaColor}>
-                            Tip Dogadjaja:
-                          </span>{" "}
-                          <span>{dogadjaj.tipDogadjaja.naziv}</span>
-                        </div>
-                        <div className="underline">
-                          <span className={classes.poljaColor}>Moderator:</span>{" "}
-                          <span>{dogadjaj.korisnik.naziv}</span>
-                        </div>
-                        <div className="underline">
-                          <span className={classes.poljaColor}>Resursi:</span>{" "}
-                          <span
-                            className={classes.ocjene}
-                            onClick={() =>
-                              handlePrikaziModalZaResurse(dogadjaj)
-                            }
-                          >
-                            Resursi
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <p className={classes.praznaLista}>Nema dogadjaja!</p>
-                )}
-              </ul>
-            )}
-          </div>
-          <div className={classes.buttons}></div>
-        </li>
-      </div>
-    ));
-  } else {
-    konferencijeList = <li>Nema konferencija</li>;
-  }
-
+  useEffect(() => {
+    const data = {
+      status: statusZaPretragu,
+      start: startTimeZaPretragu,
+      end: endTimeZaPretragu,
+      naziv: nazivZaPretragu,
+    };
+    console.log("podaci za bekend", data);
+    dispatch(fetchFilterKonferencije({ token: token, data: data }))
+      .then((response) => {
+        console.log("responseee", response);
+        setKonferencije(response.payload);
+      })
+      .catch((error) => {});
+    console.log("na  svaku pormjenu zovi bekend");
+    console.log("nazivZaPretragu:", nazivZaPretragu);
+    console.log("startTimeZaPretragu:", startTimeZaPretragu);
+    console.log("endTimeZaPretragu:", endTimeZaPretragu);
+    console.log("statusZaPretragu:", statusZaPretragu);
+  }, [
+    nazivZaPretragu,
+    startTimeZaPretragu,
+    endTimeZaPretragu,
+    statusZaPretragu,
+    token,
+    refreshKey,
+  ]);
   return (
-    <div>
+    <div className={classes.glavni}>
+      <div className={classes.pretraga}>
+        <SearchComponent onSearch={onSearch} />
+        <FilterComponent handleChange={handleChange} />
+        <DateComponent handleDateChange={handleDateChange} />
+      </div>
       <h2 className={classes.stilZaH2}>Konferencije</h2>
-      <button>
-        <FilterSquare />
-      </button>
       <div className={classes.centeredDiv}>
-        <ul>{konferencijeList}</ul>
+        <ul>
+          {konferencije && konferencije.length > 0 ? (
+            konferencije.map((konferencija) => (
+              <div>
+                {" "}
+                <Konferencija
+                  key={konferencija.id}
+                  konferencija={konferencija}
+                  classes={classes}
+                  formatirajDatum={formatirajDatum}
+                  handlePrikaziModalZaOcjenu={handlePrikaziModalZaOcjenu}
+                  handlePrikaziDogadjaje={handlePrikaziDogadjaje}
+                  selectedKonferencija={selectedKonferencija}
+                  handlePrikaziModalZaResurse={handlePrikaziModalZaResurse}
+                  handleOcjeniModal={handleOcjeniModal}
+                  handlePrijaviSeNaDogadjaj={handlePrijaviSeNaDogadjaj}
+                  showSucess={showSucess}
+                  succesMessage={succesMessage}
+                  showError={showError}
+                  errorMessage={errorMessage}
+                  prijavljeniDogadjaj={prijavljeniDogadjaj}
+                />
+              </div>
+            ))
+          ) : (
+            <li>Nema konferencija</li>
+          )}
+        </ul>
         {showModalZaOcjenu && (
           <OcjenaModal
             onClose={handleClose}
