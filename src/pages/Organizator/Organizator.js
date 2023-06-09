@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  fetchKonferecnije,
-  fetchTipoviDogadjaja,
-} from "../../redux/features/organizatorSlice";
+import { fetchTipoviDogadjaja } from "../../redux/features/organizatorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import classes from "./Organizator.module.css";
 import Obrisi from "../Obrisi/Obrisi";
@@ -11,7 +8,6 @@ import {
   fetchModeratori,
   fetchLokacije,
 } from "../../redux/features/organizatorSlice";
-import { setKonferencijeRedux } from "../../redux/features/organizatorSlice";
 import AddConference from "./AddConference/AddConference";
 import UrediKonferenciju from "./UrediKonferenciju/UrediKonferenciju";
 import Posjetioci from "../Posjetioci/Posjetioci";
@@ -29,13 +25,11 @@ const Organizator = () => {
   const [konferencije, setKonferencije] = useState([]);
   const [konferencijaZaBrisanje, setKonferencijaZaBrisanje] = useState({});
   const [selectedKonferencija, setSelectedKonferencija] = useState(null); // Dodato stanje za praćenje odabrane konferencije
-  const [selectedDogadjaj, setSelectedDogadjaj] = useState(null); // Dodato stanje za praćenje odabranog događaja
   const [showModal, setShowModal] = useState(false); // Dodato stanje za prikazivanje modalnog prozora
   const [showAddModal, setshowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPosjetiociModal, setShowPosjetiociModal] = useState(false);
   const [dogadjajZaPosjetioce, setDogadjajZaPosjetioce] = useState({});
-  const posjetiociSectionRef = useRef(null); // Referenca na donji dio (posjetiociSection)
   const [refreshKey, setRefreshKey] = useState(0);
   const dispatch = useDispatch();
   const [dogadjajZaResurse, setDogadjajZaResurse] = useState({});
@@ -64,18 +58,12 @@ const Organizator = () => {
       end: endTimeZaPretragu,
       naziv: nazivZaPretragu,
     };
-    console.log("podaci za bekend", data);
     dispatch(fetchFilterKonferencije({ token: token, data: data }))
       .then((response) => {
-        console.log("responseee", response);
         setKonferencije(response.payload);
       })
       .catch((error) => {});
-    console.log("na  svaku pormjenu zovi bekend");
-    console.log("nazivZaPretragu:", nazivZaPretragu);
-    console.log("startTimeZaPretragu:", startTimeZaPretragu);
-    console.log("endTimeZaPretragu:", endTimeZaPretragu);
-    console.log("statusZaPretragu:", statusZaPretragu);
+    console.log("konferencije", konferencije);
   }, [
     nazivZaPretragu,
     startTimeZaPretragu,
@@ -108,7 +96,6 @@ const Organizator = () => {
   }, [dispatch, token]);
   const handlePrikaziModalZaResurse = (dogadjaj) => {
     //setKonferencijaZaBrisanje(konferencija);
-    console.log("prikazi");
     setDogadjajZaResurse(dogadjaj);
     setShowModalZaResurse(true); // Postavite showModal na true kada se pritisne dugme za brisanje
   };
@@ -143,41 +130,25 @@ const Organizator = () => {
   };
 
   const handleObrisi = (konferencija) => {
-    console.log("obrisi", konferencija);
     setKonferencijaZaBrisanje(konferencija);
     setShowModal(true); // Postavite showModal na true kada se pritisne dugme za brisanje
   };
   const handlePrikaziPosjetioceModal = (dogadjaj) => {
     //setKonferencijaZaBrisanje(konferencija);
-    console.log("prikazi");
     setDogadjajZaPosjetioce(dogadjaj);
     setShowPosjetiociModal(true); // Postavite showModal na true kada se pritisne dugme za brisanje
   };
 
   const handlePrikaziDogadjaje = (konferencija) => {
-    console.log("konferencija", konferencija);
     if (selectedKonferencija === konferencija) {
       setSelectedKonferencija(null);
     } else {
       setSelectedKonferencija(konferencija);
     }
   };
-  const handlePrikaziPosjetioce = (dogadjaj) => {
-    setShowPosjetiociModal(true);
-    console.log("Posjetioce prikazi", showPosjetiociModal);
-    /* if (selectedDogadjaj === dogadjaj) {
-      setSelectedDogadjaj(null);
-    } else {
-      setSelectedDogadjaj(dogadjaj);
-      /* if (posjetiociSectionRef.current) {
-        // Provera da li je referenca definisana
-        posjetiociSectionRef.current.scrollIntoView({ behavior: "smooth" });
-      }*/
-    //}
-  };
+
   const handlePrikaziModalZaOcjenu = (dogadjaj) => {
     //setKonferencijaZaBrisanje(konferencija);
-    console.log("prikazi");
     setDogadjajZaOcjenu(dogadjaj);
     setShowModalZaOcjenu(true); // Postavite showModal na true kada se pritisne dugme za brisanje
   };
@@ -196,10 +167,7 @@ const Organizator = () => {
       const [startDate, endDate] = dates;
       setStartTimeZaPretragu(startDate.toDate());
       setEndTimeZaPretragu(endDate.toDate());
-      console.log("Početni datum:", startDate.toDate());
-      console.log("Završni datum:", endDate.toDate());
     } else {
-      console.log("Nije odabran nijedan datum.");
       setStartTimeZaPretragu(null);
       setEndTimeZaPretragu(null);
     }
@@ -211,6 +179,7 @@ const Organizator = () => {
         <FilterComponent handleChange={handleChange} />
         <DateComponent handleDateChange={handleDateChange} />
       </div>
+
       <h2 className={classes.stilZaH2}>Konferencije</h2>
       <div className={classes.centeredDiv}>
         <ul>

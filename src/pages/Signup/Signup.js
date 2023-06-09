@@ -24,7 +24,6 @@ const Signup = (props) => {
       setError(true);
       setMessage("Popunite sva polja.");
     } else {
-      console.log("sva polja popunjena");
       const data = {
         username: username,
         password: password,
@@ -33,17 +32,13 @@ const Signup = (props) => {
         rola: 3,
       };
 
-      console.log(data);
-
       dispatch(registrujSe(data))
         .then((response) => {
-          console.log("Login response", response);
           setRegistrationSuccess(true);
         })
         .catch((error) => {
           console.error("Došlo je do greške prilikom slanja zahtjeva:", error);
           setRegistrationSuccess(false);
-          console.log("register succ", registrationSuccess);
           setError(true);
           setMessage(
             "Došlo je do greške prilikom registracije. Pokušajte ponovo."

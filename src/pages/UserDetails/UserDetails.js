@@ -15,7 +15,7 @@ const UserDetails = () => {
   const [email, setEmail] = useState(user.user.email);
   const [username, setUsername] = useState(user.user.username);
   const [ime, setIme] = useState(user.user.naziv);
-  const [isEmailValid, setIsEmailValid] = useState(true); // Dodano stanje za praćenje ispravnosti e-maila
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isImeValid, setIsImeValid] = useState(true);
   const [isUsernameValid, setIsUsernameValid] = useState(true);
@@ -55,11 +55,11 @@ const UserDetails = () => {
     setIsEditMode(true);
   };
   useEffect(() => {
-    checkValidity(); // Provjerava valjanost svih parametara
+    checkValidity();
   }, [ime, email, username]);
 
   useEffect(() => {
-    checkValidityPassword(); // Provjerava valjanost svih parametara
+    checkValidityPassword();
   }, [oldPassword, newPassword, password]);
 
   const checkValidityPassword = () => {
@@ -103,9 +103,7 @@ const UserDetails = () => {
       };
 
       dispatch(promjeniLozinku({ token, data, idKorisnika }))
-        .then((response) => {
-          console.log("response promjeni lozinku", response);
-        })
+        .then((response) => {})
         .catch((error) => {});
       setIsChangeMode(false);
       setPassword("");
@@ -114,9 +112,9 @@ const UserDetails = () => {
     } else {
       setShowErrorMessagePass(true);
 
-      setIsPasswordValid(false); // Postavlja stanje ispravnosti e-maila na false
-      setIsNewPasswordValid(false); // Postavlja stanje ispravnosti imena na false
-      setIsOldPasswordValid(false); // Postavlja stanje ispravnosti korisničkog imena na false
+      setIsPasswordValid(false);
+      setIsNewPasswordValid(false);
+      setIsOldPasswordValid(false);
     }
   };
   const handleChangeClick = () => {
@@ -131,7 +129,7 @@ const UserDetails = () => {
     setShowErrorMessagePass(false);
   };
   const handleSaveClick = () => {
-    checkValidity(); // Provjerava valjanost svih parametara
+    checkValidity();
 
     if (isImeValid && isEmailValid && isUsernameValid) {
       const data = {
@@ -147,17 +145,15 @@ const UserDetails = () => {
           idKorisnika: idKorisnika,
         })
       )
-        .then((response) => {
-          console.log("response", response);
-        })
+        .then((response) => {})
         .catch((error) => {});
 
       setIsEditMode(false);
     } else {
-      setShowErrorMessage(true); // Postavlja stanje za prikaz poruke na true
-      setIsEmailValid(false); // Postavlja stanje ispravnosti e-maila na false
-      setIsImeValid(false); // Postavlja stanje ispravnosti imena na false
-      setIsUsernameValid(false); // Postavlja stanje ispravnosti korisničkog imena na false
+      setShowErrorMessage(true);
+      setIsEmailValid(false);
+      setIsImeValid(false);
+      setIsUsernameValid(false);
     }
   };
 

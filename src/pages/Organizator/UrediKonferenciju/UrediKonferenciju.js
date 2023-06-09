@@ -4,7 +4,6 @@ import {
   azurirajRezervacije,
 } from "../../../redux/features/organizatorSlice";
 import Modal from "../../Modal/Modal";
-//import classes from "../../AddConference/AddConference.module.css";
 import classes from "./UrediKonferenciju.module.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,26 +26,20 @@ const UrediKonferenciju = (props) => {
     konferencija.endTime
   );
   const [urlKonferencije, setUrlKonferencije] = useState(konferencija.url);
-
   const [showDogadjaje, setShowDogadjaje] = useState(false);
   const [showRezervacije, setShowRezervacije] = useState(false);
-  // const [showDogadjaj, setShowDogadjaj] = useState(false);
   const [showMess, setShowMess] = useState(false);
   const [message, setMessage] = useState("");
   const [showMessRez, setShowMessRez] = useState(false);
   const [messageRez, setMessageRez] = useState("");
   const [showMessKonf, setShowMessKonf] = useState(false);
   const [messageKonf, setMessageKonf] = useState("");
-
   const [showErrorMess, setShowErrorMess] = useState(false);
-
-  //ostane broj lokacija trebala bih ovde citati iz baze ispocetka svaki put
   const lokacije = useSelector((state) => state.organizator.lokacije);
   const moderatori = useSelector((state) => state.organizator.moderatori);
   const tipovi_dogadjaja = useSelector(
     (state) => state.organizator.tipoviDogadjaja
   );
-
   const [moderatorDOgadjaja, setModeratorDOgadjaja] = useState("");
   const [tipDogadjaja, setTipDogadjaja] = useState("");
   const [urlDogadjaja, setUrlDOgadjaja] = useState("");
@@ -57,17 +50,24 @@ const UrediKonferenciju = (props) => {
   const [selectedKolicina, setSelectedKolicina] = useState(0);
 
   useEffect(() => {
-    console.log("expanded dogadjaj ", expandedDogadjajId);
+    const formattedStartTime = startTimeKonferencije.slice(0, 16); // Izrežemo vremensku zonu
+    setStartTimeKonferencije(formattedStartTime);
+    const formattedEndtTime = endTimeKonferencija.slice(0, 16); // Izrežemo vremensku zonu
+    setEndTimeKonferencija(formattedEndtTime);
     if (expandedDogadjajId !== null) {
       const dogadjaj = dogadjaji.find((dog) => dog.id === expandedDogadjajId);
-      console.log("dogadjaj", dogadjaj);
       const tip1 = parseInt(dogadjaj.tipDogadjaja.id, 10);
       setTipDogadjaja(tip1);
       const moderator1 = parseInt(dogadjaj.korisnik.id, 10);
       setModeratorDOgadjaja(moderator1);
       setImeDogadjaja(dogadjaj.naziv);
-      setStartDogadjaja(dogadjaj.startTime);
-      setKrajDogadjaja(dogadjaj.endTime);
+      //setStartDogadjaja(dogadjaj.startTime);
+
+      const formattedDogadjajStart = dogadjaj.startTime.slice(0, 16); // Izrežemo vremensku zonu
+      setStartDogadjaja(formattedDogadjajStart);
+      //setKrajDogadjaja(dogadjaj.endTime);
+      const formattedDogadjajEnd = dogadjaj.endTime.slice(0, 16); // Izrežemo vremensku zonu
+      setKrajDogadjaja(formattedDogadjajEnd);
       setUrlDOgadjaja(dogadjaj.url);
     }
   }, [lokacije, moderatori, tipovi_dogadjaja, expandedDogadjajId, dogadjaji]);
@@ -76,15 +76,6 @@ const UrediKonferenciju = (props) => {
   };
 
   const handleSpremiDogadjaj = () => {
-    console.log("startDogadjaja", startDogadjaja);
-    console.log("krajDogadjaja", krajDogadjaja);
-    console.log("imeDogadjaja", imeDogadjaja);
-    console.log("urlDOgadjaja", urlDogadjaja);
-    console.log("id konf", konferencija.id);
-    console.log("tip dogadjaja", tipDogadjaja);
-    console.log("lokacija konf", konferencija.lokacija);
-    console.log("moderator dogadjaja", moderatorDOgadjaja);
-
     const dogadjaj = {
       startTime: startDogadjaja,
       endTime: krajDogadjaja,
@@ -94,12 +85,6 @@ const UrediKonferenciju = (props) => {
       tipDogadjaja: tipDogadjaja,
       moderator_Id: moderatorDOgadjaja,
     };
-
-    // setNizDOgadjaja((prevNiz) => [...prevNiz, noviDogadjaj]);
-
-    console.log("dokadjaj Za bekend", dogadjaj);
-    console.log("idDOgadjaja", expandedDogadjajId);
-
     dispatch(
       azurirajDogadjaj({
         token: token,
@@ -108,13 +93,8 @@ const UrediKonferenciju = (props) => {
       })
     )
       .then((response) => {
-        console.log("response dogadjaja", response);
-        console.log("spremi dogadjaj");
         setShowMess(true);
         setMessage("Uspješno ste sačuvali izmjene!");
-        console.log(" setShowMess", showMess);
-        //treba vidjeti payload.status==200
-
         const timer = setTimeout(() => {
           setShowMess(false);
           setMessage("");
@@ -128,17 +108,11 @@ const UrediKonferenciju = (props) => {
   };
 
   const handleSpremiResurs = () => {
-    console.log("kolicina", selectedKolicina);
-    console.log("dogadjajId", expandedDogadjajId);
-    console.log("resursId", expandedResursId);
-
     const rezervacijaRequest = {
       kolicina: selectedKolicina,
       dogadjajId: expandedDogadjajId,
       resursId: expandedResursId,
     };
-    console.log("resurs Za bekend", rezervacijaRequest);
-
     dispatch(
       azurirajRezervacije({
         token: token,
@@ -146,12 +120,8 @@ const UrediKonferenciju = (props) => {
       })
     )
       .then((response) => {
-        console.log("rezultat rezervacije", response);
         setShowMessRez(true);
         setMessageRez("Uspješno ste sačuvali izmjene!");
-        console.log(" setShowMess", showMess);
-        //treba vidjeti payload.status==200
-
         const timer = setTimeout(() => {
           setShowMessRez(false);
           setMessageRez("");
@@ -162,15 +132,12 @@ const UrediKonferenciju = (props) => {
     // setExpandedResursId(null);
   };
   const handleModalDOgadjaj = (dogadjajId) => {
-    console.log("otvori ");
     setExpandedDogadjajId(dogadjajId);
   };
 
   const handleModalResurs = (resursId, dogadjajId) => {
     setExpandedResursId(resursId);
     setExpandedDogadjajId(dogadjajId);
-    console.log("rezervacijaId ", resursId);
-    console.log("dogadjajId ", dogadjajId);
   };
 
   const handleCloseResursModal = () => {
@@ -180,18 +147,6 @@ const UrediKonferenciju = (props) => {
 
   const handleOdustaniOdDogadjaja = (e) => {
     e.preventDefault();
-    /*if (expandedDogadjajId !== null) {
-      const dogadjaj = dogadjaji.find((dog) => dog.id === expandedDogadjajId);
-      console.log("dogadjaj", dogadjaj);
-      setTipDogadjaja(dogadjaj.tipDogadjaja);
-      setModeratorDOgadjaja(dogadjaj.korisnik);
-      setImeDogadjaja(dogadjaj.naziv);
-      setStartDogadjaja(dogadjaj.startTime);
-      setKrajDogadjaja(dogadjaj.endTime);
-      setUrlDOgadjaja(dogadjaj.url);
-      console.log("dogadjaj", dogadjaj);
-    }*/
-    // setShowDogadjaj(false); mozda treba provjeri
     setShowInnerModal(false);
     setExpandedDogadjajId(null);
   };
@@ -203,8 +158,6 @@ const UrediKonferenciju = (props) => {
   const handleDogadjaji = (e) => {
     e.preventDefault();
     setShowDogadjaje(!showDogadjaje);
-    // setShowInnerModal(true);
-    console.log("show inner", showInnerModal);
   };
   const handleRezervacije = (e) => {
     e.preventDefault();
@@ -220,7 +173,10 @@ const UrediKonferenciju = (props) => {
   };
 
   const handleEndTimeChanged = (e) => {
-    setEndTimeKonferencija(e.target.value);
+    const selectedEndTime = e.target.value;
+    if (selectedEndTime >= startTimeKonferencije) {
+      setEndTimeKonferencija(selectedEndTime);
+    }
   };
 
   const handleUrlChanged = (e) => {
@@ -235,29 +191,27 @@ const UrediKonferenciju = (props) => {
     const tip1 = parseInt(e.target.value, 10);
     setTipDogadjaja(tip1);
   };
-  const handleKrajDOgadjajaChanged = (e) => {
-    setKrajDogadjaja(e.target.value);
-  };
   const handleStartDOgadjajaChanged = (e) => {
-    setStartDogadjaja(e.target.value);
+    const selectedStartDate = e.target.value;
+
+    setStartDogadjaja(selectedStartDate);
+  };
+
+  const handleKrajDOgadjajaChanged = (e) => {
+    const selectedEndDate = e.target.value;
+
+    if (selectedEndDate >= startDogadjaja) {
+      setKrajDogadjaja(selectedEndDate);
+    }
   };
 
   const handleSave = () => {
-    console.log("startTimeKonferencije", startTimeKonferencije);
-    console.log("endTimeKonferencija", endTimeKonferencija);
-    console.log("imeKonferencije", imeKonferencije);
-    console.log("urlKonferencije", urlKonferencije);
-
     const konferencijaRequest = {
       startTime: startTimeKonferencije,
       endTime: endTimeKonferencija,
       naziv: imeKonferencije,
       url: urlKonferencije,
     };
-
-    console.log("id konf", konferencija.id);
-    console.log("konferencija Za bekend", konferencijaRequest);
-    console.log("id konferencijeeee", konferencija.id);
 
     dispatch(
       azurirajKonferenciju({
@@ -267,12 +221,8 @@ const UrediKonferenciju = (props) => {
       })
     )
       .then((response) => {
-        console.log("rezultat konferencije", response);
         setShowMessKonf(true);
         setMessageKonf("Uspješno ste sačuvali izmjene!");
-        console.log(" setShowMess", showMess);
-        //treba vidjeti payload.status==200
-
         const timer = setTimeout(() => {
           setShowMessKonf(false);
           setMessageKonf("");
@@ -281,10 +231,6 @@ const UrediKonferenciju = (props) => {
         }, 1000);
       })
       .catch((error) => {});
-    // setExpandedResursId(null); onCLose()????
-    console.log("pozvace se funkcije");
-    /* onClose();
-    props.onSave();*/
   };
 
   return (
@@ -311,36 +257,39 @@ const UrediKonferenciju = (props) => {
             </div>
           </div>
 
-          <div className={classes.formRow}>
-            <div className={classes.formLabelIme}>
-              <label>
-                <strong>Početak:</strong>
-              </label>
+          <div>
+            <div className={classes.formRow}>
+              <div className={classes.formLabelIme}>
+                <label>
+                  <strong>Početak:</strong>
+                </label>
+              </div>
+              <div className={classes.formInputIme}>
+                <input
+                  value={startTimeKonferencije}
+                  onChange={handleStartTimeChanged}
+                  type="datetime-local"
+                  id="startTime"
+                  name="startTime"
+                />
+              </div>
             </div>
-            <div className={classes.formInputIme}>
-              <input
-                value={startTimeKonferencije}
-                onChange={handleStartTimeChanged}
-                type="datetime-local"
-                id="startTime"
-                name="startTime"
-              />
-            </div>
-          </div>
-          <div className={classes.formRow}>
-            <div className={classes.formLabelIme}>
-              <label>
-                <strong>Kraj:</strong>
-              </label>
-            </div>
-            <div className={classes.formInputIme}>
-              <input
-                value={endTimeKonferencija}
-                onChange={handleEndTimeChanged}
-                type="datetime-local"
-                id="endTime"
-                name="endTime"
-              />
+            <div className={classes.formRow}>
+              <div className={classes.formLabelIme}>
+                <label>
+                  <strong>Kraj:</strong>
+                </label>
+              </div>
+              <div className={classes.formInputIme}>
+                <input
+                  value={endTimeKonferencija}
+                  onChange={handleEndTimeChanged}
+                  type="datetime-local"
+                  id="endTime"
+                  name="endTime"
+                  min={startTimeKonferencije}
+                />
+              </div>
             </div>
           </div>
 
@@ -386,7 +335,7 @@ const UrediKonferenciju = (props) => {
                     {expandedDogadjajId === dogadjaj.id && (
                       <Modal>
                         <div
-                          className={`${classes.userDetailsContainer} ${classes.scrollable}`}
+                          className={`${classes.userDetailsContainer2} ${classes.scrollable}`}
                         >
                           <div className={classes.konfDetails}>
                             <div className={classes.formRow}>
@@ -395,51 +344,55 @@ const UrediKonferenciju = (props) => {
                                   <strong>Ime:</strong>
                                 </label>
                               </div>
-                            </div>
-                            <div className={classes.formInputIme}>
-                              <input
-                                value={imeDogadjaja}
-                                onChange={(e) =>
-                                  handleImeDogadjajaChanged(e.target.value)
-                                }
-                                type="text"
-                                id="imeDOgadjaja"
-                                name="imeDOgadjaja"
-                              />
-                            </div>
 
-                            <div className={classes.formRow}>
-                              <div className={classes.formLabelIme}>
-                                <label>
-                                  <strong>Početak:</strong>
-                                </label>
+                              <div className={classes.formInputIme}>
+                                <input
+                                  value={imeDogadjaja}
+                                  onChange={(e) =>
+                                    handleImeDogadjajaChanged(e.target.value)
+                                  }
+                                  type="text"
+                                  id="imeDOgadjaja"
+                                  name="imeDOgadjaja"
+                                />
                               </div>
                             </div>
-                            <div className={classes.formInputIme}>
-                              <input
-                                value={startDogadjaja}
-                                onChange={handleStartDOgadjajaChanged}
-                                type="datetime-local"
-                                id="startDogadjaja"
-                                name="startDogadjaja"
-                              />
-                            </div>
-
-                            <div className={classes.formRow}>
-                              <div className={classes.formLabelIme}>
-                                <label>
-                                  <strong>Kraj:</strong>
-                                </label>
+                            <div>
+                              <div className={classes.formRow}>
+                                <div className={classes.formLabelIme}>
+                                  <label>
+                                    <strong>Početak:</strong>
+                                  </label>
+                                </div>
+                                <div className={classes.formInputIme}>
+                                  <input
+                                    value={startDogadjaja}
+                                    onChange={handleStartDOgadjajaChanged}
+                                    type="datetime-local"
+                                    id="startD"
+                                    name="startD"
+                                  />
+                                </div>
+                              </div>
+                              <div className={classes.formRow}>
+                                <div className={classes.formLabelIme}>
+                                  <label>
+                                    <strong>Kraj:</strong>
+                                  </label>
+                                </div>
+                                <div className={classes.formInputIme}>
+                                  <input
+                                    value={krajDogadjaja}
+                                    onChange={handleKrajDOgadjajaChanged}
+                                    type="datetime-local"
+                                    id="endD"
+                                    name="endD"
+                                    min={startDogadjaja}
+                                  />
+                                </div>
                               </div>
                             </div>
-                            <div className={classes.formInputIme}>
-                              <input
-                                value={krajDogadjaja}
-                                onChange={handleKrajDOgadjajaChanged}
-                                type="datetime-local"
-                                id="krajDogadjaja"
-                                name="krajDogadjaja"
-                              />
+                            <div>
                               {dogadjaj.url && (
                                 <div>
                                   <div className={classes.formRow}>

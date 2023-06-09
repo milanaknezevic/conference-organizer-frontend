@@ -26,30 +26,22 @@ const Login = () => {
 
       dispatch(ulogujSe(data))
         .then((response) => {
-          console.log("Login response", response);
-          console.log("Login payload", response.payload);
-          console.log("Login username", response.payload.username);
-          console.log("Login ulogovan", response.payload.ulogovan);
-
           if (response.payload.rola === "ADMIN") {
             navigate("/admin");
           } else if (
             response.payload.rola === "ORGANIZATOR" &&
             response.payload.status === "ACTIVE"
           ) {
-            console.log("organizatro je aktivan");
             navigate("/organizator");
           } else if (
             response.payload.rola === "POSJETILAC" &&
             response.payload.status === "ACTIVE"
           ) {
-            console.log("posjetilac je aktivan");
             navigate("/posjetilac");
           } else if (
             response.payload.rola === "MODERATOR" &&
             response.payload.status === "ACTIVE"
           ) {
-            console.log("moderator je aktivan");
             navigate("/moderator");
           } else {
             setError(false);

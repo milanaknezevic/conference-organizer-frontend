@@ -12,10 +12,9 @@ const login = (data) => {
       }
     })
     .then((responseJson) => {
-      // Spremanje uloge korisnika u localStorage
-      localStorage.setItem("userRole", responseJson.role);
+      localStorage.setItem("userRole", responseJson.rola);
       localStorage.setItem("auth", responseJson.token);
-      // sessionStorage.setItem("auth", responseJson.token);
+
       return responseJson;
     })
     .catch((error) => {
@@ -42,7 +41,6 @@ const filtrirajKonferencije = (token, data) => {
   }
 
   const url = `http://localhost:8080/konferencije/searchConf?${params}`;
-  console.log("url iz servisa", url);
 
   const requestOptions = {
     method: "GET",
@@ -76,7 +74,6 @@ const registerUser = (data) => {
   })
     .then((response) => {
       if (response.ok) {
-        console.log("New user registered");
         return response.ok;
       } else {
         console.error("Registration failed");
@@ -95,10 +92,7 @@ const odjaviKorisnika = () => {
 };
 const updateKorisnika = (token, data, idKorisnika) => {
   const url = `http://localhost:8080/korisnici/${idKorisnika}`;
-  console.log("idKorisnika", idKorisnika);
-  console.log("token", token);
-  console.log("data", data);
-  console.log("url", url);
+
   const requestOptions = {
     method: "PUT",
     headers: {
@@ -125,10 +119,7 @@ const updateKorisnika = (token, data, idKorisnika) => {
 };
 const changePassword = (token, data, idKorisnika) => {
   const url = `http://localhost:8080/korisnici/${idKorisnika}/change-password`;
-  console.log("idKorisnika", idKorisnika);
-  console.log("token", token);
-  console.log("data", data);
-  console.log("url", url);
+
   const requestOptions = {
     method: "POST",
     headers: {

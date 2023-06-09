@@ -55,10 +55,35 @@ const addOcjenu = (token, ocjenaRequest) => {
       throw error;
     });
 };
+
+const deletePosjetioca = (token, korisnikId, dogadjajId) => {
+  const url = `http://localhost:8080/posjetioci/${korisnikId}/${dogadjajId}`;
+
+  const requestOptions = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom brisanja posjetioca.");
+      }
+      return response;
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom brisanja posjetioca:", error);
+      throw error;
+    });
+};
+
 const addPosjetioca = (token, posjetilac) => {
-  console.log("moderator iz servisa", posjetilac);
   const url = `http://localhost:8080/posjetioci`;
-  console.log("url za pojetilac ", url);
 
   const requestOptions = {
     method: "POST",
@@ -104,7 +129,6 @@ const filtrirajKonferencijePosjetilac = (token, idPosjetioca, data) => {
   }
 
   const url = `http://localhost:8080/konferencije/searchConfPosjetilac/${idPosjetioca}?${params}`;
-  console.log("url iz servisa", url);
 
   const requestOptions = {
     method: "GET",
@@ -135,4 +159,5 @@ export {
   addOcjenu,
   addPosjetioca,
   filtrirajKonferencijePosjetilac,
+  deletePosjetioca,
 };

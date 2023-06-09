@@ -133,7 +133,6 @@ const getTipoviDogadjaja = (token) => {
 };
 
 const updateKonferenciju = (token, idKonferencije, konferencijaRequest) => {
-  console.log("servis konferencijaRequest", konferencijaRequest);
   const url = `http://localhost:8080/konferencije/${idKonferencije}`;
 
   const requestOptions = {
@@ -163,8 +162,7 @@ const updateKonferenciju = (token, idKonferencije, konferencijaRequest) => {
 
 const updateRezervacije = (token, rezervacijaRequest) => {
   const url = `http://localhost:8080/rezervacije/update`;
-  console.log("url za update rezervacije", url);
-  console.log("rezReq u servisu", rezervacijaRequest);
+
   const requestOptions = {
     method: "PATCH",
     headers: {
@@ -192,7 +190,7 @@ const updateRezervacije = (token, rezervacijaRequest) => {
 
 const updateDogadjaj = (token, dogadjaj, idDogadjaja) => {
   const url = `http://localhost:8080/dogadjaji/${idDogadjaja}`;
-  console.log("url za update dogadjaja", url);
+
   const requestOptions = {
     method: "PATCH",
     headers: {
@@ -248,7 +246,7 @@ const addKonferencija = (token, konferencijaRequest) => {
 
 const addDogadjaj = (token, dogadjajRequest) => {
   const url = `http://localhost:8080/dogadjaji`;
-  console.log("gledaaaaajjjj ovoooo", dogadjajRequest);
+
   const requestOptions = {
     method: "POST",
     headers: {
@@ -275,7 +273,6 @@ const addDogadjaj = (token, dogadjajRequest) => {
 };
 
 const addResurs = (token, resurs) => {
-  console.log("resursi iz servisa", resurs);
   const url = `http://localhost:8080/rezervacije`;
 
   const requestOptions = {
@@ -304,9 +301,7 @@ const addResurs = (token, resurs) => {
 };
 
 const addModerator = (token, moderator) => {
-  console.log("moderator iz servisa", moderator);
   const url = `http://localhost:8080/korisnici/dodaj_moderatora`;
-  console.log("url za moderatora ", url);
 
   const requestOptions = {
     method: "POST",

@@ -15,9 +15,7 @@ const AddUser = (props) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  useEffect(() => {
-    console.log("kreiranje korisnika");
-  }, []);
+
   const handleSpremi = (e) => {
     e.preventDefault();
     if (username !== "" && password !== "" && name !== "" && email !== "") {
@@ -30,11 +28,8 @@ const AddUser = (props) => {
           rola: 2, //moderator???
         };
 
-        console.log("moderator za bazu", korisnik);
-
         dispatch(dodajModeratora({ token: token, moderator: korisnik }))
           .then((response) => {
-            console.log("response", response);
             onClose();
           })
           .catch((error) => {});
@@ -48,8 +43,6 @@ const AddUser = (props) => {
     }
   };
   const handleOdustani = () => {
-    console.log("token", token);
-
     onClose(); // Zatvorite modal nakon brisanja konferencije
   };
 

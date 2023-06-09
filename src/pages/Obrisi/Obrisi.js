@@ -8,12 +8,8 @@ const Obrisi = (props) => {
   const dispatch = useDispatch();
 
   const handleObrisi = () => {
-    console.log("token", token);
-
-    console.log("idKonferencije u Obrisi", idKonferencije);
     dispatch(obrisiKonferenciju({ token, idKonferencije }))
       .then((response) => {
-        console.log("response !", response);
         onClose(); // Zatvorite modal nakon brisanja konferencije
         props.onSave();
       })

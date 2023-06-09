@@ -7,8 +7,21 @@
   align-items: center;
   overflow: auto;
 }
+.userDetailsContainer2 {
+  min-width: 390px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
 .mess {
   color: red;
+}
+.disabled {
+  opacity: 0.5; /* Smanjuje prozirnost elementa */
+  pointer-events: none; /* Onemogućava interakciju s elementom */
 }
 .pom {
   top: 0;
@@ -84,7 +97,7 @@
   margin-bottom: 1rem;
   align-items: center; /* Promenjeno sa 'left' na 'center' */
   justify-content: space-between;
-  width: 180px;
+  gap: 12px;
 }
 .resursiHeader {
   display: flex;

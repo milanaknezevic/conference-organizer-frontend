@@ -164,6 +164,7 @@
 .poruka {
   color: red;
   padding: 10px;
+  padding-bottom: 20px;
 }
 .outerDiv {
   gap: 25px;
@@ -177,7 +178,7 @@
   border: 3px solid cornflowerblue;
   border-radius: 10px;
   padding: 10px;
-  margin-top: 2rem;
+  margin-top: 7rem;
   margin-bottom: 1rem;
   margin-left: 20px;
   background-color: #f0f0f0;

@@ -88,11 +88,12 @@
 }
 .saveResurs {
   background-color: transparent;
-  color: purple;
+
   margin-right: 10px;
+  font-weight: red;
 }
 .saveResurs:hover {
-  color: blue;
+  color: red;
 }
 .resursSelect {
   padding: 5px;
@@ -109,6 +110,13 @@
   display: flex;
   justify-content: space-between;
 }
+.buttonSa {
+  font-weight: bold;
+  background-color: transparent;
+}
+.buttonSa:hover {
+  color: red;
+}
 .buttonDOgadjaji {
   display: flex;
   justify-content: space-between;
@@ -117,12 +125,12 @@
 }
 .buttonD {
   background-color: transparent;
-  color: purple;
+
+  font-weight: bold;
 }
 
 .buttonD:hover {
-  background-color: transparent;
-  color: blue;
+  color: red;
 }
 .buttonContainer button:last-child {
   margin-left: 10px; /* Prilagodite vrijednost razmaka prema svojim potrebama */

@@ -2,12 +2,15 @@ import React from "react";
 import QRCode from "qrcode";
 import { useState, useEffect } from "react";
 import classes from "./Dogadjaj.module.css";
-import { PlusCircleFill } from "react-bootstrap-icons";
+import { PlusCircleFill, FileMinusFill } from "react-bootstrap-icons";
+import { useSelector, useDispatch } from "react-redux";
+
 const Dogadjaj = ({
   dogadjaj,
   selectedDogadjaj,
   handlePrikaziModalZaResurse,
   handlePrikaziPosjetioceModal,
+  handleOdjaviSeSaDogadjaja,
   konferencija,
   formatirajDatum,
   handlePrijaviSeNaDogadjaj,
@@ -18,6 +21,34 @@ const Dogadjaj = ({
   prijavljeniDogadjaj,
 }) => {
   const [qrCode, setQRCode] = useState("");
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.login);
+  const [showPlus, setShowPlus] = useState(true);
+  const [showMinus, setShowMinus] = useState(true);
+
+  useEffect(() => {
+    console.log("dogadjaj", dogadjaj.posjetilacs);
+    console.log("ulogovani korisnik id", user.user.id);
+    const filterPrijave = dogadjaj.posjetilacs.filter(
+      (korisnik) => korisnik.korisnik.id === user.user.id
+    );
+    console.log("filterPrijave", filterPrijave);
+    if (filterPrijave.length > 0) {
+      setShowMinus(true);
+      setShowPlus(false);
+
+      console.log("usla u if");
+      console.log("show Plus iz useEffecta", false);
+      console.log("show minus iz useEffecta", true);
+    } else {
+      setShowPlus(true);
+      setShowMinus(false);
+      console.log("usla u else");
+      console.log("show Plus iz useEffecta", true);
+      console.log("show minus iz useEffecta", false);
+    }
+  }, []);
   useEffect(() => {
     if (dogadjaj.url) {
       generateQRCode(dogadjaj.url);
@@ -41,6 +72,16 @@ const Dogadjaj = ({
     dogadjaj.korisnik,
     dogadjaj.soba,
   ]);
+  const sakrijPlusDugme = () => {
+    setShowPlus(false);
+    setShowMinus(true);
+    console.log("Sakrila sam plus");
+  };
+  const sakrijMinusDUgme = () => {
+    setShowPlus(true);
+    setShowMinus(false);
+    console.log("Sakrila sam minus");
+  };
   const formattedDate = (date) =>
     new Date(date).toLocaleDateString("en-US", {
       month: "2-digit",
@@ -68,28 +109,47 @@ const Dogadjaj = ({
             <span className={classes.poljaColor}>Naziv događaja:</span>{" "}
             <span>{dogadjaj.naziv}</span>
           </div>
-          {handlePrijaviSeNaDogadjaj && (
+          {handlePrijaviSeNaDogadjaj && showPlus && (
             <div>
               <div className={classes.prijavi}>
-                {konferencija.status === true && (
+                {konferencija.status === false && (
                   <button
                     title=" Prijavi se na događaj"
-                    onClick={() => handlePrijaviSeNaDogadjaj(dogadjaj)}
+                    onClick={() => {
+                      handlePrijaviSeNaDogadjaj(dogadjaj);
+                      sakrijPlusDugme();
+                    }}
                   >
                     <PlusCircleFill className={classes.plus} />
                   </button>
                 )}
               </div>
-
-              {prijavljeniDogadjaj?.id === dogadjaj.id && showSucess && (
-                <div className={classes.poruka}>{succesMessage}</div>
-              )}
-              {prijavljeniDogadjaj?.id === dogadjaj.id && showError && (
-                <div className={classes.poruka}>{errorMessage}</div>
-              )}
+            </div>
+          )}
+          {handleOdjaviSeSaDogadjaja && showMinus && (
+            <div>
+              <div className={classes.prijavi}>
+                {konferencija.status === false && (
+                  <button
+                    title=" Odjavi se sa događaja"
+                    onClick={() => {
+                      handleOdjaviSeSaDogadjaja(dogadjaj);
+                      sakrijMinusDUgme();
+                    }}
+                  >
+                    <FileMinusFill className={classes.plus} />
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>
+        {prijavljeniDogadjaj?.id === dogadjaj.id && showSucess && (
+          <div className={classes.poruka}>{succesMessage}</div>
+        )}
+        {prijavljeniDogadjaj?.id === dogadjaj.id && showError && (
+          <div className={classes.poruka}>{errorMessage}</div>
+        )}
 
         <div className="underline">
           <span className={classes.poljaColor}>Početak:</span>{" "}

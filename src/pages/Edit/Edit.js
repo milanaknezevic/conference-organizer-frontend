@@ -25,13 +25,8 @@ const Edit = (props) => {
   const handleSave = () => {
     const userId = user.id;
     const saveToken = token;
-    console.log("userId", userId);
-    console.log("token", saveToken);
-    console.log("status", status);
-
     promjeniStatus(saveToken, userId, status)
       .then((response) => {
-        console.log("Status je uspješno izmijenjen:", response);
         onClose();
         props.onSave();
       })
@@ -39,13 +34,6 @@ const Edit = (props) => {
         console.error("Greška prilikom izmjene statusa:", error);
       });
   };
-
-  useEffect(() => {
-    console.log("user", user);
-    console.log("status", user.status);
-    console.log("Active", checkedValues.value1);
-    console.log("blocked", checkedValues.value2);
-  }, [checkedValues, user]);
 
   return (
     <Modal>

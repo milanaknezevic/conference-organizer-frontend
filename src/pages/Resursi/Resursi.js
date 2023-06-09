@@ -3,9 +3,8 @@ import { Modal } from "antd";
 const Resursi = ({ dogadjaj, show, onClose }) => {
   const title1 = `Resursi:`;
 
-  // Definišite imena polja
   const fields = ["Naziv", "Količina"];
-  console.log("gledaj", dogadjaj);
+
   return (
     <Modal
       title={title1}

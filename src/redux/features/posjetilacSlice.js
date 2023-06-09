@@ -4,6 +4,7 @@ import {
   addOcjenu,
   addPosjetioca,
   filtrirajKonferencijePosjetilac,
+  deletePosjetioca,
 } from "../../services/posjetilac.service";
 
 export const fetchKonferecnijePosjetioca = createAsyncThunk(
@@ -13,6 +14,7 @@ export const fetchKonferecnijePosjetioca = createAsyncThunk(
     return response;
   }
 );
+
 export const fetchFilterKonferencijePosjetioca = createAsyncThunk(
   "konferencije/posjetilac/filter",
   async ({ token, idPosjetioca, data }) => {
@@ -31,15 +33,38 @@ export const dodajOcjenu = createAsyncThunk(
     return response;
   }
 );
-
 export const dodajPosjetioca = createAsyncThunk(
+  "posjetilac/add_posjetioca",
+  async ({ token, posjetilac }) => {
+    const response = await addPosjetioca(token, posjetilac);
+    const responseData = {
+      status: response.status,
+      ok: response.ok,
+      // Dodajte druge relevantne podatke iz odgovora
+    };
+    return responseData;
+  }
+);
+export const obrisiPosjetioca = createAsyncThunk(
+  "posjetilac/obrisiPosjetioca",
+  async ({ token, korisnikId, dogadjajId }) => {
+    const response = await deletePosjetioca(token, korisnikId, dogadjajId);
+    const responseData = {
+      status: response.status,
+      ok: response.ok,
+      // Dodajte druge relevantne podatke iz odgovora
+    };
+    return responseData;
+  }
+);
+/*export const dodajPosjetioca = createAsyncThunk(
   "organizator/add_posjetioca",
   async ({ token, posjetilac }) => {
     console.log("posjetioc iz slice", posjetilac);
     const response = await addPosjetioca(token, posjetilac);
     return response;
   }
-);
+);*/
 
 const posjetilacSlice = createSlice({
   name: "posjetilac",
@@ -99,6 +124,21 @@ const posjetilacSlice = createSlice({
       state.konferencijePosjetioca = action.payload;
     },
     [fetchFilterKonferencijePosjetioca.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [obrisiPosjetioca.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [obrisiPosjetioca.fulfilled]: (state, action) => {
+      /*const deletedKonferencija = action.payload;
+      state.konferencije = state.konferencije.filter(
+        (konferencija) => konferencija.id !== deletedKonferencija.id
+      );*/
+      state.error = null;
+      state.loading = false;
+    },
+    [obrisiPosjetioca.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },

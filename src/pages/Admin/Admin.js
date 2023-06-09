@@ -21,12 +21,9 @@ const Admin = () => {
   useEffect(() => {
     dispatch(fetchKorisnici({ token, userId, izbor }))
       .then((response) => {
-        console.log("response", response);
         setKorisnici(response.payload);
       })
-      .catch((error) => {
-        console.log("error", error);
-      });
+      .catch((error) => {});
   }, [dispatch, token, userId, izbor, refreshKey]);
 
   const handleEdit = (korisnik) => {
@@ -35,7 +32,6 @@ const Admin = () => {
   };
 
   const handleClose = () => {
-    console.log("zatvori");
     setRefreshKey((prevKey) => prevKey + 1);
     setSelectedUser(null);
     setOpenModal(false);
@@ -57,25 +53,25 @@ const Admin = () => {
       >
         <div>
           <div className="underline">
-            <span className="polja-color">Naziv:</span>{" "}
+            <span className="polja-color">Naziv: </span>{" "}
             <span> {korisnik.naziv}</span>
           </div>
           <div className="underline">
-            <span className="polja-color">Korisnicko ime:</span>{" "}
+            <span className="polja-color">Korisničko ime: </span>{" "}
             <span> {korisnik.username}</span>
           </div>
           <div className="underline">
-            <span className="polja-color">Email:</span>{" "}
+            <span className="polja-color">Email: </span>{" "}
             <span> {korisnik.email}</span>
           </div>
           <div className="underline">
             <p>
-              <span className="polja-color">Status:</span>{" "}
+              <span className="polja-color">Status: </span>{" "}
               <span>{korisnik.status}</span>
             </p>
           </div>
           <div className="underline">
-            <span className="polja-color">Rola:</span>{" "}
+            <span className="polja-color">Rola: </span>{" "}
             <span> {korisnik.rola}</span>
           </div>
         </div>

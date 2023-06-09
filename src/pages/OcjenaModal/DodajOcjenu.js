@@ -18,17 +18,12 @@ const DodajOcjenu = ({ korisnik, arg, show, onClose }) => {
     form
       .validateFields()
       .then(() => {
-        console.log("Dobivene vrijednosti:", values); // Ispisivanje dobivenih vrijednosti
-        console.log("idKonferencije:", arg.id); // Ispisivanje dobivenih vrijednosti
-        console.log("korisnik id brate:", korisnik.user.id); // Ispisivanje dobivenih vrijednosti
         const ocjenaRequest = {
           zvjezdica: values.stars,
           komentar: values.comment,
           korisnikId: korisnik.user.id,
           konferencijaId: arg.id,
         };
-        console.log("ocjena req", ocjenaRequest);
-        console.log("korisnik.user.token", korisnik.user.token);
         dispatch(
           dodajOcjenu({
             token: korisnik.user.token,
@@ -36,15 +31,11 @@ const DodajOcjenu = ({ korisnik, arg, show, onClose }) => {
           })
         )
           .then((response) => {
-            console.log("sacuvala sam ocjene ovo je response", response);
-            console.log("Pozovi onClose()");
             onClose();
           })
           .catch((error) => {});
       })
-      .catch((error) => {
-        console.log("Greška pri validaciji forme:", error);
-      });
+      .catch((error) => {});
   };
 
   return (

@@ -4,6 +4,7 @@ import QRCode from "qrcode";
 import { useState, useEffect } from "react";
 import Dogadjaj from "../Dogadjaj/Dogadjaj";
 import classes from "./Konferencija.module.css";
+import { useSelector } from "react-redux";
 const Konferencija = ({
   konferencija,
 
@@ -13,6 +14,7 @@ const Konferencija = ({
   selectedKonferencija,
   handlePrikaziModalZaResurse,
   handlePrikaziPosjetioceModal,
+  handleOdjaviSeSaDogadjaja,
   selectedDogadjaj,
   handleUredi,
   handleObrisi,
@@ -25,7 +27,22 @@ const Konferencija = ({
   prijavljeniDogadjaj,
 }) => {
   const [qrCode, setQRCode] = useState("");
+  const [showOcjeni, setShowOcjeni] = useState(false);
+  const user = useSelector((state) => state.login);
   useEffect(() => {
+    console.log("ulogovani korisnik id", user.user.id);
+    console.log("ocjene", konferencija.ocjenas);
+
+    const filterOcjene = konferencija.ocjenas.filter(
+      (korisnik) => korisnik.korisnik.id === user.user.id
+    );
+    console.log("filter ocjene", filterOcjene);
+    if (filterOcjene.length > 0) {
+      setShowOcjeni(false);
+    } else {
+      setShowOcjeni(true);
+    }
+
     if (konferencija.url) {
       generateQRCode(konferencija.url);
     } else {
@@ -125,7 +142,7 @@ const Konferencija = ({
                 : "Prikaži događaje"}
             </button>
           </div>
-          {handleOcjeniModal && (
+          {handleOcjeniModal && showOcjeni && (
             <div className={classes.ocjeni}>
               {konferencija.status === true && (
                 <button onClick={() => handleOcjeniModal(konferencija)}>
@@ -148,6 +165,7 @@ const Konferencija = ({
                     handlePrikaziModalZaResurse={handlePrikaziModalZaResurse}
                     handlePrikaziPosjetioceModal={handlePrikaziPosjetioceModal}
                     handlePrijaviSeNaDogadjaj={handlePrijaviSeNaDogadjaj}
+                    handleOdjaviSeSaDogadjaja={handleOdjaviSeSaDogadjaja}
                     showSucess={showSucess}
                     succesMessage={succesMessage}
                     showError={showError}

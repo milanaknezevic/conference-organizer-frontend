@@ -2,7 +2,7 @@ import { Button, Modal } from "antd";
 import { StarFill } from "react-bootstrap-icons";
 const OcjenaModal = ({ arg, show, onClose }) => {
   const title1 = `${arg.naziv} Ocjene:`;
-  console.log(arg);
+
   return (
     <>
       <Modal

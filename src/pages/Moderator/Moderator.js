@@ -79,10 +79,7 @@ const Moderator = () => {
     const currentTimeFormatted = moment(currentTime).format(
       "YYYY-MM-DDTHH:mm:ss.SSSZ"
     );
-    console.log(" dogadjaj.endTime,", dogadjaj.endTime);
-    console.log(" currentTime,", currentTimeFormatted);
     setPrijavljeniDogadjaj(dogadjaj);
-    console.log("dogadjaj", dogadjaj);
     if (currentTimeFormatted < dogadjaj.endTime) {
       setShowError(false);
 
@@ -91,7 +88,6 @@ const Moderator = () => {
         dogadjajId: dogadjaj.id,
       };
 
-      console.log("uspjenso si se prijavio na", prijavljeniDogadjaj);
       setShowSucess(true);
       setSuccesrMessage("Prijavljeni ste na dogadjaj!");
       setTimeout(() => {
@@ -99,12 +95,9 @@ const Moderator = () => {
         setSuccesrMessage("");
       }, 1000); // 1 sekunda
       dispatch(dodajPosjetioca({ token: token, posjetilac: posjetilac }))
-        .then((response) => {
-          console.log("response", response);
-        })
+        .then((response) => {})
         .catch((error) => {});
     } else {
-      console.log("zakasnio si");
       setShowSucess(false);
       setShowError(true);
       setErrorMessage("Vrijeme za prijavu je isteklo!");
@@ -116,18 +109,6 @@ const Moderator = () => {
     //setPrijavljeniDogadjaj(null);
   };
 
-  const handlePrikaziModalZaOcjenu = (dogadjaj) => {
-    //setKonferencijaZaBrisanje(konferencija);
-    console.log("prikazi");
-    setDogadjajZaOcjenu(dogadjaj);
-    setShowModalZaOcjenu(true); // Postavite showModal na true kada se pritisne dugme za brisanje
-  };
-  const handleOcjeniModal = (dogadjaj) => {
-    //setKonferencijaZaBrisanje(konferencija);
-    console.log("prikazi");
-    setDogadjajZaOcjenu(dogadjaj);
-    setShowOcjeniModal(true); // Postavite showModal na true kada se pritisne dugme za brisanje
-  };
   const handleClose = () => {
     setShowModalZaOcjenu(false);
     setShowOcjeniModal(false);

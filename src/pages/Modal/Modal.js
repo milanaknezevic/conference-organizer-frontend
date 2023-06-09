@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import ReactDOM from "react-dom";
 
 import classes from "./Modal.module.css";
@@ -11,10 +11,6 @@ const ModalOverlay = (props) => {
   const { resurs } = props;
   const modalClass =
     resurs === undefined ? classes.modal : classes.modalZaRezervaciju;
-  useEffect(() => {
-    console.log("ZaRezervaciju gledajjj ", resurs);
-    console.log("modalClass", modalClass);
-  }, [modalClass, resurs]);
 
   return (
     <div className={modalClass}>

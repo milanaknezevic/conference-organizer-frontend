@@ -23,7 +23,7 @@ const Header = (props) => {
   };
 
   useEffect(() => {
-    console.log("isLoggedIn", isLoggedIn);
+    // console.log("isLoggedIn", isLoggedIn);
     if (isLoggedIn) {
       setRola(user.user.rola);
     }
@@ -47,17 +47,17 @@ const Header = (props) => {
 
           {isLoggedIn && rola === "ORGANIZATOR" && (
             <Link className={`${classes.konferencije}`} to="/organizator">
-              Konferencije O
+              Konferencije
             </Link>
           )}
           {isLoggedIn && rola === "ADMIN" && (
             <Link className={`${classes.konferencije}`} to="/admin">
-              Konferencije A
+              Konferencije
             </Link>
           )}
           {isLoggedIn && rola === "POSJETILAC" && (
             <Link className={`${classes.konferencije}`} to="/posjetilac">
-              Konferencije P
+              Konferencije
             </Link>
           )}
           {isLoggedIn && rola === "POSJETILAC" && (
@@ -70,7 +70,7 @@ const Header = (props) => {
           )}
           {isLoggedIn && rola === "MODERATOR" && (
             <Link className={`${classes.konferencije}`} to="/moderator">
-              Moje Konferencije M
+              Moje Konferencije
             </Link>
           )}
         </div>

@@ -54,7 +54,7 @@ const AddConference = (props) => {
   const [tipDogadjaja, tsetTipDogadjaja] = useState("");
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("resurs iz use effect", resursDogadjaja);
   }, [
     lokacije,
@@ -62,7 +62,7 @@ const AddConference = (props) => {
     moderatori,
     tipovi_dogadjaja,
     lokacijaKonferencije,
-  ]);
+  ]);*/
   const handleDogadjaji = (e) => {
     e.preventDefault();
     if (lokacijaKonfChecked || urlKonfChecked) {
@@ -83,7 +83,6 @@ const AddConference = (props) => {
 
   const handleSpremiResurs = (e) => {
     if (resursDogadjaja === "" || kolicinaResursa === "") {
-      console.log("nisi dodao resurs");
       setShowErrorMessZaResurs(true);
       setErrorMessage("Odaberite resurs!");
       const timer = setTimeout(() => {
@@ -96,7 +95,7 @@ const AddConference = (props) => {
         dogadjajId: "",
         resursId: resursDogadjaja,
       };
-      console.log("resurssss", noviResurs);
+
       setNizResursa((prevNiz) => [...prevNiz, noviResurs]);
       setResursDOgadjaja("");
       setKolicinaResursa(0);
@@ -107,7 +106,6 @@ const AddConference = (props) => {
     }
   };
   const handleResurskolicinaChanged = (e) => {
-    console.log("kolicina", e.target.value);
     setKolicinaResursa(e.target.value);
   };
 
@@ -131,10 +129,16 @@ const AddConference = (props) => {
   };
 
   const handleEndTimeChanged = (e) => {
-    setEndTimeKonferencija(e.target.value);
+    const selectedEndTime = e.target.value;
+    if (selectedEndTime >= startTimeKonferencije) {
+      setEndTimeKonferencija(selectedEndTime);
+    }
   };
   const handleEndTimeDogadjaja = (e) => {
-    setEndTimeDogadjaja(e.target.value);
+    const selectedEndDate = e.target.value;
+    if (selectedEndDate >= startTimeDogadjaja) {
+      setEndTimeDogadjaja(e.target.value);
+    }
   };
 
   const handleUrlChanged = (e) => {
@@ -157,9 +161,6 @@ const AddConference = (props) => {
       (lokacija) => lokacija.id === selectedLocationId2
     );
     setSelectedLocation(selectedLocation1);
-    console.log("selectedLocation", selectedLocation);
-    console.log("resursi na lokaciji", selectedLocation.resurs);
-
     setUrlKonferencije("");
   };
   const handleSObaChanged = (e) => {
@@ -169,7 +170,6 @@ const AddConference = (props) => {
   const handleResursChanged = (e) => {
     const selectedSoba2 = parseInt(e.target.value, 10);
     setResursDOgadjaja(selectedSoba2);
-    console.log("resurs", resursDogadjaja);
     setKolicinaResursa("");
   };
 
@@ -210,7 +210,6 @@ const AddConference = (props) => {
       moderatorDOgadjaja === "" ||
       (tipDogadjaja === "" && (sobaDogadjaja === "" || urlDogadjaja === ""))
     ) {
-      console.log("niste odabrali sve");
       setShowErrorMessZaResurs(true);
       setErrorMessage("Popunite sva polja!");
       const timer = setTimeout(() => {
@@ -260,7 +259,6 @@ const AddConference = (props) => {
       dogadjajSacuvan === false ||
       (lokacijaKonfChecked === true && resursSacuvan === false)
     ) {
-      console.log("nistaa");
       setShowErrorMessZaResurs(true);
       setErrorMessage("Niste popunili sva polja!");
       const timer = setTimeout(() => {
@@ -276,45 +274,37 @@ const AddConference = (props) => {
         organizatorId: user.user.id,
         lokacijaId: lokacijaKonferencije,
       };
-      console.log("nizDOgadjaja", nizDOgadjaja);
       const noviNiz = nizDOgadjaja.map(
         ({ resursi, ...ostaliAtributi }) => ostaliAtributi
       );
-      console.log("noviNiz", noviNiz);
       const conf = await dispatch(
         dodajKonferenciju({
           token: token,
           konferencijaRequest: konferencijaRequest,
         })
       );
-      console.log("id konferencije", conf.payload.id);
       for (let dogadjaj of noviNiz) {
         dogadjaj.konferencijaId = conf.payload.id;
       }
 
       for (let i = 0; i < noviNiz.length; i++) {
         const dogadjajRequest = noviNiz[i];
-        console.log("dogadjaj jedan po jedan", dogadjajRequest);
         const responseDog = await dispatch(
           dodajDogadjaj({
             token: token,
             dogadjajRequest: dogadjajRequest,
           })
         );
-        console.log("dogadjaj ID", responseDog.payload.id);
         for (let resurs of nizDOgadjaja[i].resursi) {
-          console.log("ovo citaaaj", responseDog);
           resurs.dogadjajId = responseDog.payload.id;
         }
         for (let resurs of nizDOgadjaja[i].resursi) {
-          console.log("resurs za dispetch", resurs);
           const resursODG = await dispatch(
             dodajResurs({
               token: token,
               resurs: resurs,
             })
           );
-          console.log("resurs response", resursODG);
         }
       }
       onClose();
@@ -378,6 +368,7 @@ const AddConference = (props) => {
                 type="datetime-local"
                 id="endTime"
                 name="endTime"
+                min={startTimeKonferencije}
               />
             </div>
           </div>
@@ -516,6 +507,7 @@ const AddConference = (props) => {
                     type="datetime-local"
                     id="endTimeD"
                     name="endTimeD"
+                    min={startTimeDogadjaja}
                   />
                 </div>
               </div>
@@ -698,8 +690,12 @@ const AddConference = (props) => {
           </div>
         )}
         <div className={classes.buttonContainer}>
-          <button onClick={handleSave}>Sačuvaj</button>
-          <button onClick={onClose}>Odustani</button>
+          <button className={classes.buttonSa} onClick={handleSave}>
+            Sačuvaj
+          </button>
+          <button className={classes.buttonSa} onClick={onClose}>
+            Odustani
+          </button>
         </div>
       </div>
     </Modal>

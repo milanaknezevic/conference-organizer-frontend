@@ -1,6 +1,6 @@
 const getAllKonferencijeZaModeratora = (token, idModeratora) => {
   const url = `http://localhost:8080/konferencije/${idModeratora}/moderator`;
-  console.log("url za moderatora", url);
+
   const requestOptions = {
     method: "GET",
     headers: {
@@ -47,7 +47,6 @@ const filtrirajKonferencijeModerator = (token, idModeratora, data) => {
   }
 
   const url = `http://localhost:8080/konferencije/searchConfModerator/${idModeratora}?${params}`;
-  console.log("url iz servisa", url);
 
   const requestOptions = {
     method: "GET",
