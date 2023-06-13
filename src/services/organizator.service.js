@@ -1,3 +1,30 @@
+const getKonferencijaById = (token, id) => {
+  const url = `http://localhost:8080/konferencije/${id}`;
+
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Greška prilikom dohvata konferencija sa id.");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Greška prilikom dohvata konferencija sa id :", error);
+      throw error;
+    });
+};
+
 const getAllKonferencije = (token) => {
   const url = `http://localhost:8080/konferencije/all`;
 
@@ -205,7 +232,7 @@ const updateDogadjaj = (token, dogadjaj, idDogadjaja) => {
       if (!response.ok) {
         throw new Error("Greška prilikom update dogadjaja.");
       }
-      return response;
+      return response.json();
     })
     .then((data) => {
       return data;
@@ -341,4 +368,5 @@ export {
   addResurs,
   updateDogadjaj,
   addModerator,
+  getKonferencijaById,
 };

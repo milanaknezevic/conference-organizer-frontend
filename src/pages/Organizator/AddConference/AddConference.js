@@ -491,6 +491,8 @@ const AddConference = (props) => {
                     type="datetime-local"
                     id="startTimeD"
                     name="startTimeD"
+                    min={startTimeKonferencije}
+                    max={endTimeKonferencija}
                   />
                 </div>
               </div>
@@ -508,6 +510,7 @@ const AddConference = (props) => {
                     id="endTimeD"
                     name="endTimeD"
                     min={startTimeDogadjaja}
+                    max={endTimeKonferencija}
                   />
                 </div>
               </div>

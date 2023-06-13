@@ -12,12 +12,21 @@ import {
   addResurs,
   updateDogadjaj,
   addModerator,
+  getKonferencijaById,
 } from "../../services/organizator.service";
 
 export const fetchKonferecnije = createAsyncThunk(
   "organizator/konferencije",
   async (token) => {
     const response = await getAllKonferencije(token);
+    return response;
+  }
+);
+
+export const fetchKonferecnijaById = createAsyncThunk(
+  "organizator/konferencije/id",
+  async (token, id) => {
+    const response = await getAllKonferencije(token, id);
     return response;
   }
 );
@@ -121,6 +130,7 @@ const organizatorSlice = createSlice({
     tipoviDogadjaja: [],
     moderatori: [],
     izabrana: {},
+    saId: {},
     loading: false,
     error: null,
   },
@@ -152,6 +162,19 @@ const organizatorSlice = createSlice({
       state.error = null;
     },
     [fetchKonferecnije.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [fetchKonferecnijaById.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [fetchKonferecnijaById.fulfilled]: (state, action) => {
+      state.saId = action.payload;
+
+      state.loading = false;
+      state.error = null;
+    },
+    [fetchKonferecnijaById.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },

@@ -110,7 +110,7 @@ body {
   color: red;
 }
 .succesMessage {
-  color: red;
+  color: #f0f0f0;
 }
 
 .headerContainer {
@@ -202,8 +202,8 @@ button {
 
 .underline {
   display: flex;
-  /*border-bottom: 1px solid lightgray;*/
-  margin-bottom: 12px; /* Veći razmak između div elemenata */
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .ok {

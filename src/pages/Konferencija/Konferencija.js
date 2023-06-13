@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Dogadjaj from "../Dogadjaj/Dogadjaj";
 import classes from "./Konferencija.module.css";
 import { useSelector } from "react-redux";
+import Pokusaj from "../Pokusaj/Pokusaj";
 const Konferencija = ({
   konferencija,
 
@@ -30,13 +31,10 @@ const Konferencija = ({
   const [showOcjeni, setShowOcjeni] = useState(false);
   const user = useSelector((state) => state.login);
   useEffect(() => {
-    console.log("ulogovani korisnik id", user.user.id);
-    console.log("ocjene", konferencija.ocjenas);
-
     const filterOcjene = konferencija.ocjenas.filter(
       (korisnik) => korisnik.korisnik.id === user.user.id
     );
-    console.log("filter ocjene", filterOcjene);
+
     if (filterOcjene.length > 0) {
       setShowOcjeni(false);
     } else {
@@ -46,8 +44,9 @@ const Konferencija = ({
     if (konferencija.url) {
       generateQRCode(konferencija.url);
     } else {
-      const { naziv, startTime, endTime, lokacija, soba } = konferencija;
+      const { id, naziv, startTime, endTime, lokacija, soba } = konferencija;
       const data = {
+        id: id,
         naziv: naziv,
         startTime: formattedDate(startTime),
         endTime: formattedDate(endTime),
@@ -89,11 +88,11 @@ const Konferencija = ({
       <li key={konferencija.id} className={classes.organizator}>
         <div className={classes.pom}>
           <div className="underline">
-            <span className={classes.poljaColor}>Naziv:</span>{" "}
+            <span className={classes.poljaColor}>Naziv: </span>{" "}
             <span> {konferencija.naziv}</span>
           </div>
           <div className="underline">
-            <span className={classes.poljaColor}>Početak:</span>{" "}
+            <span className={classes.poljaColor}>Početak: </span>{" "}
             <span> {formatirajDatum(konferencija.startTime)}</span>
           </div>
           <div className="underline">

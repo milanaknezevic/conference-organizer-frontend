@@ -17,7 +17,7 @@
   overflow: auto;
 }
 .mess {
-  color: red;
+  color: #333;
 }
 .disabled {
   opacity: 0.5; /* Smanjuje prozirnost elementa */
@@ -217,7 +217,7 @@
 
 .buttonD:hover {
   background-color: transparent;
-  color: blue;
+  color: red;
 }
 .buttonContainer button:last-child {
   margin-left: 10px; /* Prilagodite vrijednost razmaka prema svojim potrebama */

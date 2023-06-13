@@ -42,6 +42,7 @@ const Posjetilac = () => {
   const [startTimeZaPretragu, setStartTimeZaPretragu] = useState(null);
   const [endTimeZaPretragu, setEndTimeZaPretragu] = useState(null);
   const [dogadjajZaPosjetioce, setDogadjajZaPosjetioce] = useState({});
+  const [showModalZaPokusaj, setShowModalZaPokusaj] = useState(false);
 
   useEffect(() => {
     dispatch(fetchTipoviDogadjaja(token))
@@ -82,6 +83,7 @@ const Posjetilac = () => {
     } else {
       setSelectedKonferencija(konferencija);
     }
+    // setShowModalZaPokusaj(true);
   };
   const handleOdjaviSeSaDogadjaja = (dogadjaj) => {
     console.log("odjavi se sa", dogadjaj);
@@ -97,12 +99,12 @@ const Posjetilac = () => {
         console.log("obrisi posjetioca response", response);
       })
       .catch((error) => {});
-    setShowSucess(true);
-    setSuccesrMessage("Odjavljeni ste sa dogadjaja!");
+    setShowError(true);
+    setErrorMessage("Odjavljeni ste sa dogadjaja!");
 
     setTimeout(() => {
-      setShowSucess(false);
-      setSuccesrMessage("");
+      setShowError(false);
+      setErrorMessage("");
     }, 1000); // 1 sekunda
   };
   const handlePrijaviSeNaDogadjaj = (dogadjaj) => {
@@ -160,6 +162,7 @@ const Posjetilac = () => {
     setShowModalZaOcjenu(false);
     setShowOcjeniModal(false);
     setShowPosjetiociModal(false);
+    setShowModalZaPokusaj(false);
     setRefreshKey((prevKey) => prevKey + 1);
   };
   const handleChange = (value) => {
@@ -269,6 +272,13 @@ const Posjetilac = () => {
             onClose={handleClose}
             dogadjaj={dogadjajZaResurse}
             show={showModalZaResurse}
+          />
+        )}
+        {showModalZaPokusaj && (
+          <Resursi
+            onClose={handleClose}
+            dogadjaj={dogadjajZaResurse}
+            show={showModalZaPokusaj}
           />
         )}
       </div>

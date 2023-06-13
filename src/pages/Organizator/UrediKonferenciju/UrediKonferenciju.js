@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 const UrediKonferenciju = (props) => {
   const konferencija = useSelector((state) => state.organizator.izabrana);
+  const id = useSelector((state) => state.organizator.izabrana.id);
   const dogadjaji = konferencija.dogadjajs;
   const user = useSelector((state) => state.login);
   const token = user.user.token;
@@ -50,6 +51,7 @@ const UrediKonferenciju = (props) => {
   const [selectedKolicina, setSelectedKolicina] = useState(0);
 
   useEffect(() => {
+    console.log("use effect se desiooooo, a konferneicja je", id);
     const formattedStartTime = startTimeKonferencije.slice(0, 16); // Izrežemo vremensku zonu
     setStartTimeKonferencije(formattedStartTime);
     const formattedEndtTime = endTimeKonferencija.slice(0, 16); // Izrežemo vremensku zonu
@@ -582,13 +584,13 @@ const UrediKonferenciju = (props) => {
                                                     </div>
                                                   </div>
                                                   {showMessRez && (
-                                                    <diV>
+                                                    <div>
                                                       <p
                                                         className={classes.mess}
                                                       >
                                                         {messageRez}
                                                       </p>
-                                                    </diV>
+                                                    </div>
                                                   )}
                                                   <div
                                                     className={
@@ -632,9 +634,9 @@ const UrediKonferenciju = (props) => {
                                 </>
                               )}
                             {showMess && (
-                              <diV>
+                              <div>
                                 <p className={classes.mess}>{message}</p>
-                              </diV>
+                              </div>
                             )}
 
                             <div className={classes.buttonDOgadjaji}>
@@ -661,9 +663,9 @@ const UrediKonferenciju = (props) => {
           )}
         </div>
         {showMessKonf && (
-          <diV>
+          <div>
             <p className={classes.mess}>{messageKonf}</p>
-          </diV>
+          </div>
         )}
         <div className={classes.buttonDOgadjaji}>
           <button className={classes.buttonD} onClick={handleSave}>

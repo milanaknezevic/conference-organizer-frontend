@@ -13,11 +13,14 @@ import SearchComponent from "../../components/Pretrage/Naziv/SearchComponent";
 import { fetchFilterKonferencijeModeratora } from "../../redux/features/moderatorSlice";
 import { fetchFilterKonferencijePosjetioca } from "../../redux/features/posjetilacSlice";
 import Posjetioci from "../Posjetioci/Posjetioci";
+import { obrisiPosjetioca } from "../../redux/features/posjetilacSlice";
 
 const MojeKonferencije = () => {
   const rez = useSelector((state) => state.login);
   const user = rez.user;
   const token = rez.user.token;
+  const [showSucess, setShowSucess] = useState(false);
+  const [succesMessage, setSuccesrMessage] = useState("");
   const [dogadjajZaPosjetioce, setDogadjajZaPosjetioce] = useState({});
   const [konferencije, setKonferencije] = useState([]);
   const [selectedKonferencija, setSelectedKonferencija] = useState(null); // Dodato stanje za praćenje odabrane konferencije
@@ -32,12 +35,15 @@ const MojeKonferencije = () => {
   const [endTimeZaPretragu, setEndTimeZaPretragu] = useState(null);
   const [nazivZaPretragu, setNazivZaPretragu] = useState(null);
   const [showPosjetiociModal, setShowPosjetiociModal] = useState(false);
-
   const dispatch = useDispatch();
+  const [posjetilac, setPosjetilac] = useState(false);
+  const [posjetilacSeOdjavio, setPosjetilacSeOdjavio] = useState(false);
 
   useEffect(() => {
+    console.log("i sada se desio use effect");
     //ne treba sve vec smao na kojim je on posjetilac tj moderator
     if (user.rola === "POSJETILAC") {
+      setPosjetilac(true);
       const data = {
         status: statusZaPretragu,
         start: startTimeZaPretragu,
@@ -57,6 +63,7 @@ const MojeKonferencije = () => {
         })
         .catch((error) => {});
     } else if (user.rola === "MODERATOR") {
+      setPosjetilac(false);
       const data = {
         status: statusZaPretragu,
         start: startTimeZaPretragu,
@@ -86,7 +93,32 @@ const MojeKonferencije = () => {
     startTimeZaPretragu,
     endTimeZaPretragu,
     statusZaPretragu,
+    posjetilacSeOdjavio,
   ]);
+  const handleOdjaviSeSaDogadjaja = (dogadjaj) => {
+    console.log("user moja konf", user.id);
+    console.log("dogadjajID moja konf", dogadjaj.id);
+
+    dispatch(
+      obrisiPosjetioca({
+        token: token,
+        korisnikId: user.id,
+        dogadjajId: dogadjaj.id,
+      })
+    )
+      .then((response) => {
+        console.log("obrisi posjetioca response", response);
+      })
+      .catch((error) => {});
+    setShowSucess(true);
+    setSuccesrMessage("Odjavljeni ste sa dogadjaja!");
+
+    setTimeout(() => {
+      setShowSucess(false);
+      setSuccesrMessage("");
+      setPosjetilacSeOdjavio(true);
+    }, 1000);
+  };
 
   const formatirajDatum = (datum) => {
     const options = {
@@ -163,6 +195,8 @@ const MojeKonferencije = () => {
                   key={konferencija.id}
                   konferencija={konferencija}
                   classes={classes}
+                  showSucess={showSucess}
+                  succesMessage={succesMessage}
                   formatirajDatum={formatirajDatum}
                   handlePrikaziModalZaOcjenu={handlePrikaziModalZaOcjenu}
                   handlePrikaziDogadjaje={handlePrikaziDogadjaje}
@@ -170,6 +204,7 @@ const MojeKonferencije = () => {
                   handlePrikaziModalZaResurse={handlePrikaziModalZaResurse}
                   handleOcjeniModal={handleOcjeniModal}
                   handlePrikaziPosjetioceModal={handlePrikaziPosjetioceModal}
+                  handleOdjaviSeSaDogadjaja={handleOdjaviSeSaDogadjaja}
                 />
               </div>
             ))
@@ -200,6 +235,13 @@ const MojeKonferencije = () => {
           />
         )}
         {showPosjetiociModal && (
+          <Posjetioci
+            onClose={handleClose}
+            dogadjaj={dogadjajZaPosjetioce}
+            show={showPosjetiociModal}
+          />
+        )}
+        {showPosjetiociModal && posjetilac && (
           <Posjetioci
             onClose={handleClose}
             dogadjaj={dogadjajZaPosjetioce}

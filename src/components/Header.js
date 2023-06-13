@@ -52,7 +52,7 @@ const Header = (props) => {
           )}
           {isLoggedIn && rola === "ADMIN" && (
             <Link className={`${classes.konferencije}`} to="/admin">
-              Konferencije
+              Korisnici
             </Link>
           )}
           {isLoggedIn && rola === "POSJETILAC" && (

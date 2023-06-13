@@ -41,16 +41,6 @@ const Organizator = () => {
   const [startTimeZaPretragu, setStartTimeZaPretragu] = useState(null);
   const [endTimeZaPretragu, setEndTimeZaPretragu] = useState(null);
 
-  /*useEffect(() => {
-    dispatch(fetchKonferecnije(token))
-      .then((response) => {
-        dispatch(setKonferencijeRedux(response.payload));
-        setKonferencije(response.payload);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [dispatch, token, refreshKey]);*/
   useEffect(() => {
     const data = {
       status: statusZaPretragu,
@@ -63,7 +53,6 @@ const Organizator = () => {
         setKonferencije(response.payload);
       })
       .catch((error) => {});
-    console.log("konferencije", konferencije);
   }, [
     nazivZaPretragu,
     startTimeZaPretragu,
@@ -107,6 +96,7 @@ const Organizator = () => {
     setshowAddModal(false);
     setShowEditModal(false);
     setShowPosjetiociModal(false);
+    setRefreshKey((prevKey) => prevKey + 1);
   };
 
   const handleAddConference = () => {

@@ -53,8 +53,9 @@ const Dogadjaj = ({
     if (dogadjaj.url) {
       generateQRCode(dogadjaj.url);
     } else {
-      const { naziv, startTime, endTime, lokacija, soba } = dogadjaj;
+      const { id, naziv, startTime, endTime, lokacija, soba } = dogadjaj;
       const data = {
+        id: id,
         naziv: naziv,
         startTime: formattedDate(startTime),
         endTime: formattedDate(endTime),
@@ -145,7 +146,7 @@ const Dogadjaj = ({
           )}
         </div>
         {prijavljeniDogadjaj?.id === dogadjaj.id && showSucess && (
-          <div className={classes.poruka}>{succesMessage}</div>
+          <div className={classes.successMessage}>{succesMessage}</div>
         )}
         {prijavljeniDogadjaj?.id === dogadjaj.id && showError && (
           <div className={classes.poruka}>{errorMessage}</div>
@@ -185,15 +186,17 @@ const Dogadjaj = ({
           <span className={classes.poljaColor}>Moderator:</span>{" "}
           <span>{dogadjaj.korisnik.naziv}</span>
         </div>
-        <div className="underline">
-          <span className={classes.poljaColor}>Resursi:</span>{" "}
-          <span
-            className={classes.ocjene}
-            onClick={() => handlePrikaziModalZaResurse(dogadjaj)}
-          >
-            Resursi
-          </span>
-        </div>
+        {dogadjaj.resursi && (
+          <div className="underline">
+            <span className={classes.poljaColor}>Resursi:</span>{" "}
+            <span
+              className={classes.ocjene}
+              onClick={() => handlePrikaziModalZaResurse(dogadjaj)}
+            >
+              Resursi
+            </span>
+          </div>
+        )}
 
         <button
           onClick={() => handlePrikaziPosjetioceModal(dogadjaj)}

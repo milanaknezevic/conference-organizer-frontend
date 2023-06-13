@@ -1,10 +1,32 @@
-import { Modal } from "antd";
+import { Modal, Table } from "antd";
 
 const Posjetioci = ({ dogadjaj, show, onClose }) => {
-  const title1 = `Posjetioci ${dogadjaj.naziv}`;
+  const title1 = `Posjetioci:`;
 
-  // Definišite imena polja
-  const fields = ["Naziv", "Korisničko ime", "Email"];
+  const columns = [
+    {
+      title: "Naziv",
+      dataIndex: "naziv",
+      key: "naziv",
+    },
+    {
+      title: "Korisničko ime",
+      dataIndex: "username",
+      key: "username",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+  ];
+
+  const dataSource = dogadjaj.posjetilacs.map((user) => ({
+    key: user.korisnik.id,
+    naziv: user.korisnik.naziv,
+    username: user.korisnik.username,
+    email: user.korisnik.email,
+  }));
 
   return (
     <Modal
@@ -12,64 +34,12 @@ const Posjetioci = ({ dogadjaj, show, onClose }) => {
       visible={show}
       onCancel={onClose}
       maskClosable={false}
-      footer={
-        [
-          /* <Button
-          key="cancel"
-          onClick={onClose}
-          style={{ maxHeight: "300px", overflowY: "auto" }}
-        >
-          Izađi
-        </Button>,*/
-        ]
-      }
+      footer={[]}
     >
       {dogadjaj.posjetilacs.length === 0 ? (
         <span style={{ color: "red" }}>Nema posjetilaca!</span>
       ) : (
-        <ul
-          style={{
-            padding: 0,
-            listStyle: "none",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {/* Prikaz imena polja */}
-          <li
-            style={{
-              fontSize: 16,
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            {fields.map((field) => (
-              <span key={field} style={{ textAlign: "left" }}>
-                {field}
-              </span>
-            ))}
-          </li>
-
-          {/* Prikaz vrednosti polja za svakog člana liste */}
-          {dogadjaj.posjetilacs.map((user) => (
-            <li
-              style={{
-                fontSize: 16,
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-              key={user.korisnik.id}
-            >
-              <span style={{ textAlign: "left", width: "80px" }}>
-                {user.korisnik.naziv}
-              </span>
-              <span style={{ textAlign: "left" }}>
-                {user.korisnik.username}
-              </span>
-              <span style={{ textAlign: "left" }}>{user.korisnik.email}</span>
-            </li>
-          ))}
-        </ul>
+        <Table columns={columns} dataSource={dataSource} pagination={false} />
       )}
     </Modal>
   );

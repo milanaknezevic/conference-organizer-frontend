@@ -113,6 +113,7 @@ const Admin = () => {
         izbor1={handleIzborAktivnih}
         izbor2={handleIzborBlokiranih}
         izbor3={handleIzborZahtjeva}
+        izbor={izbor}
         open={openModal}
       />
 

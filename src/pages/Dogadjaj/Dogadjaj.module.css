@@ -166,6 +166,11 @@
   padding: 10px;
   padding-bottom: 20px;
 }
+.successMessage {
+  color: blue;
+  padding: 10px;
+  padding-bottom: 20px;
+}
 .outerDiv {
   gap: 25px;
   display: flex;
