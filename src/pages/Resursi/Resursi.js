@@ -19,7 +19,7 @@ const Resursi = ({ dogadjaj, show, onClose }) => {
   const dataSource = dogadjaj.rezervacijas?.map((rezervacija) => ({
     key: rezervacija.resurs.id,
     naziv: rezervacija.resurs.naziv,
-    kolicina: rezervacija.resurs.kolicina,
+    kolicina: rezervacija.kolicina,
   }));
 
   return (

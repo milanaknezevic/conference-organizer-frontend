@@ -79,6 +79,7 @@ const MojeKonferencije = () => {
       )
         .then((response) => {
           dispatch(setKonferencijeModeratora(response.payload)); // Ažurirajte stanje pomoću akcije setKonferencije
+          console.log("response", response.payload);
           setKonferencije(response.payload);
         })
         .catch((error) => {});

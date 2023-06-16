@@ -99,8 +99,9 @@ const Posjetilac = () => {
         console.log("obrisi posjetioca response", response);
       })
       .catch((error) => {});
+    setRefreshKey((prevKey) => prevKey + 1);
     setShowError(true);
-    setErrorMessage("Odjavljeni ste sa dogadjaja!");
+    setErrorMessage("Odjavljeni ste sa događaja!");
 
     setTimeout(() => {
       setShowError(false);
@@ -114,17 +115,20 @@ const Posjetilac = () => {
     );
 
     setPrijavljeniDogadjaj(dogadjaj);
+    console.log("current", currentTimeFormatted);
+    console.log("dogadjaj", dogadjaj.startTime);
+    console.log("", currentTimeFormatted < dogadjaj.startTime);
 
-    if (currentTimeFormatted < dogadjaj.endTime) {
+    if (currentTimeFormatted < dogadjaj.startTime) {
       setShowError(false);
 
       const posjetilac = {
         korisnikId: user.user.id,
         dogadjajId: dogadjaj.id,
       };
-
+      setRefreshKey((prevKey) => prevKey + 1);
       setShowSucess(true);
-      setSuccesrMessage("Prijavljeni ste na dogadjaj!");
+      setSuccesrMessage("Prijavljeni ste na događaj!");
 
       setTimeout(() => {
         setShowSucess(false);
@@ -146,6 +150,7 @@ const Posjetilac = () => {
         setErrorMessage("");
       }, 1000); // 1 sekunda
     }
+
     //setPrijavljeniDogadjaj(null);
   };
 
@@ -165,6 +170,7 @@ const Posjetilac = () => {
     setShowModalZaPokusaj(false);
     setRefreshKey((prevKey) => prevKey + 1);
   };
+
   const handleChange = (value) => {
     setStatusZaPretragu(value);
   };

@@ -4,7 +4,9 @@ body {
   padding: 0;
   background-color: white;
 }
-
+.slova {
+  color: #f0f0f0;
+}
 .header {
   position: fixed;
   top: 0;

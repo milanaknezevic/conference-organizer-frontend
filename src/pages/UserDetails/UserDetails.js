@@ -36,6 +36,7 @@ const UserDetails = () => {
     if (password !== "") {
       setShowErrorMessagePass(false);
     }
+    console.log(" nova   event.target.value", event.target.value);
   };
 
   const handleNewPasswordChange = (event) => {
@@ -43,6 +44,7 @@ const UserDetails = () => {
     if (newPassword !== "") {
       setShowErrorMessagePass(false);
     }
+    console.log(" newww event.target.value", event.target.value);
   };
 
   const handleOldPasswordChange = (event) => {
@@ -50,6 +52,7 @@ const UserDetails = () => {
     if (oldPassword !== "") {
       setShowErrorMessagePass(false);
     }
+    console.log(" old    event.target.value", event.target.value);
   };
   const handleEditClick = () => {
     setIsEditMode(true);

@@ -53,7 +53,7 @@ const Admin = () => {
       >
         <div>
           <div className="underline">
-            <span className="polja-color">Naziv: </span>{" "}
+            <span className="polja-color">Ime: </span>{" "}
             <span> {korisnik.naziv}</span>
           </div>
           <div className="underline">

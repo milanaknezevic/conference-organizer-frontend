@@ -5,7 +5,7 @@ const Posjetioci = ({ dogadjaj, show, onClose }) => {
 
   const columns = [
     {
-      title: "Naziv",
+      title: "Ime",
       dataIndex: "naziv",
       key: "naziv",
     },

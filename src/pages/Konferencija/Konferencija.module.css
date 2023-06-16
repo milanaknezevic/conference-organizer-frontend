@@ -2,7 +2,7 @@
   display: flex;
   list-style: none;
   min-width: 650px;
-  min-height: 350px;
+  min-height: 320px;
   border-radius: 10px;
   padding: 10px;
   margin-top: 1rem;
@@ -21,16 +21,6 @@
   background-image: linear-gradient(79deg, #7439db, #c66fbc 48%, blue);
   z-index: -1;
   border-radius: 10px;
-}
-.qrCodeContainer {
-  position: absolute;
-  top: 6rem;
-  right: 0.2rem;
-}
-.qrCodeContainerPosjetilac {
-  position: absolute;
-  top: 8rem;
-  right: 1rem;
 }
 
 .ocjeni {
@@ -61,8 +51,7 @@
 }
 .buttons {
   position: absolute;
-
-  top: 2rem;
+  top: 4rem;
   right: 1rem;
   transform: translateY(-50%);
   display: flex;
@@ -70,6 +59,31 @@
   justify-content: flex-end;
   align-items: flex-end;
   /* Add equal spacing between buttons */
+}
+.nesto {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+
+  display: flex;
+}
+.nestozaButton {
+  display: flex;
+  flex-direction: column;
+}
+.buttonStil {
+  height: 20px;
+  background-color: transparent;
+}
+.qrCodeContainer {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.3rem;
+}
+.qrCodeContainerPosjetilac {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.3rem;
 }
 .buttonc {
   position: absolute;
@@ -104,6 +118,18 @@
   display: flex;
   flex-grow: 1;
 }
+.pomoc {
+  display: flex;
+  margin-bottom: 60px;
+  flex-direction: column;
+  align-items: flex-start; /* Poravnavamo elemente vertikalno po sredini */
+}
+.ulX {
+  /* border: 2px solid blueviolet;*/
+  margin-left: -30px;
+  min-width: 620px;
+  margin-top: 60px;
+}
 .prikaziDogađajeButton {
   width: 100%;
   display: flex;
@@ -111,6 +137,7 @@
   align-items: center;
   background-color: transparent;
   text-decoration: underline;
+  margin-top: 30px;
 }
 .prikaziDogađajeButton:hover {
   color: blue;

@@ -5,7 +5,9 @@ import { useState, useEffect } from "react";
 import Dogadjaj from "../Dogadjaj/Dogadjaj";
 import classes from "./Konferencija.module.css";
 import { useSelector } from "react-redux";
-import Pokusaj from "../Pokusaj/Pokusaj";
+import { Accordion, Tab, Tabs } from "react-bootstrap";
+import AccordionItem from "react-bootstrap/esm/AccordionItem";
+
 const Konferencija = ({
   konferencija,
 
@@ -131,7 +133,7 @@ const Konferencija = ({
               Ocjene
             </span>
           </div>
-          <div className={classes.divZaButton}>
+          {/* <div className={classes.divZaButton}>
             <button
               onClick={() => handlePrikaziDogadjaje(konferencija)}
               className={classes.prikaziDogađajeButton}
@@ -140,7 +142,7 @@ const Konferencija = ({
                 ? "Sakrij događaje"
                 : "Prikaži događaje"}
             </button>
-          </div>
+          </div>*/}
           {handleOcjeniModal && showOcjeni && (
             <div className={classes.ocjeni}>
               {konferencija.status === true && (
@@ -150,37 +152,56 @@ const Konferencija = ({
               )}
             </div>
           )}
-          {selectedKonferencija === konferencija && (
-            <ul>
-              {konferencija.dogadjajs.length > 0 ? (
-                konferencija.dogadjajs.map((dogadjaj) => (
-                  <Dogadjaj
-                    key={dogadjaj.id}
-                    dogadjaj={dogadjaj}
-                    selectedDogadjaj={selectedDogadjaj}
-                    classes={classes}
-                    konferencija={konferencija}
-                    formatirajDatum={formatirajDatum}
-                    handlePrikaziModalZaResurse={handlePrikaziModalZaResurse}
-                    handlePrikaziPosjetioceModal={handlePrikaziPosjetioceModal}
-                    handlePrijaviSeNaDogadjaj={handlePrijaviSeNaDogadjaj}
-                    handleOdjaviSeSaDogadjaja={handleOdjaviSeSaDogadjaja}
-                    showSucess={showSucess}
-                    succesMessage={succesMessage}
-                    showError={showError}
-                    errorMessage={errorMessage}
-                    prijavljeniDogadjaj={prijavljeniDogadjaj}
-                  />
-                ))
-              ) : (
-                <p className={classes.praznaLista}>Nema dogadjaja!</p>
-              )}
-            </ul>
+
+          {showSucess && (
+            <p style={{ marginBottom: "-40px", color: "blue" }}>
+              {succesMessage}
+            </p>
           )}
+          {showError && (
+            <p style={{ marginBottom: "-40px", color: "red" }}>
+              {errorMessage}
+            </p>
+          )}
+          <div style={{ marginTop: "50px" }}>
+            {
+              /*selectedKonferencija === konferencija &&*/ <ul>
+                {konferencija.dogadjajs.length > 0 ? (
+                  konferencija.dogadjajs.map((dogadjaj) => (
+                    <div>
+                      <Dogadjaj
+                        key={dogadjaj.id}
+                        dogadjaj={dogadjaj}
+                        selectedDogadjaj={selectedDogadjaj}
+                        classes={classes}
+                        konferencija={konferencija}
+                        formatirajDatum={formatirajDatum}
+                        handlePrikaziModalZaResurse={
+                          handlePrikaziModalZaResurse
+                        }
+                        handlePrikaziPosjetioceModal={
+                          handlePrikaziPosjetioceModal
+                        }
+                        handlePrijaviSeNaDogadjaj={handlePrijaviSeNaDogadjaj}
+                        handleOdjaviSeSaDogadjaja={handleOdjaviSeSaDogadjaja}
+                        showSucess={showSucess}
+                        succesMessage={succesMessage}
+                        showError={showError}
+                        errorMessage={errorMessage}
+                        prijavljeniDogadjaj={prijavljeniDogadjaj}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <p className={classes.praznaLista}>Nema dogadjaja!</p>
+                )}
+              </ul>
+            }
+          </div>
         </div>
 
-        {handleObrisi && (
-          <div className={classes.buttons}>
+        <div className={classes.nesto}>
+          <div className={classes.nestozaButton}>
             <button
               className={classes.editButton}
               onClick={() => handleUredi(konferencija)}
@@ -194,10 +215,10 @@ const Konferencija = ({
               <Trash /> Obrisi
             </button>
           </div>
-        )}
 
-        <div className={classes.qrCodeContainerPosjetilac}>
-          <img src={qrCode} alt="QR Code" />
+          <div>
+            <img src={qrCode} alt="QR Code" />
+          </div>
         </div>
       </li>
     </div>

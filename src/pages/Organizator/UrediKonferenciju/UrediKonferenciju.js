@@ -96,7 +96,7 @@ const UrediKonferenciju = (props) => {
     )
       .then((response) => {
         setShowMess(true);
-        setMessage("Uspješno ste sačuvali izmjene!");
+        setMessage("Uspješno ste sačuvali izmjene za događaj!");
         const timer = setTimeout(() => {
           setShowMess(false);
           setMessage("");
@@ -123,7 +123,7 @@ const UrediKonferenciju = (props) => {
     )
       .then((response) => {
         setShowMessRez(true);
-        setMessageRez("Uspješno ste sačuvali izmjene!");
+        setMessageRez("Uspješno ste sačuvali izmjene za rezervacije!");
         const timer = setTimeout(() => {
           setShowMessRez(false);
           setMessageRez("");
