@@ -96,10 +96,11 @@ const Posjetilac = () => {
       })
     )
       .then((response) => {
+        setRefreshKey((prevKey) => prevKey + 1);
         console.log("obrisi posjetioca response", response);
       })
       .catch((error) => {});
-    setRefreshKey((prevKey) => prevKey + 1);
+
     setShowError(true);
     setErrorMessage("Odjavljeni ste sa događaja!");
 
@@ -109,6 +110,8 @@ const Posjetilac = () => {
     }, 1000); // 1 sekunda
   };
   const handlePrijaviSeNaDogadjaj = (dogadjaj) => {
+    console.log("dosla sam da s eprijavim ");
+
     const currentTime = new Date(); // Trenutno vrijeme
     const currentTimeFormatted = moment(currentTime).format(
       "YYYY-MM-DDTHH:mm:ss.SSSZ"
@@ -126,7 +129,7 @@ const Posjetilac = () => {
         korisnikId: user.user.id,
         dogadjajId: dogadjaj.id,
       };
-      setRefreshKey((prevKey) => prevKey + 1);
+
       setShowSucess(true);
       setSuccesrMessage("Prijavljeni ste na događaj!");
 
@@ -136,6 +139,7 @@ const Posjetilac = () => {
       }, 1000); // 1 sekunda
       dispatch(dodajPosjetioca({ token: token, posjetilac: posjetilac }))
         .then((response) => {
+          setRefreshKey((prevKey) => prevKey + 1);
           console.log("Repsone prijave posjetioca", response);
 
           console.log("show prijavi psojetioca");

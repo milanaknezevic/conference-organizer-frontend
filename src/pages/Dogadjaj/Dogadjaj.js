@@ -95,7 +95,6 @@ const Dogadjaj = ({
       <li key={dogadjaj.id} className={classes.lista}>
         <div className={classes.listaDiv}>
           <div className={classes.underlineX}>
-            <span className={classes.poljaColor}>Naziv događaja:</span>{" "}
             <span>{dogadjaj.naziv}</span>
           </div>
           <div>

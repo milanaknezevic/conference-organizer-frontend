@@ -33,6 +33,8 @@ const Konferencija = ({
   const [showOcjeni, setShowOcjeni] = useState(false);
   const user = useSelector((state) => state.login);
   useEffect(() => {
+    console.log("status", konferencija.status);
+    console.log("naziv", konferencija.naziv);
     const filterOcjene = konferencija.ocjenas.filter(
       (korisnik) => korisnik.korisnik.id === user.user.id
     );
@@ -133,6 +135,9 @@ const Konferencija = ({
               Ocjene
             </span>
           </div>
+          <div className={classes.underlineX}>
+            <span className={classes.poljaColor}>Dogadjaji:</span>{" "}
+          </div>
           {/* <div className={classes.divZaButton}>
             <button
               onClick={() => handlePrikaziDogadjaje(konferencija)}
@@ -163,9 +168,11 @@ const Konferencija = ({
               {errorMessage}
             </p>
           )}
+
           <div style={{ marginTop: "50px" }}>
             {
-              /*selectedKonferencija === konferencija &&*/ <ul>
+              /*selectedKonferencija === konferencija &&*/
+              <ul className={classes.ulX}>
                 {konferencija.dogadjajs.length > 0 ? (
                   konferencija.dogadjajs.map((dogadjaj) => (
                     <div>
@@ -201,20 +208,25 @@ const Konferencija = ({
         </div>
 
         <div className={classes.nesto}>
-          <div className={classes.nestozaButton}>
-            <button
-              className={classes.editButton}
-              onClick={() => handleUredi(konferencija)}
-            >
-              <Pencil /> Uredi
-            </button>
-            <button
-              className={classes.deleteButton}
-              onClick={() => handleObrisi(konferencija)}
-            >
-              <Trash /> Obrisi
-            </button>
-          </div>
+          {handleObrisi && (
+            <div className={classes.nestozaButton}>
+              {konferencija.status === false && (
+                <button
+                  className={classes.editButton}
+                  onClick={() => handleUredi(konferencija)}
+                >
+                  <Pencil /> Uredi
+                </button>
+              )}
+
+              <button
+                className={classes.deleteButton}
+                onClick={() => handleObrisi(konferencija)}
+              >
+                <Trash /> Obrisi
+              </button>
+            </div>
+          )}
 
           <div>
             <img src={qrCode} alt="QR Code" />
